@@ -2,29 +2,31 @@
 
 ## Current classification
 
-**Baseline source imported for review. Not yet production-approved.**
+**Corrective source completed and automated quality gates passed. Hostinger staging acceptance remains mandatory.**
 
-## Evidence available
+## Lifecycle evidence
 
-- Extracted supplied source is preserved under the original plugin directory.
-- Original archive SHA-256 is recorded.
-- Per-file SHA-256 checksums are recorded.
-- PHP and JavaScript syntax checks passed at import time.
-- Baseline integrity workflow is included.
-
-## Not yet established
-
-- Functional WordPress activation with File 03.
-- Fresh-install and upgrade behavior.
-- Page creation and shortcode routing.
-- Verified-doctor-only public visibility.
-- Search and filter correctness.
-- Profile completion and contact controls.
-- Reporting, moderation, privacy export, and erasure behavior.
-- Capability, nonce, sanitization, escaping, SQL, IDOR, and data-exposure audit.
-- Responsive, accessibility, RTL, browser, and mobile acceptance.
-- Staging deployment, rollback, and Founder acceptance.
+| Stage | Status |
+|---|---|
+| Original archive identity | PASS |
+| Baseline preservation | PASS |
+| Post-upload code audit | PASS — blockers identified |
+| Corrective implementation | PASS — version 0.2.0 source completed |
+| Corrected per-file checksums | PASS |
+| PHP syntax | PASS — 10/10 PHP files |
+| JavaScript syntax | PASS — 1/1 JavaScript file |
+| Static defect-regression audit | PASS |
+| Programmatic contrast checks | PASS |
+| GitHub Actions | PASS — File 07 Quality Gates |
+| WordPress fresh activation with File 03 | Not yet established |
+| Upgrade from 0.1.0 database/page state | Not yet established |
+| File 20 shell visual integration | Not yet established |
+| Real multi-role and privacy workflows | Not yet established |
+| Hostinger staging responsive/accessibility acceptance | Not yet established |
+| Backup restore and rollback | Not yet established |
+| Founder acceptance | Not yet established |
+| Production deployment | BLOCKED |
 
 ## Progression gate
 
-Any defect found during audit or testing must be corrected, re-tested, and accepted before work progresses beyond this file's review stage.
+No merge-to-production or “100% complete” declaration is permitted until every item in `REVIEW-REQUIRED.md` passes on staging. Any newly discovered defect must be corrected and re-tested before progression.

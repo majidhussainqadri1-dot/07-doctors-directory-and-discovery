@@ -2,23 +2,30 @@
 
 Official repository for **File 07** of the **Sabri Social Homeopathy Platform**.
 
-## Supplied baseline
+## Current corrective release candidate
 
 - Plugin: `Doctors Directory and Discovery`
-- Supplied version: `0.1.0`
-- WordPress requirement: `6.0+`
-- PHP requirement: `7.4+`
-- Required dependency: **File 03 — Sabri Profiles and Doctors**
-- Original plugin directory: `doctors-directory/`
-- Original supplied archive: `07-doctors-directory-and-discovery-0.1.0.zip`
-- Original archive SHA-256: `966119b570d20e475fbfa631018d2c6ad56217ba0202e7c6264b9a3766afa351`
+- Corrected version: `0.2.0`
+- Required WordPress: `6.0+`
+- Required PHP: `7.4+`
+- Required dependency: **File 03 — Sabri Profiles and Doctors 0.1.0+**
+- Plugin directory: `doctors-directory/`
+- Corrective branch: `fix/file-07-audit-remediation`
 
-## Baseline import policy
+## What version 0.2.0 repairs
 
-The `baseline/file-07-original-import` branch preserves the extracted supplied plugin source without deliberate source-code alteration. Repository governance files, integrity records, and automated checks are additions around the original source and were not contained in the supplied plugin ZIP.
+Version 0.2.0 corrects the post-upload audit blockers without altering the preserved baseline branch. It introduces safe and reversible page ownership, a database-filtered paginated directory, Founder exclusion, File 20 shell boundaries, status-aware profiles, the expanded professional profile contract, privacy/report audit completion, private-page cache and indexing protection, a public-doctor sitemap provider, and WCAG-oriented interaction styling.
 
-No corrective development should be merged into this baseline import. Audit findings and repairs must be handled in later branches and pull requests, with re-testing before progression.
+## Evidence and governance
 
-## Current status
+- [`SOURCE-PROVENANCE.md`](SOURCE-PROVENANCE.md) — identity of the original supplied archive.
+- [`CORRECTIVE-REPAIR.md`](CORRECTIVE-REPAIR.md) — defect-to-repair traceability.
+- [`TEST-EVIDENCE.md`](TEST-EVIDENCE.md) — automated checks and current limits.
+- [`STATUS.md`](STATUS.md) — exact lifecycle classification.
+- [`MANIFEST.md`](MANIFEST.md) — repository and source inventory.
+- [`CHECKSUMS.sha256`](CHECKSUMS.sha256) — corrected source and QA file integrity.
+- [`REVIEW-REQUIRED.md`](REVIEW-REQUIRED.md) — mandatory staging acceptance still required.
 
-See [`STATUS.md`](STATUS.md), [`SOURCE-PROVENANCE.md`](SOURCE-PROVENANCE.md), [`MANIFEST.md`](MANIFEST.md), [`ORIGINAL-ARCHIVE.sha256`](ORIGINAL-ARCHIVE.sha256), and [`CHECKSUMS.sha256`](CHECKSUMS.sha256).
+## Branch policy
+
+The branch `baseline/file-07-original-import` remains the immutable evidentiary import of version 0.1.0. Corrective development belongs only in later branches and pull requests. The repaired source must not be called production-complete until File 03 integration, database migration, role/privacy workflows, File 20 rendering, rollback, responsive behavior, accessibility, and Hostinger staging acceptance all pass.
