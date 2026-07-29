@@ -1,0 +1,2 @@
+.sdd-admin-stats{display:flex;gap:14px;margin:18px 0}.sdd-admin-stats div{min-width:140px;padding:18px;border-left:4px solid #ff8a1f;background:#fff;box-shadow:0 2px 9px rgba(0,0,0,.06)}.sdd-admin-stats strong,.sdd-admin-stats span{display:block}.sdd-admin-stats strong{font-size:28px;color:#b94e00}.sdd-admin td{vertical-align:top}.sdd-admin form{display:grid;gap:7px}.sdd-admin input,.sdd-admin select{max-width:230px}@media(max-width:700px){.sdd-admin-stats{display:grid}}
+

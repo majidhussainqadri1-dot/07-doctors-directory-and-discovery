@@ -1,0 +1,24 @@
+name: Baseline Integrity
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify extracted-source SHA-256 checksums
+        run: sha256sum -c CHECKSUMS.sha256
+
+      - name: Check PHP syntax
+        run: find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Check JavaScript syntax
+        run: find doctors-directory -type f -name '*.js' -print0 | xargs -0 -n1 node --check
