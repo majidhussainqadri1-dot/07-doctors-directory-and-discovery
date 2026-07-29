@@ -28,8 +28,8 @@ final class SDD_SEO {
 		if ( ! $user || ! SDD_Helpers::is_public( $user->ID ) ) {
 			return;
 		}
-		$url       = SDD_Helpers::profile_url( $user->ID );
-		$photo     = absint( SDD_Helpers::spd( $user->ID, 'profile_photo_id', 0 ) );
+		$url      = SDD_Helpers::profile_url( $user->ID );
+		$photo    = absint( SDD_Helpers::spd( $user->ID, 'profile_photo_id', 0 ) );
 		$languages = array_values( array_filter( array_map( 'trim', preg_split( '/[,;\n]+/', (string) SDD_Helpers::spd( $user->ID, 'languages' ) ) ) ) );
 		$person = array(
 			'@type'       => 'Person',
@@ -111,7 +111,9 @@ final class SDD_SEO {
 			$sitemaps->registry->add_provider( 'doctors', new SDD_Doctor_Sitemap_Provider() );
 		}
 	}
+
 }
+
 
 if ( class_exists( 'WP_Sitemaps_Provider' ) ) {
 	final class SDD_Doctor_Sitemap_Provider extends WP_Sitemaps_Provider {
