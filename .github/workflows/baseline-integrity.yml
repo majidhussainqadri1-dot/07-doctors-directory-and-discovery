@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Print critical source hashes
+        run: sha256sum doctors-directory/includes/class-sdd-seo.php doctors-directory/uninstall.php
+
       - name: Verify repository SHA-256 checksums
         run: sha256sum -c CHECKSUMS.sha256
 
