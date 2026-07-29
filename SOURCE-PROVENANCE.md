@@ -1,34 +1,19 @@
 # Source Provenance — File 07
 
-## Supplied artifact
+## Original supplied artifact
 
 - File name: `07-doctors-directory-and-discovery-0.1.0.zip`
-- Imported repository: `majidhussainqadri1-dot/07-doctors-directory-and-discovery`
+- Original SHA-256: `966119b570d20e475fbfa631018d2c6ad56217ba0202e7c6264b9a3766afa351`
+- Original top-level plugin directory: `doctors-directory/`
+- Original extracted source files: 14
 - Baseline branch: `baseline/file-07-original-import`
-- Import date: 2026-07-29
+- Baseline commit: `9278938bf2b524c77f5f523271cc938c5fa27cc1`
+- Imported: 2026-07-29
 - Supplied by: Dr. Allamah Majid Hussain Sabri Muhaddith Mursheed
 - Project: Sabri Social Homeopathy Platform
 
-## Archive identity
+## Corrective lineage
 
-- SHA-256: `966119b570d20e475fbfa631018d2c6ad56217ba0202e7c6264b9a3766afa351`
-- Archive entries: 19, including directories
-- Extracted source files: 14
-- Uncompressed source size reported by ZIP: 59,165 bytes
-- Top-level plugin directory: `doctors-directory/`
+Version `0.2.0` is a reviewed corrective derivative of the preserved 0.1.0 baseline. The baseline branch remains unchanged. The corrective branch changes source only to remedy documented defects and adds QA/governance files around it.
 
-The original archive hash is recorded in `ORIGINAL-ARCHIVE.sha256`. The repository baseline contains the extracted plugin source; the binary ZIP itself is not represented as source code.
-
-## Preservation statement
-
-The files under `doctors-directory/` were extracted from the supplied ZIP and imported without deliberate source-code modification. Repository-level documentation, workflow, and checksum files were created solely to document and verify the import.
-
-## Import-time mechanical checks
-
-- ZIP listing completed successfully.
-- No absolute or path-traversal entries were observed in the archive listing.
-- PHP syntax check passed for all 10 PHP files using `php -l` in the import environment.
-- JavaScript syntax check passed for the single JavaScript file using `node --check`.
-- A basic secret-pattern scan found no obvious API key, password, token, or private-key material.
-
-These checks do **not** prove WordPress runtime correctness, security, privacy, accessibility, dependency compatibility, database migration safety, or production readiness.
+The original binary ZIP is not treated as corrected source. Its hash remains recorded in `ORIGINAL-ARCHIVE.sha256`; corrected source integrity is recorded separately in `CHECKSUMS.sha256`.

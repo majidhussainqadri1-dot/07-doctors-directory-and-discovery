@@ -1,11 +1,6 @@
-# Manifest — File 07 Baseline
+# Manifest — File 07 Corrective Candidate 0.2.0
 
-## Original supplied archive
-
-- File: `07-doctors-directory-and-discovery-0.1.0.zip`
-- SHA-256: recorded in `ORIGINAL-ARCHIVE.sha256`
-
-## Extracted plugin source
+## Corrected plugin source
 
 ```text
 doctors-directory/
@@ -29,6 +24,15 @@ doctors-directory/
 └── uninstall.php
 ```
 
+## QA files
+
+```text
+tests/
+├── static-audit.sh
+└── test-contrast.py
+.github/workflows/baseline-integrity.yml
+```
+
 ## Counts
 
 - Plugin source files: 14
@@ -36,4 +40,6 @@ doctors-directory/
 - CSS files: 2
 - JavaScript files: 1
 - WordPress readme files: 1
-- Repository governance/integrity files: separate from the original ZIP
+- Automated QA scripts: 2
+- GitHub Actions workflows: 1
+- Repository governance/integrity documents: separate from plugin source
