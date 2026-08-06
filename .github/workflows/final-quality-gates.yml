@@ -38,6 +38,7 @@ jobs:
         run: |
           bash tests/build-release.sh
           cmp /tmp/build-a.zip build/07-doctors-directory-and-discovery-1.1.0.zip
+          sha256sum build/07-doctors-directory-and-discovery-1.1.0.zip
           (cd build && sha256sum -c ../RELEASE-CANDIDATE.sha256)
       - name: Clean-extract package verification
         run: |
