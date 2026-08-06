@@ -1,26 +1,15 @@
-# File 07 — Fresh Review and Correction Cycle 2
+# Fresh Adversarial Review and Retest Cycle 2 — 2026-08-06
 
-## Independent adversarial review focus
+Focus: negative paths, authorization, privacy leakage, concurrency, event reliability, migration, destructive behavior, rendering and package readiness.
 
-- Founder duplication and recent-date correctness.
-- Cursor ordering under concurrent changes.
-- Public DTO minimization and internal-ID leakage.
-- Replay/idempotency and stale-version mutations.
-- Private status indexing/cache.
-- Global shell ownership and green visual identity.
-- Backup/package reproducibility and truthful acceptance boundary.
+Checks performed:
+- Direct superglobal reads reviewed for sanitization/nonces/capabilities.
+- Direct writes reviewed for File 07 ownership; no companion truth write found.
+- Public rendering reviewed for contextual escaping.
+- Dangerous execution/file/network primitives scanned; none used by runtime.
+- TODO/dead/placeholder functionality scanned; none found.
+- Mandatory owners, Founder exclusion, cursor binding, rate limits, event retry/dead-letter, report transitions, feature expiry, privacy/legal hold, Safe Mode/repair, SEO, InnoDB and uninstall invariants retested.
+- 1,500-record stable relevance pagination model passed without duplicate or omission.
+- Seven contrast pairs passed.
 
-## Results
-
-- Founder is excluded by the eligibility contract and rendered only through the institutional Founder contract.
-- Recently verified uses authoritative `effective_at`; account registration date is not used.
-- Cursor includes featured, quality, verified date and internal tie-breaker but is signed and opaque; public responses expose no internal doctor ID.
-- Feature/report state transitions require expected version; event replay payload mismatch fails.
-- Status route is private, no-store, noindex/noarchive/nosnippet.
-- File 07 emits only semantic module content and hooks; no global navigation or shell is rendered.
-- Green is the primary visual identity; contextual warning/blue/danger colors remain accessible.
-- Release ZIP is deterministic byte-for-byte with the documented SHA-256.
-
-## Residual external gates
-
-No source defect was found in this cycle. Actual WordPress/MySQL, companion runtime, Hostinger cache, browser/device, restore/rollback and Founder acceptance cannot be truthfully substituted by static tests; they remain explicitly blocked in the staging matrix.
+Result: zero known unresolved local source defects within the executed repository test scope. This does not replace independent penetration testing, real WordPress/MySQL upgrade testing, browser assistive-technology acceptance, restore/rollback rehearsal or Founder acceptance.

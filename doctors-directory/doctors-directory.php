@@ -3,7 +3,7 @@
  * Plugin Name: Doctors Directory and Discovery
  * Plugin URI: https://www.sabrihomeopathy.com/
  * Description: Canonical verified-doctor directory, discovery, eligibility projection, search, moderation, SEO and operational controls for the Sabri Social Homeopathy Platform.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Requires at least: 7.0
  * Requires PHP: 8.0
  * Author: Dr. Allamah Majid Hussain Sabri Muhaddith Mursheed
@@ -13,22 +13,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DDD_VERSION', '1.0.0' );
-define( 'DDD_DB_VERSION', '1.0.0' );
-define( 'DDD_CONTRACT_VERSION', '1.0.0' );
+define( 'DDD_VERSION', '1.1.0' );
+define( 'DDD_DB_VERSION', '1.1.0' );
+define( 'DDD_CONTRACT_VERSION', '1.1.0' );
 define( 'DDD_FILE', __FILE__ );
 define( 'DDD_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DDD_URL', plugin_dir_url( __FILE__ ) );
 define( 'DDD_TEXT_DOMAIN', 'doctors-directory-discovery' );
 define( 'DDD_SLUG', 'doctors-directory-discovery' );
-define( 'DDD_PROJECTION_SCHEMA', 1 );
+define( 'DDD_PROJECTION_SCHEMA', 2 );
 define( 'DDD_MIN_FILE03_VERSION', '0.1.0' );
 define( 'DDD_SAFE_MODE_OPTION', 'ddd_safe_mode' );
-
-foreach ( glob( DDD_DIR . 'includes/trait-ddd-*.php' ) as $ddd_trait_file ) {
-	require_once $ddd_trait_file;
-}
-unset( $ddd_trait_file );
 
 require_once DDD_DIR . 'includes/class-sdd-helpers.php';
 require_once DDD_DIR . 'includes/class-sdd-activator.php';

@@ -24,6 +24,7 @@ final class DDD_SEO {
 			return;
 		}
 		$result = DDD_Repository::search( array( 'limit' => 12 ) );
+		if ( is_wp_error( $result ) ) { return; }
 		$items = array();
 		$position = 1;
 		foreach ( $result['items'] as $doctor ) {
@@ -48,8 +49,8 @@ final class DDD_SEO {
 		$data = array(
 			'@context'    => 'https://schema.org',
 			'@type'       => 'CollectionPage',
-			'@id'         => home_url( '/doctors/#directory' ),
-			'url'         => home_url( '/doctors/' ),
+			'@id'         => $this->directory_url() . '#directory',
+			'url'         => $this->directory_url(),
 			'name'        => __( 'Doctors Directory and Discovery', DDD_TEXT_DOMAIN ),
 			'description' => __( 'Publicly eligible verified homeopathic doctors. Verification is not an endorsement or treatment guarantee.', DDD_TEXT_DOMAIN ),
 			'mainEntity'  => array( '@type' => 'ItemList', 'itemListElement' => $items ),
@@ -79,9 +80,14 @@ final class DDD_SEO {
 		return false;
 	}
 
+	private function directory_url() {
+		$map = (array) get_option( DDD_Activator::PAGE_MAP_OPTION, array() );
+		return ! empty( $map['directory'] ) && 'publish' === get_post_status( absint( $map['directory'] ) ) ? get_permalink( absint( $map['directory'] ) ) : home_url( '/doctors/' );
+	}
+
 	public function canonical_url( $canonical, $post ) {
 		if ( $this->is_directory_page() ) {
-			return home_url( '/doctors/' );
+			return $this->directory_url();
 		}
 		if ( get_query_var( 'ddd_doctor_public_id' ) ) {
 			return DDD_Helpers::public_profile_url( get_query_var( 'ddd_doctor_public_id' ) );
@@ -110,10 +116,10 @@ if ( class_exists( 'WP_Sitemaps_Provider' ) ) {
 			$page_num = max( 1, absint( $page_num ) );
 			$offset = ( $page_num - 1 ) * self::PER_PAGE;
 			$table = DDD_Repository::table( 'projection' );
-			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT public_id,updated_at FROM {$table} WHERE eligible=1 ORDER BY doctor_id ASC LIMIT %d OFFSET %d", self::PER_PAGE, $offset ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT public_id,profile_url,updated_at FROM {$table} WHERE eligible=1 ORDER BY doctor_id ASC LIMIT %d OFFSET %d", self::PER_PAGE, $offset ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$urls = array();
 			foreach ( $rows as $row ) {
-				$entry = array( 'loc' => DDD_Helpers::public_profile_url( $row['public_id'] ) );
+				$entry = array( 'loc' => ! empty( $row['profile_url'] ) ? esc_url_raw( $row['profile_url'] ) : DDD_Helpers::public_profile_url( $row['public_id'] ) );
 				if ( $row['updated_at'] && '0000-00-00 00:00:00' !== $row['updated_at'] ) {
 					$entry['lastmod'] = gmdate( DATE_W3C, strtotime( $row['updated_at'] . ' UTC' ) );
 				}

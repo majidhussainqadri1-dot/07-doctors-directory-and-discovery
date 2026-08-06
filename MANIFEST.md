@@ -1,28 +1,43 @@
-# File 07 — Version 1.0.0 Manifest
+# Source Manifest — File 07 v1.1.0
 
-## Canonical release package
+## Runtime
+- `doctors-directory/doctors-directory.php`
+- `doctors-directory/includes/class-sdd-helpers.php`
+- `doctors-directory/includes/class-sdd-activator.php`
+- `doctors-directory/includes/class-sdd-directory.php`
+- `doctors-directory/includes/class-sdd-profile.php`
+- `doctors-directory/includes/class-sdd-admin.php`
+- `doctors-directory/includes/class-sdd-privacy.php`
+- `doctors-directory/includes/class-sdd-seo.php`
+- `doctors-directory/includes/class-sdd-plugin.php`
+- `doctors-directory/uninstall.php`
 
-- ZIP: `07-doctors-directory-and-discovery-1.0.0.zip`
-- Top-level folder: `doctors-directory-and-discovery/`
-- SHA-256: `96a770f28ef9cceb2401204ef716d3503ebd1ebecc005d5ea1d2a8c2b36ee375`
+## Assets
+- `doctors-directory/assets/css/directory.css`
+- `doctors-directory/assets/css/admin.css`
+- `doctors-directory/assets/js/directory.js`
 
-## Plugin source
+## QA/build
+- `.github/workflows/file-07-quality-gates.yml`
+- `tests/bootstrap.php`
+- `tests/unit-helpers.php`
+- `tests/source-contracts.py`
+- `tests/static-audit.sh`
+- `tests/test-pagination.py`
+- `tests/test-contrast.py`
+- `tests/build-release.sh`
 
-- Bootstrap: `doctors-directory/doctors-directory.php`
-- PHP includes: 8
-- PHP uninstall file: 1
-- CSS files: 2
-- JavaScript files: 1
-- WordPress readme: 1
-
-## QA and governance
-
-- GitHub Actions workflow: 1
-- Test/build scripts: 4
-- Requirements traceability: 1
-- Staging acceptance matrix: 1
-- Operations runbook: 1
-- Fresh review/fix records: 2
-- Release notes: 1
-
-The repository source folder remains `doctors-directory/` for upgrade continuity. The deterministic build script packages it under the master-plan canonical folder `doctors-directory-and-discovery/`.
+## Governance/release evidence
+- `docs/REQUIREMENTS-TRACEABILITY.md`
+- `docs/API-CONTRACTS.md`
+- `docs/DATA-DICTIONARY.md`
+- `docs/THREAT-MODEL.md`
+- `docs/PRIVACY-RETENTION.md`
+- `docs/MIGRATION.md`
+- `docs/ROLLBACK.md`
+- `docs/OPERATIONS-RUNBOOK.md`
+- `docs/STAGING-ACCEPTANCE.md`
+- `docs/REVIEW-CYCLE-1.md`
+- `docs/REVIEW-CYCLE-2.md`
+- `docs/RELEASE-NOTES-1.1.0.md`
+- `docs/DEPENDENCY-INVENTORY.md`

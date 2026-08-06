@@ -1,25 +1,38 @@
 # File 07 — Doctors Directory and Discovery
 
-Canonical repository for File 07 of the Sabri Social Homeopathy Platform.
+Canonical repository source for **Sabri Social Homeopathy Platform File 07**.
 
-## Current candidate
+## Release candidate
 
-- Software: `1.0.0`
-- Contract: `1.0.0`
-- Governing plan: `SSH-F07-PLAN-2026-v1.0`
-- Branch: `codex/file-07-complete-v1.0.0`
-- Deterministic release checksum: `96a770f28ef9cceb2401204ef716d3503ebd1ebecc005d5ea1d2a8c2b36ee375`
+- Runtime: `1.1.0`
+- Database schema: `1.1.0`
+- Contract: `1.1.0`
+- Projection schema: `2`
+- WordPress baseline: `7.0.1`
+- PHP baseline: `8.3`
+- Text domain: `doctors-directory-discovery`
+- PHP prefix: `DDD_`
+- Package folder: `doctors-directory-and-discovery`
 
-Version 1.0.0 implements the canonical public projection and discovery system for verified-eligible doctors while preserving File 00/09 identity and verification ownership, File 03 profile ownership, File 08 clinic ownership, File 20 shell ownership, File 25 visual-system ownership and File 24 assurance boundaries.
+## Canonical ownership
 
-Start with:
+File 07 owns the rebuildable public discovery projection of verified-eligible doctors, directory search, filters, ranking, cursor pagination, Founder/featured/recent/all sections, safe SEO, saved references, listing reports, reconciliation and directory operations.
 
-- `STATUS.md`
-- `docs/REQUIREMENTS-TRACEABILITY.md`
-- `docs/STAGING-ACCEPTANCE.md`
-- `docs/OPERATIONS-RUNBOOK.md`
-- `docs/REVIEW-CYCLE-1.md`
-- `docs/REVIEW-CYCLE-2.md`
-- `MANIFEST.md`
+It does **not** own membership/identity (File 00), doctor verification decisions/evidence (File 09), professional profile truth (File 03), clinic/appointment truth (File 08), global shell (File 20), visual design-system ownership (File 25), global discovery/recommendation orchestration (File 26), or security enforcement owned natively by companion modules.
 
-No production merge is authorized without exact Hostinger staging evidence and explicit Founder acceptance.
+## Local verification
+
+```bash
+find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+find doctors-directory -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+php tests/unit-helpers.php
+python3 tests/source-contracts.py
+python3 tests/test-pagination.py
+python3 tests/test-contrast.py
+bash tests/static-audit.sh
+bash tests/build-release.sh
+```
+
+## Release truth
+
+Source, deterministic package and automated repository QA are separate from Hostinger staging, real companion-package integration, browser/device acceptance, restore/rollback rehearsal, Founder acceptance, live deployment and operational acceptance. See `docs/STAGING-ACCEPTANCE.md`.

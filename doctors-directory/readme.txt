@@ -4,7 +4,7 @@ Tags: doctors, directory, discovery, homeopathy, verified-professionals
 Requires at least: 7.0
 Tested up to: 7.0.1
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 
 Canonical verified-doctor public projection, search, filtering, ranking, moderation, SEO, privacy and operational controls for the Sabri Social Homeopathy Platform.
@@ -45,6 +45,12 @@ Highlights:
 Verification is not an endorsement, cure claim or treatment guarantee. Emergency care is outside this directory. Public fields are allowlisted and must be consented. Private identity evidence, patient data and internal risk details are never indexed or exposed.
 
 == Changelog ==
+
+= 1.1.0 =
+* Closed fail-open identity/profile/verification paths and made missing mandatory contracts deny public eligibility.
+* Added filter-bound opaque cursor pagination, active-feature expiry handling, privacy-safe public DTOs and aggregate search metrics.
+* Added InnoDB schema, resumable migration, claimed outbox workers, durable inbox states, taxonomy management, feature/admin audits and reversible repair.
+* Hardened report idempotency, privacy export/erasure, legal holds, managed-page restoration and deletion reconciliation.
 
 = 1.0.0 =
 * Rebuilt File 07 against the complete 2026 master plan.

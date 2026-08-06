@@ -1,62 +1,43 @@
 <?php
-define( 'ABSPATH', __DIR__ . '/' );
-define( 'DDD_TEXT_DOMAIN', 'doctors-directory-discovery' );
-define( 'DDD_CONTRACT_VERSION', '1.0.0' );
-define( 'DDD_MIN_FILE03_VERSION', '0.1.0' );
-function __( $text, $domain = null ) { return $text; }
-function absint( $value ) { return abs( (int) $value ); }
-function sanitize_text_field( $value ) { return trim( preg_replace( '/\s+/', ' ', strip_tags( (string) $value ) ) ); }
-function sanitize_key( $value ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $value ) ); }
-function sanitize_textarea_field( $value ) { return trim( strip_tags( (string) $value ) ); }
-function sanitize_title( $value ) { return trim( preg_replace( '/[^a-z0-9]+/', '-', strtolower( (string) $value ) ), '-' ); }
-function wp_strip_all_tags( $value ) { return strip_tags( (string) $value ); }
-function remove_accents( $value ) { return (string) $value; }
-function wp_json_encode( $value ) { return json_encode( $value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ); }
-function wp_salt( $scheme = 'auth' ) { return 'unit-test-salt-' . $scheme; }
-function wp_hash( $value ) { return hash( 'sha256', $value ); }
-function wp_rand() { return 123456; }
-function wp_generate_uuid4() { return '11111111-1111-4111-a111-111111111111'; }
-function wp_parse_args( $args, $defaults ) { return array_merge( $defaults, $args ); }
-function esc_url_raw( $url ) { return filter_var( $url, FILTER_SANITIZE_URL ); }
-function home_url( $path = '' ) { return 'https://example.test' . $path; }
-function user_trailingslashit( $path ) { return rtrim( $path, '/' ) . '/'; }
-function wp_sanitize_redirect( $url ) { return $url; }
-function get_user_meta() { return ''; }
-function update_user_meta() { return true; }
-function get_option() { return 0; }
-function get_userdata() { return false; }
-function user_can() { return false; }
-function has_filter() { return false; }
-function apply_filters( $tag, $value ) { return $value; }
-function class_exists_stub() { return false; }
-function current_time() { return gmdate( 'Y-m-d H:i:s' ); }
-function get_transient() { return 0; }
-function set_transient() { return true; }
-function wp_unslash( $value ) { return $value; }
+require __DIR__.'/bootstrap.php';
+$tests=0;
+function ok($condition,$message){ global $tests; $tests++; if(!$condition){ fwrite(STDERR,"FAIL: $message\n"); exit(1);} echo "PASS: $message\n"; }
 
-foreach ( glob( __DIR__ . '/../doctors-directory/includes/trait-ddd-contracts-*.php' ) as $file ) { require_once $file; }
-foreach ( glob( __DIR__ . '/../doctors-directory/includes/trait-ddd-helpers-*.php' ) as $file ) { require_once $file; }
-require_once __DIR__ . '/../doctors-directory/includes/class-sdd-helpers.php';
+ok(DDD_Helpers::valid_public_id('12345678-1234-4abc-8def-123456789abc'),'valid UUID v4 accepted');
+ok(!DDD_Helpers::valid_public_id('123'),'invalid public ID rejected');
+$id1=DDD_Helpers::uuid_from_user(42); $id2=DDD_Helpers::uuid_from_user(42);
+ok($id1===$id2 && DDD_Helpers::valid_public_id($id1),'opaque public ID persists');
+ok(DDD_Helpers::decimal_or_null('10.25')===10.25,'valid decimal accepted');
+ok(DDD_Helpers::decimal_or_null('-1')===null,'negative fee rejected');
+ok(DDD_Helpers::decimal_or_null('1.234')===null,'excess decimal precision rejected');
+ok(DDD_Helpers::consultation_modes(array('In Person','video call','telephone','unknown'))===array('in-person','video','phone'),'consultation modes normalized and allowlisted');
+ok(DDD_Helpers::same_origin_url('/doctors/abc/')==='https://sabrihomeopathy.test/doctors/abc/','relative route canonicalized');
+ok(DDD_Helpers::same_origin_url('https://sabrihomeopathy.test/profile/a')==='https://sabrihomeopathy.test/profile/a','same-origin route accepted');
+ok(DDD_Helpers::same_origin_url('https://evil.example/profile/a')==='','foreign route rejected');
 
-$failures = array();
-$assert = function ( $condition, $message ) use ( &$failures ) {
-	if ( ! $condition ) { $failures[] = $message; }
-};
+$args=array('q'=>'Heart Doctor','country'=>'Pakistan','city'=>'Lahore','specialty'=>'Cardiology','language'=>'Urdu','qualification'=>'BHMS','min_experience'=>5,'mode'=>'online','accepting'=>1,'currency'=>'PKR','fee_min'=>'100','fee_max'=>'500','featured_only'=>0,'recent_only'=>30);
+$hash=DDD_Helpers::filter_hash($args);
+$cursor=DDD_Helpers::cursor_encode(array('fh'=>$hash,'r'=>100,'f'=>1,'q'=>88.2,'v'=>'2026-08-06 00:00:00','p'=>'12345678-1234-4abc-8def-123456789abc'));
+$decoded=DDD_Helpers::cursor_decode($cursor,$hash);
+ok(!empty($decoded) && $decoded['p']==='12345678-1234-4abc-8def-123456789abc','signed cursor decodes for exact filters');
+ok(DDD_Helpers::cursor_decode($cursor,DDD_Helpers::filter_hash(array_merge($args,array('city'=>'Karachi'))))===array(),'cursor cannot cross filter sets');
+$tampered=substr($cursor,0,-1).(substr($cursor,-1)==='a'?'b':'a');
+ok(DDD_Helpers::cursor_decode($tampered,$hash)===array(),'tampered cursor rejected');
 
-$list = DDD_Helpers::list_value( "Urdu, English;Arabic\nUrdu" );
-$assert( $list === array( 'Urdu', 'English', 'Arabic' ), 'list_value deduplication failed' );
-$assert( DDD_Helpers::decimal_or_null( 'PKR 1,250.50' ) === 1250.50, 'decimal normalization failed' );
-$assert( DDD_Helpers::decimal_or_null( 'not-a-number' ) === null, 'invalid decimal did not fail closed' );
-$normalized = DDD_Helpers::normalize_token( 'Classical—Homeopathy  ڈاکٹر' );
-$assert( strpos( $normalized, 'classical homeopathy' ) !== false, 'token normalization failed' );
-$cursor = DDD_Helpers::cursor_encode( array( 'f' => 1, 'q' => 91.5, 'v' => '2026-01-01 00:00:00', 'id' => 10 ) );
-$decoded = DDD_Helpers::cursor_decode( $cursor );
-$assert( isset( $decoded['id'] ) && 10 === $decoded['id'], 'cursor round trip failed' );
-$assert( DDD_Helpers::cursor_decode( $cursor . 'tampered' ) === array(), 'cursor tamper check failed' );
-$assert( preg_match( '/^[a-f0-9]{16}$/', DDD_Helpers::trace_id() ) === 1, 'trace id shape failed' );
+$health=DDD_Contracts::dependency_health();
+ok($health['ready']===false && $health['code']==='mandatory_contract_missing','mandatory owner contracts fail closed');
 
-if ( $failures ) {
-	fwrite( STDERR, "FAIL\n- " . implode( "\n- ", $failures ) . "\n" );
-	exit( 1 );
-}
-echo "PASS: helper contract tests\n";
+add_filter(DDD_Contracts::IDENTITY_FILTER,function($v,$uid){ return array('user_id'=>$uid,'account_active'=>true,'suspended'=>false,'risk_blocked'=>false,'age_eligible'=>true,'guardian_valid'=>true,'institutional'=>false,'claim_version'=>'i1'); });
+add_filter(DDD_Contracts::VERIFICATION_FILTER,function($v,$uid){ return array('user_id'=>$uid,'doctor'=>true,'verified'=>true,'status'=>'verified','effective_at'=>'2026-08-01 00:00:00','decision_version'=>'v1'); });
+add_filter(DDD_Contracts::PROFILE_FILTER,function($v,$uid){ return array('user_id'=>$uid,'public'=>true,'discoverable'=>true,'display_name'=>'Doctor One','professional_title'=>'Homeopathic Doctor','specialty'=>'Classical Homeopathy','country'=>'Pakistan','city'=>'Gujrat','languages'=>array('Urdu','English'),'qualification'=>'DHMS','experience_years'=>10,'profile_url'=>'https://sabrihomeopathy.test/profile/doctor-one/','profile_version'=>'p1'); });
+$elig=DDD_Contracts::eligibility(7);
+ok($elig['eligible']===true && $elig['status']==='eligible','complete explicit owner claims become eligible');
+$GLOBALS['ddd_test_options']['smc_founder_user_id']=7;
+$founder_elig=DDD_Contracts::eligibility(7);
+ok($founder_elig['eligible']===false && in_array('founder_separate',$founder_elig['reasons'],true),'Founder excluded from ordinary directory');
+
+$GLOBALS['ddd_test_filters'][DDD_Contracts::PROFILE_FILTER]=array(function($v,$uid){ return array('user_id'=>$uid,'public'=>true,'discoverable'=>true,'display_name'=>'Doctor','specialty'=>'Homeopathy','country'=>'Pakistan','profile_url'=>'https://evil.example/a'); });
+$p=DDD_Contracts::public_profile(8);
+ok($p['profile_url']==='','foreign owner destination removed');
+
+echo "TOTAL PASS: $tests\n";

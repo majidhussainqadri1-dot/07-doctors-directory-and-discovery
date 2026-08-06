@@ -1,52 +1,37 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PLUGIN="$ROOT/doctors-directory"
-fail(){ echo "FAIL: $*" >&2; exit 1; }
-pass(){ echo "PASS: $*"; }
-
-grep -q "Version: 1.0.0" "$PLUGIN/doctors-directory.php" || fail "version header"
-grep -q "define( 'DDD_VERSION', '1.0.0' )" "$PLUGIN/doctors-directory.php" || fail "runtime version"
-grep -q "define( 'DDD_CONTRACT_VERSION', '1.0.0' )" "$PLUGIN/doctors-directory.php" || fail "contract version"
-pass "version and contract identity"
-
-for table in ddd_projection ddd_taxonomy ddd_saved_refs ddd_reports ddd_report_audit ddd_outbox ddd_inbox ddd_health_log; do
-grep -Rqs "$table" "$PLUGIN/includes" || fail "missing table $table"
-done
-pass "canonical data architecture"
-
-grep -Rqs "eligible=1" "$PLUGIN/includes" || fail "fail-closed public query"
-grep -Rqs "founder_separate" "$PLUGIN/includes" || fail "Founder separation"
-grep -Rqs "feature_end" "$PLUGIN/includes" || fail "feature expiry"
-grep -Rqs "cursor_encode" "$PLUGIN/includes" || fail "signed cursor"
-grep -Rqs "DoctorDirectoryIndexReconciled.v1" "$PLUGIN/includes" || fail "reconciliation event"
-pass "eligibility, feature and cursor rules"
-
-if grep -R "ORDER BY.*\$_\|LIMIT.*\$_\|meta_query.*\$_" "$PLUGIN/includes"; then fail "untrusted query interpolation"; fi
-if grep -R "doctor_id.*=>.*public_dto" "$PLUGIN/includes"; then fail "internal doctor ID exposed in public DTO"; fi
-grep -Rqs "Idempotency-Key" "$PLUGIN/includes" || fail "idempotency contract"
-grep -Rqs "X-DDD-Signature" "$PLUGIN/includes" || fail "signed event input"
-grep -Rqs "START TRANSACTION" "$PLUGIN/includes" || fail "atomic transitions"
-pass "security and mutation contracts"
-
-grep -q "wp_privacy_personal_data_exporters" "$PLUGIN/includes/class-sdd-privacy.php" || fail "privacy exporter"
-grep -q "wp_privacy_personal_data_erasers" "$PLUGIN/includes/class-sdd-privacy.php" || fail "privacy eraser"
-grep -q "noarchive" "$PLUGIN/includes/class-sdd-seo.php" || fail "private noarchive"
-grep -Rqs "nocache_headers" "$PLUGIN/includes" || fail "private no-cache"
-pass "privacy and indexing boundaries"
-
-grep -q -- "--ddd-green" "$PLUGIN/assets/css/directory.css" || fail "green identity token"
-if grep -q -- "--sdd-orange\|#ff8a1f" "$PLUGIN/assets/css/directory.css"; then fail "legacy orange primary remains"; fi
-grep -q ":focus-visible" "$PLUGIN/assets/css/directory.css" || fail "visible focus"
-grep -q "min-height:44px\|min-height: 44px" "$PLUGIN/assets/css/directory.css" || fail "touch target"
-grep -q "prefers-reduced-motion" "$PLUGIN/assets/css/directory.css" || fail "reduced motion"
-grep -q 'html\[dir="rtl"\]' "$PLUGIN/assets/css/directory.css" || fail "RTL"
-pass "visual, accessibility and localization contracts"
-
-grep -Rqs "ddd_safe_mode" "$PLUGIN/includes" || fail "safe mode"
-grep -Rqs "system_check" "$PLUGIN/includes" || fail "system check"
-grep -Rqs "ddd_reconcile_tick" "$PLUGIN/includes" || fail "reconciliation cron"
-grep -Rqs "dead" "$PLUGIN/includes" || fail "dead-letter handling"
-pass "operability and resilience"
-
-echo "All File 07 static audit gates passed."
+fail(){ echo "FAIL: $1" >&2; exit 1; }
+pass(){ echo "PASS: $1"; }
+! grep -RInE '\$wpdb->replace|REPLACE[[:space:]]+INTO' "$PLUGIN" --include='*.php' || fail 'forbidden replace primitive'
+pass 'no destructive REPLACE primitive'
+python3 - "$ROOT" <<'PY'
+from pathlib import Path
+import re,sys
+root=Path(sys.argv[1])
+hits=[]
+pattern=re.compile(r'''(?i)(?:password|secret|api[_-]?key|access[_-]?token)\s*[:=]\s*['\"]([^'\"]{16,})['\"]''')
+for p in root.rglob('*'):
+    if p.is_file() and p.suffix in {'.php','.js','.json','.yml','.yaml','.md','.txt'}:
+        text=p.read_text(errors='ignore')
+        for m in pattern.finditer(text):
+            value=m.group(1)
+            if not any(x in value for x in ('test-salt','example','placeholder','REDACTED')): hits.append((p,m.group(0)))
+if hits:
+    print('Potential hard-coded secrets:',hits,file=sys.stderr); raise SystemExit(1)
+print('PASS: no obvious hard-coded secret literals')
+PY
+grep -q "identity_contract_unavailable" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'missing fail-closed identity path'
+grep -q "profile_contract_unavailable" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'missing fail-closed profile path'
+grep -q "verification_contract_unavailable" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'missing fail-closed verification path'
+pass 'mandatory contracts fail closed'
+grep -q "same_origin_url" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'same-origin canonical URL gate missing'
+grep -q "reporter:' . \$reporter_id" "$PLUGIN/includes/class-sdd-directory.php" || fail 'actor-scoped idempotency missing'
+grep -q "status='processing' AND locked_at<" "$PLUGIN/includes/class-sdd-directory.php" || fail 'stale outbox recovery missing'
+grep -q "DoctorDirectoryTaxonomyChanged.v1" "$PLUGIN/includes/class-sdd-directory.php" || fail 'taxonomy reindex event missing'
+pass 'security and reliability invariants present'
+grep -q "private, no-store" "$PLUGIN/includes/class-sdd-plugin.php" || fail 'private status cache policy missing'
+grep -q "noindex" "$PLUGIN/includes/class-sdd-seo.php" || fail 'noindex policy missing'
+pass 'privacy-safe cache/index controls present'
+python3 "$ROOT/tests/source-contracts.py"
