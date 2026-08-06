@@ -10,6 +10,7 @@
 - `doctors-directory/includes/class-sdd-privacy.php`
 - `doctors-directory/includes/class-sdd-seo.php`
 - `doctors-directory/includes/class-sdd-plugin.php`
+- `doctors-directory/includes/class-ddd-review-hardening.php`
 - `doctors-directory/uninstall.php`
 
 ## Assets
@@ -19,15 +20,23 @@
 
 ## QA/build
 - `.github/workflows/file-07-quality-gates.yml`
+- `.github/workflows/final-quality-gates.yml`
 - `tests/bootstrap.php`
 - `tests/unit-helpers.php`
 - `tests/source-contracts.py`
 - `tests/static-audit.sh`
+- `tests/review-40.py`
 - `tests/test-pagination.py`
 - `tests/test-contrast.py`
 - `tests/build-release.sh`
 
 ## Governance/release evidence
+- `README.md`
+- `CHANGELOG.md`
+- `LICENSE`
+- `MANIFEST.md`
+- `CHECKSUMS.sha256`
+- `RELEASE-CANDIDATE.sha256`
 - `docs/REQUIREMENTS-TRACEABILITY.md`
 - `docs/API-CONTRACTS.md`
 - `docs/DATA-DICTIONARY.md`
@@ -39,5 +48,6 @@
 - `docs/STAGING-ACCEPTANCE.md`
 - `docs/REVIEW-CYCLE-1.md`
 - `docs/REVIEW-CYCLE-2.md`
+- `docs/REVIEW-CYCLE-40.md`
 - `docs/RELEASE-NOTES-1.1.0.md`
 - `docs/DEPENDENCY-INVENTORY.md`
