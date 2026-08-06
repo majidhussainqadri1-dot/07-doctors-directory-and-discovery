@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   materialize:
@@ -55,6 +54,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git checkout HEAD -- .github/workflows/file-07-quality-gates.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
