@@ -1,0 +1,68 @@
+name: Materialize File 07 v1.1.0 Source
+
+on:
+  push:
+    branches:
+      - codex/file-07-complete-v1.0.0
+    paths:
+      - .github/workflows/materialize-f07-source.yml
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reassemble verified source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .automation/f07-xz-chunk-*.b64 > /tmp/f07-source.b64
+          echo "122e1dba28a0779a077c7b541fecd386efcf041e509bdd489a869964571932d2  /tmp/f07-source.b64" | sha256sum -c -
+          base64 -d /tmp/f07-source.b64 > /tmp/f07-source.tar.xz
+          echo "b0820eb298d937c810b13e38f4ca892379d1f446ad19640a4691723c0ac862d3  /tmp/f07-source.tar.xz" | sha256sum -c -
+          rm -rf /tmp/f07-source
+          mkdir -p /tmp/f07-source
+          tar -xJf /tmp/f07-source.tar.xz -C /tmp/f07-source
+
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.automation' ! -name '.github' -exec rm -rf {} +
+          find .github -mindepth 1 -maxdepth 1 ! -name 'workflows' -exec rm -rf {} +
+          find .github/workflows -mindepth 1 -maxdepth 1 ! -name 'materialize-f07-source.yml' -exec rm -rf {} +
+          rsync -a /tmp/f07-source/07-doctors-directory-and-discovery-1.1.0-source/ ./
+
+      - name: Verify final reviewed source
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum -c CHECKSUMS.sha256
+          find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          find doctors-directory -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+          php tests/unit-helpers.php
+          python3 tests/source-contracts.py
+          bash tests/static-audit.sh
+          python3 tests/test-pagination.py
+          python3 tests/test-contrast.py
+          bash tests/build-release.sh
+          echo "9439f0cacbc0c53618421559531a179519fe6866b5fb41db28a90e833f00a7cc  build/07-doctors-directory-and-discovery-1.1.0.zip" | sha256sum -c -
+
+      - name: Commit reviewed v1.1.0 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Finalize File 07 v1.1.0 corrected source and evidence"
+          git push origin HEAD:codex/file-07-complete-v1.0.0
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 07-doctors-directory-and-discovery-1.1.0
+          path: build/07-doctors-directory-and-discovery-1.1.0.zip
+          if-no-files-found: error
