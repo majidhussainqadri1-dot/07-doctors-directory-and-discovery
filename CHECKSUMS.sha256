@@ -39,7 +39,7 @@ af3a4e9f7a1aa3acfb5e3285d9d0d0a906f041683528c227f0914527f25263e8  ./doctors-dire
 49fa5d98aead2f2ef3126e8fe7fb81aa9cd6ae2268e264c6d56edff151e43f82  ./doctors-directory/uninstall.php
 292bd044569ef01a172e914758f9fdbaa833974d792d269b06a9a2fabf75ac24  ./tests/bootstrap.php
 fb8aaed225c7f468d394488b94e2a23c2ef890a38b0f25cc37855783b33eabf4  ./tests/build-release.sh
-82d632f8e66bdc42f1b57ff08fd9fdf621344046e648db621ead9a928f4030f3  ./tests/review-40.py
+f9a2a030494b157b44acb5c1277e47ecaaa56e7800e7c1e6db7352448c67d7b8  ./tests/review-40.py
 eee0d6df6d3597923b01f9be26b9ecbe5dce127e052a134528bda0213a3f4415  ./tests/source-contracts.py
 567936f95230782ede761eff8e4581cd5d84f96b7a239471b2bc1710abb64a1e  ./tests/static-audit.sh
 4d394cd971ba73d5fd3478f1997e488f2fcb5776d4958e4941865d3e1d49e1f9  ./tests/test-contrast.py
