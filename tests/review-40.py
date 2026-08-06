@@ -54,7 +54,7 @@ add("Same-origin destinations","same_origin_url" in h and "hash_equals( $home_ho
 dto=re.search(r"public static function public_dto.*?\n\t}",d,re.S)
 add("Public DTO minimization",dto and "'doctor_id' =>" not in dto.group(0) and "'avatar_id' =>" not in dto.group(0))
 add("Saved-reference integrity","save_reference" in d and "DDD_Contracts::eligibility" in d and "UNIQUE KEY user_doctor" in a)
-add("Report idempotency/rate limits","'reporter:' . $reporter_id" in d and "ddd_rate_limits" in a and "request_count<%d" in d)
+add("Report idempotency/rate limits","'reporter:' . $reporter_id" in d and "ddd_rate_limits" in a and "request_count<%d" in h)
 add("Atomic moderation/audit","report_transition_forbidden" in d and "'resolved' => array( 'open' )" in d and "report_audit" in d and "START TRANSACTION" in d)
 add("Privacy export","wp_privacy_personal_data_exporters" in pr and "doctor_public_id" in pr)
 add("Legal-hold erasure terminates","retention_hold=0" in ha and "remaining_unheld" in ha and "$changes['reporter_id']  = 0" in ha and "$changes['doctor_id'] = 0" in ha)
