@@ -8,7 +8,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Root source integrity
         run: sha256sum -c CHECKSUMS.sha256
       - name: Release identity and forbidden-artifact scan
@@ -26,17 +26,19 @@ jobs:
           python3 tests/source-contracts.py
       - name: Static architecture, security and privacy audit
         run: bash tests/static-audit.sh
+      - name: Forty-round review gate
+        run: python3 tests/review-40.py
       - name: Stable pagination model
         run: python3 tests/test-pagination.py
       - name: WCAG contrast calculations
         run: python3 tests/test-contrast.py
       - name: Deterministic package build A
         run: bash tests/build-release.sh && cp build/07-doctors-directory-and-discovery-1.1.0.zip /tmp/build-a.zip
-      - name: Deterministic package build B and release checksum
+      - name: Deterministic package build B and canonical release checksum
         run: |
           bash tests/build-release.sh
           cmp /tmp/build-a.zip build/07-doctors-directory-and-discovery-1.1.0.zip
-          echo "9439f0cacbc0c53618421559531a179519fe6866b5fb41db28a90e833f00a7cc  build/07-doctors-directory-and-discovery-1.1.0.zip" | sha256sum -c -
+          (cd build && sha256sum -c ../RELEASE-CANDIDATE.sha256)
       - name: Clean-extract package verification
         run: |
           rm -rf /tmp/ddd-extract && mkdir /tmp/ddd-extract
