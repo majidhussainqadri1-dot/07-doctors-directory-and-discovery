@@ -33,6 +33,7 @@ require_once DDD_DIR . 'includes/class-sdd-admin.php';
 require_once DDD_DIR . 'includes/class-sdd-privacy.php';
 require_once DDD_DIR . 'includes/class-sdd-seo.php';
 require_once DDD_DIR . 'includes/class-sdd-plugin.php';
+require_once DDD_DIR . 'includes/class-ddd-review-hardening.php';
 
 register_activation_hook( DDD_FILE, array( 'DDD_Activator', 'activate' ) );
 register_deactivation_hook( DDD_FILE, array( 'DDD_Activator', 'deactivate' ) );
@@ -79,4 +80,6 @@ function ddd_start_plugin() {
 	}
 	( new DDD_Plugin() )->run();
 }
+
+add_action( 'plugins_loaded', array( 'DDD_Review_Hardening', 'register' ), 29 );
 add_action( 'plugins_loaded', 'ddd_start_plugin', 30 );
