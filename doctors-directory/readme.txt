@@ -1,68 +1,54 @@
 === Doctors Directory and Discovery ===
 Contributors: sabrihomeopathy
-Tags: doctors, directory, profiles, discovery, homeopathy
-Requires at least: 6.0
-Tested up to: 7.0
-Requires PHP: 7.4
-Stable tag: 0.2.0
+Tags: doctors, directory, discovery, homeopathy, verified-professionals
+Requires at least: 7.0
+Tested up to: 7.0.1
+Requires PHP: 8.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 
-A secure, accessible, paginated verified-doctor directory and discovery layer for the Sabri Social Homeopathy Platform.
+Canonical verified-doctor public projection, search, filtering, ranking, moderation, SEO, privacy and operational controls for the Sabri Social Homeopathy Platform.
 
 == Description ==
 
-File 07 provides the public Doctors directory and professional discovery foundation.
+File 07 owns only the publicly searchable projection of eligible verified doctors, directory filters and cursor pagination, Founder/featured/recent/all sections, safe public SEO, listing reports, saved references, reconciliation and operational controls.
 
-Features:
-* Public browsing without registration.
-* Verified and discoverable doctors only in public search.
-* Database-level filtering and deterministic pagination without a 250-doctor ceiling.
-* Search by name, specialty, country, city, language, qualification, experience, consultation method, and patient availability.
-* Founder presented separately and excluded from ordinary doctor sections.
-* Featured, recently joined, and all-doctors sections.
-* Professional cards with verification, profile completion, contributions, phone, WhatsApp, and optional internal messaging integration.
-* Extended professional profiles including license, authority, professional address, fee, timings, time zone, clinic, appointment, and contact boundaries.
-* Status-aware private preview for pending, under-review, rejected, or suspended doctors.
-* Safe page ownership: no broad shortcode-based page-content replacement.
-* Administrative pagination, visibility controls, report moderation, reviewer notes, and immutable transition audit records.
-* WordPress privacy export and erasure callbacks covering directory settings and report data.
-* ProfilePage, Person, and credential structured data for public verified profiles.
-* Private-page no-cache, noindex, noarchive, and nosnippet controls.
-* WCAG-oriented keyboard focus, touch targets, contrast, reduced-motion, responsive, and RTL-ready styling.
-* File 20 shell compatibility: File 07 does not render a duplicate global navigation bar.
+Identity, membership, doctor verification evidence and decisions, professional profile truth, clinic truth, application shell, visual system, global search and assurance remain with their canonical platform modules.
 
-== Requirements ==
-
-File 03 — Sabri Profiles and Doctors version 0.1.0 or later must be installed and active with its required public helper API. Other platform modules are integrated only when their published pages are genuinely available.
+Highlights:
+* Fail-closed multi-owner eligibility projection.
+* Separate official Founder section; Founder never appears in ordinary or recent groups.
+* Time-bounded, labeled and audited featured doctors with no paid boost.
+* Dedicated indexed projection table and stable signed cursor pagination.
+* Safe alias/transliteration-aware search and allowlisted facets.
+* Country, city, specialty, language, qualification, experience, consultation mode, accepting-patient, currency and fee filters.
+* Versioned contract filters for Files 00, 03, 08 and 09.
+* Idempotent inbox/outbox events, retries, dead-letter state and scheduled reconciliation.
+* Doctor-owned directory status and discoverability consent.
+* Report moderation with optimistic concurrency and atomic audit transitions.
+* WordPress privacy export/erasure coverage for directory state, saves and reports.
+* Canonical routes, structured data, public sitemap, noindex filtered variants and private no-cache status page.
+* Safe Mode, System Check, redacted health evidence and bounded repair operations.
+* Green primary identity, WCAG-oriented focus, contrast, 44px targets, responsive and RTL-ready interface.
 
 == Installation ==
 
-1. Upload the ZIP through WordPress Admin > Plugins > Add New > Upload Plugin.
-2. Activate Doctors Directory and Discovery after File 03.
-3. Open the public Doctors page.
-4. Review directory settings on a doctor account.
-5. Use Doctors Management for featured placement, visibility, and reports.
-6. Test fresh install, upgrade, rollback, File 20 shell integration, and all role/privacy cases on staging before production use.
+1. Install the exact approved File 00, File 03 and File 09 packages. File 08 is optional for clinic and appointment projections.
+2. Upload the deterministic release ZIP on Hostinger staging.
+3. Activate the plugin and run Doctors Directory > System Check.
+4. Run bounded reconciliation until next_cursor is zero.
+5. Complete the staging acceptance matrix in docs/STAGING-ACCEPTANCE.md.
+6. Obtain explicit Founder acceptance before production deployment.
 
 == Safety and trust ==
 
-Directory verification is not an endorsement, treatment guarantee, or substitute for emergency or locally licensed medical care. Users should independently confirm professional licensing and suitability. The plugin does not expose identity documents, create cure claims, or invent ratings.
+Verification is not an endorsement, cure claim or treatment guarantee. Emergency care is outside this directory. Public fields are allowlisted and must be consented. Private identity evidence, patient data and internal risk details are never indexed or exposed.
 
 == Changelog ==
 
-= 0.2.0 =
-* Prevented unsafe page-content overwrite and added reversible page ownership.
-* Replaced the fixed 250-user directory with database-filtered deterministic pagination.
-* Excluded the Founder from ordinary doctor sections.
-* Removed duplicate global navigation output and added File 20 integration hooks.
-* Added status-aware profile badges and private preview notices.
-* Expanded the professional profile and directory settings contract.
-* Added optional real-page integrations for Messages, Worldwide Clinic, and Appointments.
-* Added report reviewer notes, transition audit records, write-failure handling, and administration pagination.
-* Expanded privacy export and erasure coverage.
-* Added canonical, structured-data, no-cache, and private-indexing protections.
-* Corrected contrast, focus, touch-target, reduced-motion, responsive, and RTL foundations.
-* Added dependency API/version validation and schema upgrade handling.
-
-= 0.1.0 =
-* Initial modular release.
+= 1.0.0 =
+* Rebuilt File 07 against the complete 2026 master plan.
+* Added canonical eligibility projection, stable cursor search, taxonomy aliases, reconciliation, event reliability, saves, reports, privacy, SEO, System Check and Safe Mode.
+* Added versioned cross-module contracts and backward-compatible 0.2.x adapters.
+* Changed the main visual identity to green while retaining contextual colors.
+* Added deterministic build, automated QA, traceability and operational documentation.

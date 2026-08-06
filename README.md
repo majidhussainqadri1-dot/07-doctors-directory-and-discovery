@@ -1,31 +1,25 @@
 # File 07 — Doctors Directory and Discovery
 
-Official repository for **File 07** of the **Sabri Social Homeopathy Platform**.
+Canonical repository for File 07 of the Sabri Social Homeopathy Platform.
 
-## Current corrective release candidate
+## Current candidate
 
-- Plugin: `Doctors Directory and Discovery`
-- Corrected version: `0.2.0`
-- Required WordPress: `6.0+`
-- Required PHP: `7.4+`
-- Required dependency: **File 03 — Sabri Profiles and Doctors 0.1.0+**
-- Plugin directory: `doctors-directory/`
-- Corrective branch: `fix/file-07-audit-remediation`
+- Software: `1.0.0`
+- Contract: `1.0.0`
+- Governing plan: `SSH-F07-PLAN-2026-v1.0`
+- Branch: `codex/file-07-complete-v1.0.0`
+- Deterministic release checksum: `96a770f28ef9cceb2401204ef716d3503ebd1ebecc005d5ea1d2a8c2b36ee375`
 
-## What version 0.2.0 repairs
+Version 1.0.0 implements the canonical public projection and discovery system for verified-eligible doctors while preserving File 00/09 identity and verification ownership, File 03 profile ownership, File 08 clinic ownership, File 20 shell ownership, File 25 visual-system ownership and File 24 assurance boundaries.
 
-Version 0.2.0 corrects the post-upload audit blockers without altering the preserved baseline branch. It introduces safe and reversible page ownership, a database-filtered paginated directory, Founder exclusion, File 20 shell boundaries, status-aware profiles, the expanded professional profile contract, privacy/report audit completion, private-page cache and indexing protection, a public-doctor sitemap provider, and WCAG-oriented interaction styling.
+Start with:
 
-## Evidence and governance
+- `STATUS.md`
+- `docs/REQUIREMENTS-TRACEABILITY.md`
+- `docs/STAGING-ACCEPTANCE.md`
+- `docs/OPERATIONS-RUNBOOK.md`
+- `docs/REVIEW-CYCLE-1.md`
+- `docs/REVIEW-CYCLE-2.md`
+- `MANIFEST.md`
 
-- [`SOURCE-PROVENANCE.md`](SOURCE-PROVENANCE.md) — identity of the original supplied archive.
-- [`CORRECTIVE-REPAIR.md`](CORRECTIVE-REPAIR.md) — defect-to-repair traceability.
-- [`TEST-EVIDENCE.md`](TEST-EVIDENCE.md) — automated checks and current limits.
-- [`STATUS.md`](STATUS.md) — exact lifecycle classification.
-- [`MANIFEST.md`](MANIFEST.md) — repository and source inventory.
-- [`CHECKSUMS.sha256`](CHECKSUMS.sha256) — corrected source and QA file integrity.
-- [`REVIEW-REQUIRED.md`](REVIEW-REQUIRED.md) — mandatory staging acceptance still required.
-
-## Branch policy
-
-The branch `baseline/file-07-original-import` remains the immutable evidentiary import of version 0.1.0. Corrective development belongs only in later branches and pull requests. The repaired source must not be called production-complete until File 03 integration, database migration, role/privacy workflows, File 20 rendering, rollback, responsive behavior, accessibility, and Hostinger staging acceptance all pass.
+No production merge is authorized without exact Hostinger staging evidence and explicit Founder acceptance.

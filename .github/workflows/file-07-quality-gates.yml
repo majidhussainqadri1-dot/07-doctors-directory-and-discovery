@@ -1,0 +1,31 @@
+name: File 07 Quality Gates
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP syntax
+        run: find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: JavaScript syntax
+        run: find doctors-directory -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Helper contract tests
+        run: php tests/unit-helpers.php
+      - name: Static architecture and policy audit
+        run: bash tests/static-audit.sh
+      - name: WCAG contrast calculations
+        run: python3 tests/test-contrast.py
+      - name: Deterministic package build A
+        run: bash tests/build-release.sh && cp build/07-doctors-directory-and-discovery-1.0.0.zip /tmp/build-a.zip
+      - name: Deterministic package build B
+        run: bash tests/build-release.sh && cmp /tmp/build-a.zip build/07-doctors-directory-and-discovery-1.0.0.zip
+      - name: Package contents and PHP syntax after extraction
+        run: |
+          rm -rf /tmp/ddd-extract && mkdir /tmp/ddd-extract
+          unzip -q build/07-doctors-directory-and-discovery-1.0.0.zip -d /tmp/ddd-extract
+          test -f /tmp/ddd-extract/doctors-directory-and-discovery/doctors-directory.php
+          find /tmp/ddd-extract -type f -name '*.php' -print0 | xargs -0 -n1 php -l

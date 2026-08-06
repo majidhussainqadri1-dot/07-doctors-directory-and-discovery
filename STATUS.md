@@ -1,32 +1,24 @@
-# Status — File 07
+# Status — File 07 — Version 1.0.0
 
 ## Current classification
 
-**Corrective source completed and automated quality gates passed. Hostinger staging acceptance remains mandatory.**
+**Master-plan implementation source completed; two fresh code-review/fix cycles completed; local automated quality and deterministic packaging gates pass. External Hostinger staging and Founder acceptance are not yet evidenced.**
 
-## Lifecycle evidence
+## Automated evidence
 
-| Stage | Status |
+| Gate | Result |
 |---|---|
-| Original archive identity | PASS |
-| Baseline preservation | PASS |
-| Post-upload code audit | PASS — blockers identified |
-| Corrective implementation | PASS — version 0.2.0 source completed |
-| Corrected per-file checksums | PASS |
 | PHP syntax | PASS — 10/10 PHP files |
 | JavaScript syntax | PASS — 1/1 JavaScript file |
-| Static defect-regression audit | PASS |
-| Programmatic contrast checks | PASS |
-| GitHub Actions | PASS — File 07 Quality Gates |
-| WordPress fresh activation with File 03 | Not yet established |
-| Upgrade from 0.1.0 database/page state | Not yet established |
-| File 20 shell visual integration | Not yet established |
-| Real multi-role and privacy workflows | Not yet established |
-| Hostinger staging responsive/accessibility acceptance | Not yet established |
-| Backup restore and rollback | Not yet established |
-| Founder acceptance | Not yet established |
-| Production deployment | BLOCKED |
+| Helper contract tests | PASS |
+| Static architecture/policy audit | PASS |
+| WCAG contrast calculations | PASS |
+| Deterministic package build A/B | PASS — byte-for-byte identical |
+| Clean ZIP integrity | PASS |
+| Release SHA-256 | `96a770f28ef9cceb2401204ef716d3503ebd1ebecc005d5ea1d2a8c2b36ee375` |
+| Fresh review/fix cycle 1 | PASS |
+| Fresh review/fix cycle 2 | PASS — no new source defect found |
 
-## Progression gate
+## Production boundary
 
-No merge-to-production or “100% complete” declaration is permitted until every item in `REVIEW-REQUIRED.md` passes on staging. Any newly discovered defect must be corrected and re-tested before progression.
+The repository does not possess Hostinger staging credentials or a real production-like database/browser/device environment. Therefore WordPress/MySQL runtime, exact companion integrations, LiteSpeed behavior, real-role workflows, accessibility/browser acceptance, backup restore, rollback drill, Founder sign-off and production deployment remain external gates and are not falsely marked complete.
