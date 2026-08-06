@@ -1,0 +1,71 @@
+from pathlib import Path
+import hashlib, re, sys
+R=Path(__file__).resolve().parents[1]
+rd=lambda p:(R/p).read_text(encoding="utf-8",errors="ignore")
+ex=lambda p:(R/p).is_file()
+pf={p.relative_to(R).as_posix():p.read_text(encoding="utf-8",errors="ignore") for p in (R/"doctors-directory").rglob("*") if p.is_file()}
+pt="\n".join(pf.values())
+rt="\n".join(p.read_text(encoding="utf-8",errors="ignore") for p in R.rglob("*") if p.is_file() and ".git" not in p.parts and p.suffix.lower() in {".php",".js",".css",".txt",".md",".yml",".yaml",".sh",".py"})
+d=rd("doctors-directory/includes/class-sdd-directory.php"); h=rd("doctors-directory/includes/class-sdd-helpers.php")
+p=rd("doctors-directory/includes/class-sdd-plugin.php"); a=rd("doctors-directory/includes/class-sdd-activator.php")
+pr=rd("doctors-directory/includes/class-sdd-privacy.php"); se=rd("doctors-directory/includes/class-sdd-seo.php")
+ha=rd("doctors-directory/includes/class-ddd-review-hardening.php"); u=rd("doctors-directory/uninstall.php")
+css=rd("doctors-directory/assets/css/directory.css"); m=rd("MANIFEST.md")
+wb=rd(".github/workflows/file-07-quality-gates.yml"); wf=rd(".github/workflows/final-quality-gates.yml")
+C=[]
+def add(n,v): C.append((n,bool(v)))
+add("Release identity 1.1.0",all(x in rd(y) for x,y in [("Version: 1.1.0","doctors-directory/doctors-directory.php"),("Stable tag: 1.1.0","doctors-directory/readme.txt"),("VERSION=1.1.0","tests/build-release.sh"),("1.1.0.zip","RELEASE-CANDIDATE.sha256")]))
+ok=True; listed=[]
+for line in rd("CHECKSUMS.sha256").splitlines():
+ if not line.strip(): continue
+ z=re.fullmatch(r"([0-9a-f]{64})  (.+)",line)
+ if not z: ok=False; continue
+ e,q=z.groups(); q=q[2:] if q.startswith("./") else q; f=R/q; listed.append(q)
+ if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest()!=e: ok=False
+add("Root SHA-256 integrity",ok)
+add("No obsolete 1.0.0 CI package path","1.0.0.zip" not in wb and "1.1.0" in wb)
+core=["unit-helpers.php","source-contracts.py","static-audit.sh","review-40.py","test-pagination.py","test-contrast.py"]
+add("Workflow core-gate parity",all(x in wb and x in wf for x in core))
+add("Final workflow integrity-covered",".github/workflows/final-quality-gates.yml" in listed)
+add("Manifest covers review/release evidence",all(x in m for x in [".github/workflows/final-quality-gates.yml","tests/review-40.py","docs/REVIEW-CYCLE-40.md","CHECKSUMS.sha256","RELEASE-CANDIDATE.sha256"]))
+add("Canonical release checksum source","sha256sum -c ../RELEASE-CANDIDATE.sha256" in wf and "9439f0cacbc0c536" not in wf)
+add("Maintained checkout action","actions/checkout@v5" in wb and "actions/checkout@v5" in wf)
+req=["doctors-directory/doctors-directory.php","doctors-directory/includes/class-sdd-helpers.php","doctors-directory/includes/class-sdd-activator.php","doctors-directory/includes/class-sdd-directory.php","doctors-directory/includes/class-sdd-profile.php","doctors-directory/includes/class-sdd-admin.php","doctors-directory/includes/class-sdd-privacy.php","doctors-directory/includes/class-sdd-seo.php","doctors-directory/includes/class-sdd-plugin.php","doctors-directory/includes/class-ddd-review-hardening.php","doctors-directory/uninstall.php"]
+add("Canonical runtime inventory",all(ex(x) for x in req))
+add("Namespace/text-domain/package alignment","define( 'DDD_VERSION'" in pt and "doctors-directory-discovery" in pt and "TOP=doctors-directory-and-discovery" in rd("tests/build-release.sh"))
+add("No secret artifacts/literals",not any(x.suffix.lower() in {".pem",".key",".p12",".env"} for x in R.rglob("*") if x.is_file()) and not re.search(r"(?i)(password|secret|api[_-]?key|access[_-]?token)\s*[:=]\s*['\"][^'\"]{16,}['\"]",rt))
+add("PHP direct-access guards",all(("defined( 'ABSPATH' ) || exit;" in pf[x] or "WP_UNINSTALL_PLUGIN" in pf[x]) for x in pf if x.endswith(".php")))
+add("No destructive SQL/default uninstall",not re.search(r"\$wpdb->replace|\bREPLACE\s+INTO\b",pt,re.I) and "DROP TABLE" not in u and "wp_delete_post" not in u)
+add("Transactional schema/indexes","$engine = ' ENGINE=InnoDB '" in a and all(x in a for x in ["UNIQUE KEY public_id","UNIQUE KEY event_id","UNIQUE KEY idempotency_key"]))
+add("Tokenized activation/repair lock",all(x in a for x in ["LOCK_OPTION","expires","hash_equals","option_value=%s","finally"]))
+add("Bounded resumable migration",all(x in a for x in ["LEGACY_CURSOR_OPTION","LEGACY_BATCH","migrate_legacy_batch","ddd_continue_legacy_migration"]))
+add("Managed page lifecycle","PAGE_MAP_OPTION" in a and "wp_insert_post" in a and "wp_update_post" in a)
+add("Mandatory owner fail-closed",all(x in h for x in ["mandatory_contract_missing","identity_contract_unavailable","profile_contract_unavailable","verification_contract_unavailable"]))
+add("Explicit eligibility and hardened legacy states",all(x in h for x in ["account_active","risk_blocked","age_eligible","guardian_valid","verified","discoverable","public_destination_missing"]) and all(x in ha for x in ["array( 'none', 'clear', 'low', 'approved' )","array( 'none', 'clear', 'active' )","'adult' === $age","array( 'verified', 'approved', 'active' )"]))
+add("Founder separation/revalidation","founder_separate" in h and "DDD_Contracts::founder" in pt and "founder_claim" in ha and "institutional" in ha)
+add("Featured governance",all(x in d for x in ["feature_label","feature_start","feature_end","feature_audit","version_conflict","automatic_expiry"]))
+add("Recent verified stable ordering","verified_at" in d and "recent_only" in d and re.search(r"verified_at.+doctor_id",d,re.S))
+add("Stable cursor pagination","cursor_decode" in h and "cursor_encode" in h and "DEFAULT_LIMIT" in d)
+add("All required facets",all(x in pt for x in ["country","city","specialty","language","qualification","min_experience","mode","accepting","currency","fee_min","fee_max"]))
+add("Taxonomy/alias/transliteration","taxonomy_upsert" in d and "aliases_json" in d and "normalize_token" in h and "DoctorDirectoryTaxonomyChanged.v1" in d)
+add("HMAC filter-bound cursor","hash_hmac" in h and "hash_equals" in h and "filter_hash" in h and "cursor cannot cross filter sets" in rd("tests/unit-helpers.php"))
+add("Opaque persistent UUID","wp_generate_uuid4" in h and "_ddd_public_id" in h and "valid_public_id" in h)
+add("Same-origin destinations","same_origin_url" in h and "hash_equals( $home_host, $target_host )" in h and "foreign route rejected" in rd("tests/unit-helpers.php"))
+dto=re.search(r"public static function public_dto.*?\n\t}",d,re.S)
+add("Public DTO minimization",dto and "'doctor_id' =>" not in dto.group(0) and "'avatar_id' =>" not in dto.group(0))
+add("Saved-reference integrity","save_reference" in d and "DDD_Contracts::eligibility" in d and "UNIQUE KEY user_doctor" in a)
+add("Report idempotency/rate limits","'reporter:' . $reporter_id" in d and "ddd_rate_limits" in a and "request_count<%d" in d)
+add("Atomic moderation/audit","report_transition_forbidden" in d and "'resolved' => array( 'open' )" in d and "report_audit" in d and "START TRANSACTION" in d)
+add("Privacy export","wp_privacy_personal_data_exporters" in pr and "doctor_public_id" in pr)
+add("Legal-hold erasure terminates","retention_hold=0" in ha and "remaining_unheld" in ha and "$changes['reporter_id']  = 0" in ha and "$changes['doctor_id'] = 0" in ha)
+add("Inbox dedupe/replay protection","ddd_inbox" in a and "event_replay_mismatch" in d and "payload_hash" in d)
+add("Outbox claim/retry/dead-letter",all(x in d for x in ["locked_by","locked_at","status='processing' AND locked_at<","attempts","dead"]))
+add("Live eligibility/cache freshness",d.count("DDD_Contracts::eligibility")>=4 and "get_live_status" in d and "invalidate_cache" in d)
+add("REST permissions/signed events","permission_callback" in p and "current_user_can( 'ddd_run_reconciliation' )" in p and "event_permission" in p and "hash_hmac" in p)
+add("SEO/accessibility/RTL","wp_sitemaps" in se and "canonical" in se and "noindex" in se and "private, no-store" in p and all(x in css for x in ["focus-visible","min-height:44px",'html[dir="rtl"]',"prefers-reduced-motion"]) and "aria-live" in pt)
+add("Safe Mode/operations/staging truth",all(x in p for x in ["DDD_SAFE_MODE_OPTION","system_check","set_safe_mode","redact"]) and "repair" in a.lower() and "Hostinger" in rd("docs/STAGING-ACCEPTANCE.md") and "rollback" in rd("docs/ROLLBACK.md").lower() and "separate from Hostinger staging" in rd("README.md"))
+bad=[(i+1,n) for i,(n,v) in enumerate(C) if not v]
+for i,(n,v) in enumerate(C,1): print(f"{'PASS' if v else 'FAIL'} R{i:02d}: {n}")
+print(f"TOTAL ROUNDS: {len(C)}\nPASS AFTER CORRECTION: {len(C)-len(bad)}\nFAIL AFTER CORRECTION: {len(bad)}")
+if len(C)!=40: print("Exactly 40 rounds required.",file=sys.stderr); sys.exit(2)
+if bad: print("FAILED ROUNDS: "+", ".join(f"R{i:02d}" for i,_ in bad),file=sys.stderr); sys.exit(1)
