@@ -1,0 +1,17 @@
+name: File 07 Checksum Discovery
+on:
+  push:
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Print canonical source checksums
+        run: |
+          find . -path './.git' -prune -o -path './build' -prune -o -type f ! -path './CHECKSUMS.sha256' ! -path './.github/workflows/checksum-discovery.yml' -print0 | sort -z | xargs -0 sha256sum
+      - name: Print deterministic release checksum
+        run: |
+          bash tests/build-release.sh
+          sha256sum build/07-doctors-directory-and-discovery-1.1.0.zip
