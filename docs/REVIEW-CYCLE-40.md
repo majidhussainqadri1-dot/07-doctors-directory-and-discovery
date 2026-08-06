@@ -2,7 +2,6 @@
 
 **Repository branch:** `codex/file-07-complete-v1.0.0`  
 **Runtime candidate:** `1.1.0`  
-**Verified head:** `faf9460a365e4a00b3640ca546d233668f4c9221`  
 **Review date:** 06 August 2026  
 **Method:** ہر round ایک الگ concern پر کیا گیا؛ جہاں نقص ملا، اسی round کے اختتام پر اصلاح ہوئی اور متعلقہ check دوبارہ چلایا گیا۔
 
@@ -13,7 +12,6 @@
 - **جن نظرِ ثانیوں میں کوئی نقص نہیں ملا:** 25
 - **تمام 15 defect rounds کی اصلاح:** مکمل
 - **اصلاح کے بعد repository-level unresolved critical/high defects:** 0
-- **GitHub Actions:** basic اور final دونوں exact-head green
 - **External production gates:** Hostinger staging، حقیقی companion integrations، browser/device acceptance، backup/restore/rollback rehearsal اور Founder acceptance الگ لازمی evidence ہیں۔
 
 ## مکمل رجسٹر
