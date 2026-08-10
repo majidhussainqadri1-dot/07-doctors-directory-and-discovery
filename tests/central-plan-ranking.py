@@ -11,6 +11,7 @@ checks={
  'nested Top10/100/1000/All tiers': all(x in text for x in ["'top10'","'top100'","'top1000'","'all'"]) and 'nested_tiers' in text,
  'All Verified public wording': 'All Verified Doctors' in text,
  'monthly version freshness': 'require_monthly_version' in text and 'monthly_version' in text and 'MAX_SNAPSHOT_AGE' in text,
+ 'bounded fail-closed item page': all(x in text for x in ['file26_page_oversized','file26_public_id_invalid','file26_duplicate_public_id','file26_rank_invalid','file26_explanation_missing']),
  'public explanations': 'require_explanations' in text and 'ranking_explanation' in text,
  'doctor appeal to File26': 'sabri_file26_doctor_ranking_appeal_v1' in text and 'Appeal my ranking' in text,
  'File24 assurance boundary': 'sabri_file24_doctor_ranking_assurance_v1' in text,
