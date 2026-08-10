@@ -1,0 +1,21 @@
+name: File 07 Fresh Review Diagnostic
+on:
+  push:
+    branches:
+      - fix/file-07-fresh-80-review-20260810
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Changed source SHA-256
+        run: |
+          sha256sum doctors-directory/includes/class-ddd-central-ranking.php
+          sha256sum tests/central-plan-ranking.py
+          sha256sum docs/REVIEW-CYCLE-80-FRESH-2026-08-10.md
+      - name: Build corrected package and print SHA-256
+        run: |
+          bash tests/build-release.sh
+          sha256sum build/07-doctors-directory-and-discovery-1.2.0.zip
