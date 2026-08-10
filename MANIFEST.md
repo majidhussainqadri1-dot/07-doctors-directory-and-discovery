@@ -40,6 +40,7 @@
 - `tests/static-audit.sh`
 - `tests/review-40.py`
 - `tests/review-80.py`
+- `tests/verify-package-paths.py`
 - `tests/test-pagination.py`
 - `tests/test-contrast.py`
 - `tests/build-release.sh`
