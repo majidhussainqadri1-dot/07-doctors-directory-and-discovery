@@ -19,7 +19,6 @@ fp=rd('doctors-directory/includes/class-ddd-future-preferences.php')
 fu=rd('doctors-directory/includes/class-ddd-future-ui.php')
 js=rd('doctors-directory/assets/js/future-discovery.js')
 css=rd('doctors-directory/assets/css/future-discovery.css')
-manifest=rd('doctors-directory/MANIFEST.sha256')
 C=[]
 def add(name,val): C.append((name,bool(val)))
 add('Runtime release identity 1.2.0', "Version: 1.2.0" in plug and "DDD_VERSION', '1.2.0" in plug)
