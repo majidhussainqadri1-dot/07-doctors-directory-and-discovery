@@ -28,7 +28,7 @@ Full traceability: `docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md`.
 
 ## 80-round hardening — 2026-08-10
 
-A fresh sequential 80-round review was completed after FUT24. Defects found in 25 rounds were corrected before the next round; the final executable post-correction gate is **80/80 PASS**. The hardening includes POST/no-store handling for sensitive discovery, coarse request-scoped Near-Me coordinates, strict saved-search persistence, shortlist limit integrity, File 19 worker locking/provider gates, public assurance/policy minimization, endpoint rate limits, 44px interaction targets, same-origin client defense, reduced-motion handling, signed-cursor continuation, canonical fee/timezone matching and localization coverage.
+A fresh sequential 80-round review was completed after FUT24. Defects found in 26 rounds were corrected before the next round; the final executable post-correction gate is **80/80 PASS**. The hardening includes POST/no-store handling for sensitive discovery, coarse request-scoped Near-Me coordinates, strict saved-search persistence, shortlist limit integrity, File 19 worker locking/provider gates, public assurance/policy minimization, endpoint rate limits, 44px interaction targets, same-origin client defense, reduced-motion handling, signed-cursor continuation, canonical fee/timezone matching and localization coverage.
 
 See `docs/REVIEW-CYCLE-80.md` and `tests/review-80.py`.
 
