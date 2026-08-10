@@ -1,0 +1,71 @@
+# Source Manifest — File 07 v1.2.0
+
+## Runtime
+- `doctors-directory/doctors-directory.php`
+- `doctors-directory/includes/class-sdd-helpers.php`
+- `doctors-directory/includes/class-sdd-activator.php`
+- `doctors-directory/includes/class-sdd-directory.php`
+- `doctors-directory/includes/class-sdd-profile.php`
+- `doctors-directory/includes/class-sdd-admin.php`
+- `doctors-directory/includes/class-sdd-privacy.php`
+- `doctors-directory/includes/class-sdd-seo.php`
+- `doctors-directory/includes/class-sdd-plugin.php`
+- `doctors-directory/includes/class-ddd-review-hardening.php`
+- `doctors-directory/includes/class-ddd-central-ranking.php`
+- `doctors-directory/includes/class-ddd-ranking-ui.php`
+- `doctors-directory/includes/class-ddd-ranking-appeal.php`
+- `doctors-directory/includes/class-ddd-future-query.php`
+- `doctors-directory/includes/class-ddd-future-discovery.php`
+- `doctors-directory/includes/class-ddd-future-preferences.php`
+- `doctors-directory/includes/class-ddd-future-ui.php`
+- `doctors-directory/uninstall.php`
+
+## Assets
+- `doctors-directory/assets/css/directory.css`
+- `doctors-directory/assets/css/admin.css`
+- `doctors-directory/assets/css/future-discovery.css`
+- `doctors-directory/assets/js/directory.js`
+- `doctors-directory/assets/js/future-discovery.js`
+
+## QA/build
+- `.github/workflows/file-07-quality-gates.yml`
+- `.github/workflows/final-quality-gates.yml`
+- `tests/bootstrap.php`
+- `tests/unit-helpers.php`
+- `tests/source-contracts.py`
+- `tests/central-plan-ranking.py`
+- `tests/central-plan-adversarial.py`
+- `tests/future-discovery-24.py`
+- `tests/static-audit.sh`
+- `tests/review-40.py`
+- `tests/review-80.py`
+- `tests/test-pagination.py`
+- `tests/test-contrast.py`
+- `tests/build-release.sh`
+
+## Governance/release evidence
+- `README.md`
+- `CHANGELOG.md`
+- `LICENSE`
+- `MANIFEST.md`
+- `CHECKSUMS.sha256`
+- `RELEASE-CANDIDATE.sha256`
+- `docs/REQUIREMENTS-TRACEABILITY.md`
+- `docs/API-CONTRACTS.md`
+- `docs/DATA-DICTIONARY.md`
+- `docs/THREAT-MODEL.md`
+- `docs/PRIVACY-RETENTION.md`
+- `docs/MIGRATION.md`
+- `docs/ROLLBACK.md`
+- `docs/OPERATIONS-RUNBOOK.md`
+- `docs/STAGING-ACCEPTANCE.md`
+- `docs/REVIEW-CYCLE-1.md`
+- `docs/REVIEW-CYCLE-2.md`
+- `docs/REVIEW-CYCLE-40.md`
+- `docs/REVIEW-CYCLE-80.md`
+- `docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md`
+- `docs/FILE26-RANKING-CONTRACT-v1.md`
+- `docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md`
+- `docs/RELEASE-NOTES-1.1.0.md`
+- `docs/RELEASE-NOTES-1.2.0.md`
+- `docs/DEPENDENCY-INVENTORY.md`

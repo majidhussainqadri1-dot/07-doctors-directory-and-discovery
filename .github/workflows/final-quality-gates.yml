@@ -1,0 +1,66 @@
+name: File 07 v1.2.0 Final Quality Gates
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Root source integrity
+        run: sha256sum -c CHECKSUMS.sha256
+      - name: Release identity and forbidden-artifact scan
+        run: |
+          grep -q "Version: 1.2.0" doctors-directory/doctors-directory.php
+          grep -q "Stable tag: 1.2.0" doctors-directory/readme.txt
+          test "$(find . -path './.git' -prune -o -type f \( -name '*.pem' -o -name '*.key' -o -name '*.p12' -o -name '*.env' \) -print | wc -l)" -eq 0
+      - name: PHP syntax
+        run: find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: JavaScript syntax
+        run: find doctors-directory -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Helper and contract tests
+        run: |
+          php tests/unit-helpers.php
+          python3 tests/source-contracts.py
+      - name: Central-plan File 26 ranking contract
+        run: python3 tests/central-plan-ranking.py
+      - name: Central-plan adversarial ranking review
+        run: python3 tests/central-plan-adversarial.py
+      - name: Future discovery 24 enhancements
+        run: python3 tests/future-discovery-24.py
+      - name: Static architecture, security and privacy audit
+        run: bash tests/static-audit.sh
+      - name: Forty-round regression gate
+        run: python3 tests/review-40.py
+      - name: Eighty-round post-correction gate
+        run: python3 tests/review-80.py
+      - name: Stable pagination model
+        run: python3 tests/test-pagination.py
+      - name: WCAG contrast calculations
+        run: python3 tests/test-contrast.py
+      - name: Deterministic package build A
+        run: bash tests/build-release.sh && cp build/07-doctors-directory-and-discovery-1.2.0.zip /tmp/build-a.zip
+      - name: Deterministic package build B and canonical release checksum
+        run: |
+          bash tests/build-release.sh
+          cmp /tmp/build-a.zip build/07-doctors-directory-and-discovery-1.2.0.zip
+          sha256sum build/07-doctors-directory-and-discovery-1.2.0.zip | tee build/07-doctors-directory-and-discovery-1.2.0.zip.sha256
+          (cd build && sha256sum -c ../RELEASE-CANDIDATE.sha256)
+      - name: Clean-extract package verification
+        run: |
+          rm -rf /tmp/ddd-extract && mkdir /tmp/ddd-extract
+          unzip -q build/07-doctors-directory-and-discovery-1.2.0.zip -d /tmp/ddd-extract
+          test -f /tmp/ddd-extract/doctors-directory-and-discovery/doctors-directory.php
+          test "$(find /tmp/ddd-extract -mindepth 1 -maxdepth 1 -type d | wc -l)" -eq 1
+          ! unzip -Z1 build/07-doctors-directory-and-discovery-1.2.0.zip | grep -Eq '(^/|(^|/)\.\.(/|$)|\\'
+          (cd /tmp/ddd-extract/doctors-directory-and-discovery && sha256sum -c MANIFEST.sha256)
+          find /tmp/ddd-extract -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 07-doctors-directory-and-discovery-1.2.0
+          path: |
+            build/07-doctors-directory-and-discovery-1.2.0.zip
+            build/07-doctors-directory-and-discovery-1.2.0.zip.sha256
+          if-no-files-found: error
