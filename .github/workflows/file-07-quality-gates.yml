@@ -21,6 +21,10 @@ jobs:
         run: |
           php tests/unit-helpers.php
           python3 tests/source-contracts.py
+      - name: Central-plan File 26 ranking contract
+        run: python3 tests/central-plan-ranking.py
+      - name: Central-plan adversarial ranking review
+        run: python3 tests/central-plan-adversarial.py
       - name: Static architecture, security and privacy audit
         run: bash tests/static-audit.sh
       - name: Forty-round review gate

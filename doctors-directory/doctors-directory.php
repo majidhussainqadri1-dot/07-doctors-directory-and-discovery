@@ -34,6 +34,9 @@ require_once DDD_DIR . 'includes/class-sdd-privacy.php';
 require_once DDD_DIR . 'includes/class-sdd-seo.php';
 require_once DDD_DIR . 'includes/class-sdd-plugin.php';
 require_once DDD_DIR . 'includes/class-ddd-review-hardening.php';
+require_once DDD_DIR . 'includes/class-ddd-central-ranking.php';
+require_once DDD_DIR . 'includes/class-ddd-ranking-ui.php';
+require_once DDD_DIR . 'includes/class-ddd-ranking-appeal.php';
 
 register_activation_hook( DDD_FILE, array( 'DDD_Activator', 'activate' ) );
 register_deactivation_hook( DDD_FILE, array( 'DDD_Activator', 'deactivate' ) );
