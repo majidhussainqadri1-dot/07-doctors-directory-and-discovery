@@ -40,6 +40,19 @@ final class DDD_Central_Ranking {
 
 	private static function prohibited() { return array( 'donation', 'payment', 'paid_promotion', 'founder_favoritism', 'purchased_engagement' ); }
 
+	private static function public_assurance( $assurance ) {
+		if ( ! is_array( $assurance ) ) { return array( 'status' => 'unverified' ); }
+		$out = array();
+		foreach ( array( 'status', 'policy_version', 'monthly_version', 'generated_at', 'summary', 'public_report_url' ) as $key ) {
+			if ( ! array_key_exists( $key, $assurance ) || ! is_scalar( $assurance[ $key ] ) ) { continue; }
+			$value = sanitize_text_field( (string) $assurance[ $key ] );
+			if ( 'public_report_url' === $key ) { $value = DDD_Helpers::same_origin_url( $value ); if ( ! $value ) { continue; } }
+			$out[ $key ] = $value;
+		}
+		if ( 'pass' !== sanitize_key( (string) ( $out['status'] ?? '' ) ) ) { $out['status'] = 'unverified'; }
+		return $out;
+	}
+
 	private static function request( $tier, $filters ) {
 		$cursor = isset( $_GET['doctor_rank_cursor'] ) ? sanitize_text_field( wp_unslash( $_GET['doctor_rank_cursor'] ) ) : '';
 		if ( strlen( $cursor ) > self::MAX_CURSOR ) { $cursor = ''; }
@@ -91,8 +104,7 @@ final class DDD_Central_Ranking {
 		usort( $items, static function ( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
 		$assurance = null;
 		if ( has_filter( self::ASSURANCE_FILTER ) ) {
-			$assurance = apply_filters( self::ASSURANCE_FILTER, null, $bias, array( 'policy_version' => $policy, 'monthly_version' => $monthly, 'snapshot_id' => sanitize_text_field( (string) ( $response['snapshot_id'] ?? '' ) ) ) );
-			if ( ! is_array( $assurance ) || 'pass' !== sanitize_key( (string) ( $assurance['status'] ?? '' ) ) ) { $assurance = array( 'status' => 'unverified' ); }
+			$assurance = self::public_assurance( apply_filters( self::ASSURANCE_FILTER, null, $bias, array( 'policy_version' => $policy, 'monthly_version' => $monthly, 'snapshot_id' => sanitize_text_field( (string) ( $response['snapshot_id'] ?? '' ) ) ) ) );
 		}
 		return array( 'source' => 'file26', 'ready' => true, 'policy_version' => $policy, 'monthly_version' => $monthly, 'generated_at' => gmdate( 'Y-m-d H:i:s', $generated ), 'items' => $items, 'next_cursor' => sanitize_text_field( substr( (string) ( $response['next_cursor'] ?? '' ), 0, self::MAX_CURSOR ) ), 'assurance' => $assurance );
 	}
