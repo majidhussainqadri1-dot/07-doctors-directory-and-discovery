@@ -6,7 +6,7 @@ b24047d049461eccb9dfb7679021233f99614a56a2edb5d392244a42fa039d76  ./.gitignore
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
 7fc4809b206535643ae25f8306bcdd3759b45a4cba3acbb4893bbb041af04300  ./MANIFEST.md
 ca6206bddf90fb924f16ee1e55e77c72c54e6c983c72da0bc621ed7653c4a2d5  ./README.md
-75fb217aeb2f1f7045cc5022494e2fad0aeae412a348007fbd21ae01a53010d8  ./RELEASE-CANDIDATE.sha256
+7c6c71ff5b3b26774c933419fcb09d87d9dac2365b8fe44150b6c9f2ceb53c51  ./RELEASE-CANDIDATE.sha256
 7510bcb07ff5518070bb292b19a427ed1786a57566c04aea9795c01fa219a285  ./docs/API-CONTRACTS.md
 52d5d2d413eabc07adb12faa454e319c3294c955c71813e949c0bed18aabad74  ./docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md
 3445db4538f8001a6c30f3f59ffe175cfbd77fbfd1771de90de96b83bd564986  ./docs/DATA-DICTIONARY.md
@@ -23,6 +23,7 @@ ddaf823b1a3c33c9273e2156fd32128be34806047b727798d1a9c31b7f69973a  ./docs/REQUIRE
 ac0a275dfcc32c75c5d1c721cfe2de5b2b8fc6eeb1c00f81dc02f5e52312e390  ./docs/REVIEW-CYCLE-2.md
 f76c936ae223753b8f5265590734fafb932ece7c3643fa0cbe6797579994332b  ./docs/REVIEW-CYCLE-40.md
 1363fb520a2672b6e38d1508c1b8653846619ee578e85d1b50645a41e723c82f  ./docs/REVIEW-CYCLE-80.md
+ae537c7e18066d74b7236cd538362ab8a11ee58bcc39891155dcdfe89c88896c  ./docs/REVIEW-CYCLE-80-FRESH-2026-08-10.md
 7b78e07099e8a4e91cb088910650a39ef1a9468009161d225de324c5a3bf7da4  ./docs/ROLLBACK.md
 038bd852e03f2fc7f343df07482ad3398d09557bc0b2533a70d8e3652431df44  ./docs/STAGING-ACCEPTANCE.md
 3c723d9082136b778e2ba0919e200337aa1438863f8bb758007b1595894b1f32  ./docs/THREAT-MODEL.md
@@ -33,7 +34,7 @@ d1b74f97b21827a3adfeba0a2b8aae7eb3f172000122daabf0de1dcc2fd99a30  ./doctors-dire
 1c646fbc18e5d964fb5dfffbdf1c2d4209b62df56038f779f8180dbc3505a6c4  ./doctors-directory/assets/js/directory.js
 e9fe97b6415cd2bbcd596c2dc9ecf0f685af5f08017fad86849a973ae093d74f  ./doctors-directory/assets/js/future-discovery.js
 3947db6326024fdedfa9eb36a5fe5df882eeab5af537f9afcee1791cd316ae98  ./doctors-directory/doctors-directory.php
-b7fb48eaa47aca311d4b3642ebd893831ff45145fe4b18a1099e177609f21423  ./doctors-directory/includes/class-ddd-central-ranking.php
+809ae4b9944a9a917cae4e81446e0b2c5f095dec7a87690623eb96222c2210c8  ./doctors-directory/includes/class-ddd-central-ranking.php
 191aa0f7956df78d936296589dbbf27cec032e7b6f8d51b1867ed50086c2deaf  ./doctors-directory/includes/class-ddd-future-discovery.php
 0663372da4a6f5fc34c7ad97be41a14d10697ea61136e8c22c7bb74a8b7072eb  ./doctors-directory/includes/class-ddd-future-preferences.php
 0ce12cc68c2030070c37e3e8e4ee057de1720a39e367f5677bbe1f4f51e6613f  ./doctors-directory/includes/class-ddd-future-query.php
@@ -54,7 +55,7 @@ a99bf44017d9d2df564d7b3e1aa10697efa4b035c544ad027a30e343e64c73e9  ./doctors-dire
 292bd044569ef01a172e914758f9fdbaa833974d792d269b06a9a2fabf75ac24  ./tests/bootstrap.php
 b90a4e5d6f216971f4f805198e1d00d0824a7b01e31e6f93561480fe24fd8770  ./tests/build-release.sh
 cee41a4c8c2902a0fdfcf580bee2f3265839e45a59da756d7e5bdfe083180792  ./tests/central-plan-adversarial.py
-61224f1c58f38a372a05223fe861ff63755cb4e45154ed1c6dc54b583d22daa0  ./tests/central-plan-ranking.py
+afece09b38fbec8b692647d49e0d77e067969fc8b1172b6f0be1732316ef501d  ./tests/central-plan-ranking.py
 fb0829105ec26559a6c775b185aa050fc64cf7595a70633ad590c50733d67edf  ./tests/future-discovery-24.py
 1a50ebd61c4705e5b332c2179f9a4e60b809939c321b23235946918d368cc028  ./tests/review-40.py
 e78439ba2b698c5ef0a9a0a4fa93d07288cff3416130750f5b42838c735d2b69  ./tests/review-80.py
