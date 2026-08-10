@@ -4,6 +4,7 @@ root=Path(__file__).resolve().parents[1]
 plugin=(root/'doctors-directory/doctors-directory.php').read_text()
 parts=[root/'doctors-directory/includes/class-ddd-central-ranking.php',root/'doctors-directory/includes/class-ddd-ranking-ui.php',root/'doctors-directory/includes/class-ddd-ranking-appeal.php']
 text='\n'.join(p.read_text() for p in parts)
+compact=text.replace(' ','')
 checks={
  'central bridge runtime loaded': all(p.name in plugin for p in parts),
  'File26 canonical ranking contract': 'sabri_file26_doctor_ranking_v1' in text and "'consumer' => 'file07'" in text,
@@ -15,12 +16,13 @@ checks={
  'File24 assurance boundary': 'sabri_file24_doctor_ranking_assurance_v1' in text,
  'zero paid donor favoritism': all(x in text for x in ['donation','payment','paid_promotion','founder_favoritism','purchased_engagement']) and 'paid_boost' in text and 'donor_boost' in text,
  'no fabricated top tiers': 'Top tiers are not fabricated' in text and 'No synthetic result is created' in text,
- 'neutral fallback not a merit rank': 'Neutral alphabetical fallback; no merit rank is asserted' in text and "'rank'=>0" in text.replace(' ',''),
+ 'neutral fallback not a merit rank': 'Neutral alphabetical fallback; no merit rank is asserted' in text and "'rank'=>0" in compact,
  'live owner eligibility recheck': text.count('DDD_Repository::get_by_public_id')>=2 and 'get_live_status' in text,
- 'legacy local rank removed from DOM': 'Remove the legacy File-07-local ranked All/Search section from the rendered DOM' in text and "strpos($output,'</section>'" in text.replace(' ',''),
+ 'legacy local rank removed from DOM': 'Remove the legacy File-07-local ranked All/Search section from the rendered DOM' in text and "strpos($output,'</section>'" in compact,
  'same-origin appeal return': 'DDD_Helpers::same_origin_url' in text and 'wp_safe_redirect' in text,
- 'appeal rate and object gate': "rate_limit('ranking-appeal'" in text.replace(' ','') and 'appeal only your own eligible doctor ranking' in text,
+ 'appeal rate and object gate': "rate_limit('ranking-appeal'" in compact and 'appeal only your own eligible doctor ranking' in text,
  'public ranking REST route': "'/ranking'" in text and 'rest_ranking' in text,
+ 'public ranking REST rate limited': "rate_limit('ranking'" in compact and 'ranking_rate_limited' in text,
 }
 failed=[k for k,v in checks.items() if not v]
 for k,v in checks.items(): print(('PASS' if v else 'FAIL')+': '+k)
