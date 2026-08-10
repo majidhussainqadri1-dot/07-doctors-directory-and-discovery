@@ -110,9 +110,21 @@ final class DDD_Central_Ranking {
 			$items[] = array( 'public_id' => $id, 'rank' => $rank, 'explanation' => $why );
 		}
 		usort( $items, static function ( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
+
 		$assurance = null;
 		if ( has_filter( self::ASSURANCE_FILTER ) ) {
-			$assurance = self::public_assurance( apply_filters( self::ASSURANCE_FILTER, null, $bias, array( 'policy_version' => $policy, 'monthly_version' => $monthly, 'snapshot_id' => sanitize_text_field( (string) ( $response['snapshot_id'] ?? '' ) ) ) );
+			$assurance = self::public_assurance(
+				apply_filters(
+					self::ASSURANCE_FILTER,
+					null,
+					$bias,
+					array(
+						'policy_version'  => $policy,
+						'monthly_version' => $monthly,
+						'snapshot_id'     => sanitize_text_field( (string) ( $response['snapshot_id'] ?? '' ) ),
+					)
+				)
+			);
 		}
 		return array( 'source' => 'file26', 'ready' => true, 'policy_version' => $policy, 'monthly_version' => $monthly, 'generated_at' => gmdate( 'Y-m-d H:i:s', $generated ), 'items' => $items, 'next_cursor' => sanitize_text_field( substr( (string) ( $response['next_cursor'] ?? '' ), 0, self::MAX_CURSOR ) ), 'assurance' => $assurance );
 	}
