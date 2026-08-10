@@ -10,9 +10,7 @@ final class DDD_Central_Ranking {
 	const LIMIT = 24;
 	const MAX_CURSOR = 512;
 
-	public static function register() {
-		add_action( 'rest_api_init', array( __CLASS__, 'rest_routes' ) );
-	}
+	public static function register() { add_action( 'rest_api_init', array( __CLASS__, 'rest_routes' ) ); }
 
 	public static function tier() {
 		$tier = isset( $_GET['doctor_tier'] ) ? sanitize_key( wp_unslash( $_GET['doctor_tier'] ) ) : 'all';
@@ -93,18 +91,40 @@ final class DDD_Central_Ranking {
 		$blocked = array_map( 'sanitize_key', (array) ( $bias['prohibited_signals'] ?? array() ) );
 		foreach ( self::prohibited() as $signal ) { if ( ! in_array( $signal, $blocked, true ) ) { return new WP_Error( 'file26_bias_guard_incomplete', __( 'Ranking policy does not attest every prohibited paid/donor influence.', DDD_TEXT_DOMAIN ) ); } }
 		if ( ! empty( $bias['paid_boost'] ) || ! empty( $bias['donor_boost'] ) ) { return new WP_Error( 'file26_paid_bias_detected', __( 'Paid or donor ranking advantage is forbidden.', DDD_TEXT_DOMAIN ) ); }
+
+		$raw_items = array_values( (array) ( $response['items'] ?? array() ) );
+		$request_limit = max( 1, min( self::LIMIT, absint( $request['limit'] ?? self::LIMIT ) ) );
+		if ( count( $raw_items ) > $request_limit ) { return new WP_Error( 'file26_page_oversized', __( 'File 26 returned more ranking items than the bounded page contract permits.', DDD_TEXT_DOMAIN ) ); }
+
 		$cap = 'top10' === $request['tier'] ? 10 : ( 'top100' === $request['tier'] ? 100 : ( 'top1000' === $request['tier'] ? 1000 : PHP_INT_MAX ) );
 		$seen = array(); $items = array();
-		foreach ( (array) ( $response['items'] ?? array() ) as $item ) {
-			$id = strtolower( sanitize_text_field( (string) ( $item['public_id'] ?? '' ) ) ); $rank = absint( $item['rank'] ?? 0 );
-			$why = array_values( array_filter( array_map( 'sanitize_text_field', (array) ( $item['explanation'] ?? array() ) ) ) );
-			if ( ! DDD_Helpers::valid_public_id( $id ) || ! $rank || $rank > $cap || isset( $seen[ $id ] ) || ! $why ) { continue; }
-			$seen[ $id ] = true; $items[] = array( 'public_id' => $id, 'rank' => $rank, 'explanation' => array_slice( $why, 0, 8 ) );
+		foreach ( $raw_items as $item ) {
+			$id = strtolower( sanitize_text_field( (string) ( $item['public_id'] ?? '' ) ) );
+			$rank = absint( $item['rank'] ?? 0 );
+			$why = array_values( array_filter( array_map( 'sanitize_text_field', array_slice( (array) ( $item['explanation'] ?? array() ), 0, 8 ) ) ) );
+			if ( ! DDD_Helpers::valid_public_id( $id ) ) { return new WP_Error( 'file26_public_id_invalid', __( 'File 26 returned an invalid public doctor identifier.', DDD_TEXT_DOMAIN ) ); }
+			if ( ! $rank || $rank > $cap ) { return new WP_Error( 'file26_rank_invalid', __( 'File 26 returned a rank outside the requested tier.', DDD_TEXT_DOMAIN ) ); }
+			if ( isset( $seen[ $id ] ) ) { return new WP_Error( 'file26_duplicate_public_id', __( 'File 26 returned the same doctor more than once in one ranking page.', DDD_TEXT_DOMAIN ) ); }
+			if ( ! $why ) { return new WP_Error( 'file26_explanation_missing', __( 'File 26 returned a ranked doctor without a public explanation.', DDD_TEXT_DOMAIN ) ); }
+			$seen[ $id ] = true;
+			$items[] = array( 'public_id' => $id, 'rank' => $rank, 'explanation' => $why );
 		}
 		usort( $items, static function ( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
+
 		$assurance = null;
 		if ( has_filter( self::ASSURANCE_FILTER ) ) {
-			$assurance = self::public_assurance( apply_filters( self::ASSURANCE_FILTER, null, $bias, array( 'policy_version' => $policy, 'monthly_version' => $monthly, 'snapshot_id' => sanitize_text_field( (string) ( $response['snapshot_id'] ?? '' ) ) ) ) );
+			$assurance = self::public_assurance(
+				apply_filters(
+					self::ASSURANCE_FILTER,
+					null,
+					$bias,
+					array(
+						'policy_version'  => $policy,
+						'monthly_version' => $monthly,
+						'snapshot_id'     => sanitize_text_field( (string) ( $response['snapshot_id'] ?? '' ) ),
+					)
+				)
+			);
 		}
 		return array( 'source' => 'file26', 'ready' => true, 'policy_version' => $policy, 'monthly_version' => $monthly, 'generated_at' => gmdate( 'Y-m-d H:i:s', $generated ), 'items' => $items, 'next_cursor' => sanitize_text_field( substr( (string) ( $response['next_cursor'] ?? '' ), 0, self::MAX_CURSOR ) ), 'assurance' => $assurance );
 	}
@@ -148,9 +168,7 @@ final class DDD_Central_Ranking {
 		register_rest_route( DDD_REST::NS, '/ranking', array( 'methods'=>WP_REST_Server::READABLE, 'callback'=>array(__CLASS__,'rest_ranking'), 'permission_callback'=>'__return_true', 'args'=>array('tier'=>array('sanitize_callback'=>'sanitize_key','default'=>'all')) ) );
 	}
 	public static function rest_ranking( WP_REST_Request $request ) {
-		if ( ! DDD_Helpers::rate_limit( 'ranking', DDD_Helpers::current_ip_hash(), 60, MINUTE_IN_SECONDS ) ) {
-			return DDD_Helpers::safe_error( 'ranking_rate_limited', __( 'Ranking request rate limit exceeded.', DDD_TEXT_DOMAIN ), 429 );
-		}
+		if ( ! DDD_Helpers::rate_limit( 'ranking', DDD_Helpers::current_ip_hash(), 60, MINUTE_IN_SECONDS ) ) { return DDD_Helpers::safe_error( 'ranking_rate_limited', __( 'Ranking request rate limit exceeded.', DDD_TEXT_DOMAIN ), 429 ); }
 		$tier=sanitize_key((string)$request->get_param('tier')); if(!in_array($tier,array('top10','top100','top1000','all'),true)){$tier='all';}
 		$s=self::snapshot($tier,self::filters()); if(is_wp_error($s)){return $s;}
 		return rest_ensure_response(array('source'=>$s['source'],'policy_version'=>(string)$s['policy_version'],'monthly_version'=>(string)$s['monthly_version'],'generated_at'=>(string)$s['generated_at'],'items'=>self::public_items($s),'next_cursor'=>(string)$s['next_cursor']));

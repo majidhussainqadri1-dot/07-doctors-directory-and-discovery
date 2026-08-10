@@ -50,6 +50,26 @@
     });
   }
 
+  function mutationKey(scope) {
+    var token = '';
+    try {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') token = window.crypto.randomUUID();
+      else if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+        var bytes = new Uint32Array(4); window.crypto.getRandomValues(bytes); token = Array.prototype.map.call(bytes, function (n) { return n.toString(16); }).join('-');
+      }
+    } catch (e) { token = ''; }
+    if (!token) token = String(Date.now()) + '-' + String(Math.random()).slice(2);
+    return ('ddd-' + scope + '-' + token).replace(/[^A-Za-z0-9._:-]/g, '-').slice(0, 128);
+  }
+
+  function mutationJson(path, params, scope, method) {
+    return fetchJson(cfg.base + path, {
+      method: method || 'POST',
+      headers: {'Content-Type': 'application/json', 'Idempotency-Key': mutationKey(scope)},
+      body: typeof params === 'undefined' ? undefined : JSON.stringify(params || {})
+    });
+  }
+
   function safeSameOriginHref(value) {
     if (!value) return '';
     try {
@@ -176,7 +196,7 @@
     fetchJson(cfg.base + 'shortlists').then(function(data){
       var lists = data.items || [], row = lists.length ? lists[0] : {label:'My shortlist', public_ids:[]};
       row.public_ids = Array.isArray(row.public_ids) ? row.public_ids : []; if (row.public_ids.indexOf(publicId) === -1) row.public_ids.push(publicId);
-      return fetchJson(cfg.base + 'shortlists', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:row.id || '', label:row.label || 'My shortlist', public_ids:row.public_ids})});
+      return mutationJson('shortlists', {id:row.id || '', label:row.label || 'My shortlist', public_ids:row.public_ids}, 'shortlist-save', 'POST');
     }).then(function(){ status.textContent=msg('shortlistSaved', 'Doctor added to your private shortlist.'); }).catch(function(err){ status.textContent=err.message; });
   }
 
@@ -215,7 +235,7 @@
     if (!cfg.loggedIn) { status.textContent = msg('loginSave', 'Log in to save searches and receive matching-doctor alerts.'); return; }
     var label = window.prompt(msg('saveName', 'Name this saved search'), msg('savedSearch', 'Saved doctor search')); if (label === null) return;
     var p = paramsFromForm(); delete p.lat; delete p.lng; delete p.weights; delete p.cursor;
-    fetchJson(cfg.base + 'saved-searches', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({label: label, filters: p})}).then(function () { status.textContent = msg('searchSaved', 'Search saved. Matching new eligible doctors can notify you through the platform notification system.'); }).catch(function (err) { status.textContent = err.message; });
+    mutationJson('saved-searches', {label: label, filters: p}, 'saved-search-save', 'POST').then(function () { status.textContent = msg('searchSaved', 'Search saved. Matching new eligible doctors can notify you through the platform notification system.'); }).catch(function (err) { status.textContent = err.message; });
   });
 
   var transparency = root.querySelector('[data-ddd-transparency]');

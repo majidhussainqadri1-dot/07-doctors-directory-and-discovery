@@ -404,7 +404,7 @@ final class DDD_Future_Discovery {
 				'generated_at'         => gmdate( 'c' ),
 				'expires_at'           => gmdate( 'c', time() + 6 * HOUR_IN_SECONDS ),
 			),
-			'public, max-age=21600, stale-if-error=86400'
+			'public, max-age=21600, must-revalidate'
 		);
 	}
 }

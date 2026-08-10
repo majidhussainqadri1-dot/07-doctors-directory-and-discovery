@@ -11,8 +11,8 @@ Status: implemented repository candidate for File 07 v1.2.0. These are File-07 d
 | F07-FUT-05 | Next Available Appointment | Filter by published next availability supplied by File 08. | `availability_days`; `next_available_at` owner adapter. |
 | F07-FUT-06 | Local-Time Availability | Convert public clinic availability into the user-selected IANA timezone. | `DateTimeZone`; local availability DTO; browser locale rendering. |
 | F07-FUT-07 | Serves My Country | Filter online doctors by File 08 public country-coverage contract. | `countries_served` + `serves_country`. |
-| F07-FUT-08 | Saved Searches + Smart Alerts | Store bounded private saved filters and emit matching-doctor notification facts to File 19. | user-meta limits; resumable batched matcher; `DoctorSavedSearchMatched.v1`. |
-| F07-FUT-09 | Private Doctor Shortlists | Private named collections of public doctor IDs; no clinical notes. | bounded shortlists and item limits; live eligibility check on save. |
+| F07-FUT-08 | Saved Searches + Smart Alerts | Store bounded private saved filters and emit matching-doctor notification facts to File 19. Every save/delete mutation is authenticated, rate-limited, serialized, idempotency-key protected, replay-safe and audited. | user-meta limits; 24-hour bounded security receipts + cleanup/eraser; resumable batched matcher; `DoctorSavedSearchMatched.v1`. |
+| F07-FUT-09 | Private Doctor Shortlists | Private named collections of public doctor IDs; no clinical notes. Every save/delete mutation uses the same bounded private mutation constitution. | bounded shortlists and item limits; live eligibility check on save; idempotent replay receipt. |
 | F07-FUT-10 | Why This Doctor | Explain filter matches such as language, location, mode, distance and published availability. | `why_this_doctor`; max six public-safe reasons. |
 | F07-FUT-11 | User-Controlled Personal Order | User weights may reorder discovery presentation but must never be represented as official global rank. | `personal_order_notice`; separate personal score. |
 | F07-FUT-12 | Ranking Transparency Center | Surface File 26 policy/monthly version and File 24 assurance when provided. | `/future/transparency`; prohibited-signal register. |
@@ -27,7 +27,7 @@ Status: implemented repository candidate for File 07 v1.2.0. These are File-07 d
 | F07-FUT-21 | Anti-Gaming & Manipulation Guard | File 07 exposes discovery-integrity contract; payment/donation/purchased engagement cannot be accepted as merit signals. | `ddd_file07_discovery_integrity_v1`; blocked-signal list. |
 | F07-FUT-22 | Unmet Demand Intelligence | Aggregate zero-result structured facets only; never store free-text query or precise user location. | bounded `ddd_unmet_demand_v1`; admin health endpoint. |
 | F07-FUT-23 | Red-Flag Safety Diversion | Emergency-type query phrases suppress directory recommendation and display urgent-care diversion. | `possible_emergency`; no diagnosis. |
-| F07-FUT-24 | Offline / Low-Bandwidth Directory Pack | Provide bounded public-safe text-first directory snapshot with explicit stale semantics. | `/future/offline-pack`; 6-hour cache; stale label + stale-if-error. |
+| F07-FUT-24 | Offline / Low-Bandwidth Directory Pack | Provide bounded public-safe text-first directory snapshot with an explicit six-hour lifetime; an expired HTTP copy must revalidate rather than be served by stale-if-error beyond its declared `expires_at`. | `/future/offline-pack`; 6-hour cache; stale label + `must-revalidate`. |
 
 ## Shared contracts
 
@@ -41,7 +41,7 @@ Status: implemented repository candidate for File 07 v1.2.0. These are File-07 d
 
 ## Privacy and safety invariants
 
-Precise user coordinates are request-scoped and never written to user meta, options, demand analytics or logs by this feature set. Saved searches explicitly discard coordinates. Shortlists contain only public doctor IDs and labels, not symptoms, diagnoses, prescriptions or patient notes. Unmet-demand analytics contain only bounded structured facets. Emergency-type natural-language queries do not produce doctor recommendations.
+Precise user coordinates are request-scoped and never written to user meta, options, demand analytics or logs by this feature set. Saved searches explicitly discard coordinates. Shortlists contain only public doctor IDs and labels, not symptoms, diagnoses, prescriptions or patient notes. Private mutation replay receipts contain only a request hash plus bounded success metadata and expire after 24 hours through access pruning and scheduled cleanup; they are covered by the privacy eraser. Unmet-demand analytics contain only bounded structured facets. Emergency-type natural-language queries do not produce doctor recommendations.
 
 ## Release boundary
 

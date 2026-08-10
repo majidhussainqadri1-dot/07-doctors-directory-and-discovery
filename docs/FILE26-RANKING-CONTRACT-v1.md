@@ -17,8 +17,11 @@ A valid File 26 response must provide:
 - `monthly_version` in a year-month form and a snapshot no older than 35 days;
 - `nested_tiers=true`;
 - `bias_audit.status=pass` with explicit prohibition of donation, payment, paid promotion, Founder favoritism and purchased engagement;
-- unique privacy-safe doctor `public_id` values, positive global `rank`, and non-empty public explanations;
+- no more items than the bounded `limit` requested by File 07;
+- unique privacy-safe doctor `public_id` values, positive global `rank` values within the requested tier, and non-empty public explanations for every item;
 - an optional stable `next_cursor`.
+
+Malformed provider pages fail closed as a contract error. File 07 does not silently discard an invalid, duplicate, out-of-tier or explanation-less File 26 item and then present the remaining page as though the authoritative snapshot had been valid.
 
 File 07 rechecks every ranked `public_id` through current owner eligibility before rendering. A stale, private, suspended or otherwise ineligible result is excluded from public output.
 
@@ -30,7 +33,7 @@ The public UI uses “All Verified Doctors”; it does not label the remaining v
 
 ## Degraded behavior
 
-If File 26 is missing, incompatible, stale, or fails its bias guard:
+If File 26 is missing, incompatible, stale, malformed, oversized, or fails its bias guard:
 
 - Top 10 / Top 100 / Top 1000 fail closed with an explicit unavailable state;
 - File 07 never invents a score or substitutes its historical local quality score as a global rank;

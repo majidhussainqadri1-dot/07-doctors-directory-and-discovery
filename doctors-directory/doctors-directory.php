@@ -38,6 +38,7 @@ require_once DDD_DIR . 'includes/class-ddd-central-ranking.php';
 require_once DDD_DIR . 'includes/class-ddd-ranking-ui.php';
 require_once DDD_DIR . 'includes/class-ddd-ranking-appeal.php';
 require_once DDD_DIR . 'includes/class-ddd-future-query.php';
+require_once DDD_DIR . 'includes/class-ddd-future-mutation-guard.php';
 require_once DDD_DIR . 'includes/class-ddd-future-preferences.php';
 require_once DDD_DIR . 'includes/class-ddd-future-ui.php';
 require_once DDD_DIR . 'includes/class-ddd-future-discovery.php';
@@ -89,5 +90,6 @@ function ddd_start_plugin() {
 	DDD_Future_Discovery::register();
 }
 
+add_action( 'plugins_loaded', array( 'DDD_Future_Mutation_Guard', 'register' ), 28 );
 add_action( 'plugins_loaded', array( 'DDD_Review_Hardening', 'register' ), 29 );
 add_action( 'plugins_loaded', 'ddd_start_plugin', 30 );
