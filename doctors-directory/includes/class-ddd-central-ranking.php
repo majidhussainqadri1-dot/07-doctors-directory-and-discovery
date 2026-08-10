@@ -148,6 +148,9 @@ final class DDD_Central_Ranking {
 		register_rest_route( DDD_REST::NS, '/ranking', array( 'methods'=>WP_REST_Server::READABLE, 'callback'=>array(__CLASS__,'rest_ranking'), 'permission_callback'=>'__return_true', 'args'=>array('tier'=>array('sanitize_callback'=>'sanitize_key','default'=>'all')) ) );
 	}
 	public static function rest_ranking( WP_REST_Request $request ) {
+		if ( ! DDD_Helpers::rate_limit( 'ranking', DDD_Helpers::current_ip_hash(), 60, MINUTE_IN_SECONDS ) ) {
+			return DDD_Helpers::safe_error( 'ranking_rate_limited', __( 'Ranking request rate limit exceeded.', DDD_TEXT_DOMAIN ), 429 );
+		}
 		$tier=sanitize_key((string)$request->get_param('tier')); if(!in_array($tier,array('top10','top100','top1000','all'),true)){$tier='all';}
 		$s=self::snapshot($tier,self::filters()); if(is_wp_error($s)){return $s;}
 		return rest_ensure_response(array('source'=>$s['source'],'policy_version'=>(string)$s['policy_version'],'monthly_version'=>(string)$s['monthly_version'],'generated_at'=>(string)$s['generated_at'],'items'=>self::public_items($s),'next_cursor'=>(string)$s['next_cursor']));
