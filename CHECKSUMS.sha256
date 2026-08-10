@@ -1,6 +1,6 @@
 70d51e16fe89ff87084d3826e5525f2703765e80188c34127c61e9ffdef96a60  ./.ci-trigger
-dc5eed2cd414802b74eee7fb23beb04674a07ddc23fdde82ea60d23b3b464270  ./.github/workflows/file-07-quality-gates.yml
-af31fc74fd5c101b1a4d8e52e436b7eb5e9f1c2f131d45830d182ea93e2cbd51  ./.github/workflows/final-quality-gates.yml
+04810cfbfa2bb934ea012c7e4f7b7064c091ef56252741b5232715c5067cf142  ./.github/workflows/file-07-quality-gates.yml
+50c4b40885bb7a2888685a742e378248d6d42efabc15d0cb4dcec89a9dc9cc3e  ./.github/workflows/final-quality-gates.yml
 b24047d049461eccb9dfb7679021233f99614a56a2edb5d392244a42fa039d76  ./.gitignore
 ac874fc7c727918d5b8642751c61e3eb62357c16b1c62a71a5af312d1c7b9826  ./CHANGELOG.md
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
@@ -8,8 +8,10 @@ edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
 0e65a26c2237ad0ed37996f1c4fa6909df991dd13b7af352e8197ca06982199a  ./README.md
 08a3e84082150d0ee2b459c3bb8499c1f07a149b55779a8b28e6a2105eed82e1  ./RELEASE-CANDIDATE.sha256
 7510bcb07ff5518070bb292b19a427ed1786a57566c04aea9795c01fa219a285  ./docs/API-CONTRACTS.md
+52d5d2d413eabc07adb12faa454e319c3294c955c71813e949c0bed18aabad74  ./docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md
 3445db4538f8001a6c30f3f59ffe175cfbd77fbfd1771de90de96b83bd564986  ./docs/DATA-DICTIONARY.md
 26cc9300ce652d9936d77702ed733a8ee2cbb6f40a2a6a70ecd05538ef710fe6  ./docs/DEPENDENCY-INVENTORY.md
+6669521546b53ac0288d09d166c2462fdd1a0b0b04f9a7d3873e4c37fa08dbc2  ./docs/FILE26-RANKING-CONTRACT-v1.md
 003ea32c4706b035997e053b499e689182b8a16bb1754a5d5c19d78bc1cd2c0f  ./docs/MIGRATION.md
 da96c03f9d5119563ea139c0c165663cf9b3404f03ee8700345d174681a4ad14  ./docs/OPERATIONS-RUNBOOK.md
 7d548e580f4ac29d707b77af0d8f29cd7b14c7f005e6de14c690ee6f419e67dd  ./docs/PRIVACY-RETENTION.md
@@ -25,7 +27,10 @@ edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./doctors-dire
 8cd40d919e23c5b4600219476663236b974676cf43689698b5dc20b1b134ced7  ./doctors-directory/assets/css/admin.css
 7640a67bdab4aedce1da05e591fd921d10d060f09472eb283d4190ada2d71092  ./doctors-directory/assets/css/directory.css
 1c646fbc18e5d964fb5dfffbdf1c2d4209b62df56038f779f8180dbc3505a6c4  ./doctors-directory/assets/js/directory.js
-b1876c684f6bd43b0739a656e95d562a730c9c3267c519d55177726009b30517  ./doctors-directory/doctors-directory.php
+b28cce8a281e76ea05df212f6bc2bc6413c26ddf400b90f2641e2ff33aaa2316  ./doctors-directory/doctors-directory.php
+67ccb4febff029073b199ba412867aa3e27c032eae3e57fdd709f7189aba0d86  ./doctors-directory/includes/class-ddd-central-ranking.php
+95de1c1c66bdbd642a6600de40544748713e44dcd93c47aab390cdb5bf3aafdf  ./doctors-directory/includes/class-ddd-ranking-ui.php
+ebde36a4467da9352cf3550bdcfd863f1fc471c2cdeefce39cea10947dfe0887  ./doctors-directory/includes/class-ddd-ranking-appeal.php
 3dd46b3f51119e4004207f4ba3bf3966b70e66a802ec7b791a8a29ccc0a8f907  ./doctors-directory/includes/class-ddd-review-hardening.php
 0f8ffe0b20e8671e4bd8080527456fc3e94f744c1f1a0b543d29dc78653de6db  ./doctors-directory/includes/class-sdd-activator.php
 477af20b9076c0b869a040c0341ceea86f4a6feed1c20e19d5258cdcad3db892  ./doctors-directory/includes/class-sdd-admin.php
@@ -39,6 +44,8 @@ af3a4e9f7a1aa3acfb5e3285d9d0d0a906f041683528c227f0914527f25263e8  ./doctors-dire
 49fa5d98aead2f2ef3126e8fe7fb81aa9cd6ae2268e264c6d56edff151e43f82  ./doctors-directory/uninstall.php
 292bd044569ef01a172e914758f9fdbaa833974d792d269b06a9a2fabf75ac24  ./tests/bootstrap.php
 fb8aaed225c7f468d394488b94e2a23c2ef890a38b0f25cc37855783b33eabf4  ./tests/build-release.sh
+cee41a4c8c2902a0fdfcf580bee2f3265839e45a59da756d7e5bdfe083180792  ./tests/central-plan-adversarial.py
+61224f1c58f38a372a05223fe861ff63755cb4e45154ed1c6dc54b583d22daa0  ./tests/central-plan-ranking.py
 f9a2a030494b157b44acb5c1277e47ecaaa56e7800e7c1e6db7352448c67d7b8  ./tests/review-40.py
 eee0d6df6d3597923b01f9be26b9ecbe5dce127e052a134528bda0213a3f4415  ./tests/source-contracts.py
 567936f95230782ede761eff8e4581cd5d84f96b7a239471b2bc1710abb64a1e  ./tests/static-audit.sh
