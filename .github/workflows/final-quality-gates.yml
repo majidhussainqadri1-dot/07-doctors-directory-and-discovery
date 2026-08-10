@@ -50,11 +50,11 @@ jobs:
           (cd build && sha256sum -c ../RELEASE-CANDIDATE.sha256)
       - name: Clean-extract package verification
         run: |
+          python3 tests/verify-package-paths.py build/07-doctors-directory-and-discovery-1.2.0.zip
           rm -rf /tmp/ddd-extract && mkdir /tmp/ddd-extract
           unzip -q build/07-doctors-directory-and-discovery-1.2.0.zip -d /tmp/ddd-extract
           test -f /tmp/ddd-extract/doctors-directory-and-discovery/doctors-directory.php
           test "$(find /tmp/ddd-extract -mindepth 1 -maxdepth 1 -type d | wc -l)" -eq 1
-          ! unzip -Z1 build/07-doctors-directory-and-discovery-1.2.0.zip | grep -Eq '(^/|(^|/)\.\.(/|$)|\\'
           (cd /tmp/ddd-extract/doctors-directory-and-discovery && sha256sum -c MANIFEST.sha256)
           find /tmp/ddd-extract -type f -name '*.php' -print0 | xargs -0 -n1 php -l
       - uses: actions/upload-artifact@v4
