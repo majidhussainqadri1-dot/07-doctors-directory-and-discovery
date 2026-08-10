@@ -6,7 +6,18 @@
 - Implemented `F07-FUT-01..24` in one bounded discovery layer: Compare Doctors, Guided Finder, privacy-safe Near Me, Map + List, next availability, local-time availability, serves-country discovery, saved-search alerts, private shortlists, Why This Doctor, user-controlled personal ordering, Ranking Transparency Center, freshness indicators, advanced professional filters, knowledge footprint, communication accessibility, clinic accessibility, natural-language discovery, multilingual semantic expansion, zero-result recovery, anti-gaming integrity advisory, unmet-demand intelligence, emergency safety diversion and offline/low-bandwidth packs.
 - Added owner adapters for File 03 professional public projections, File 08 public clinic/availability/location projections, File 19 notification handoff, File 24 assurance projection and File 26 ranking-policy transparency.
 - Added privacy export/erasure for future discovery preferences. Precise user coordinates remain request-scoped and are explicitly removed from saved searches and aggregate demand telemetry.
-- Added executable `future-discovery-24.py` acceptance contract and folded the new layer into source-contract and forty-round regression gates.
+- Added executable `future-discovery-24.py` acceptance contract and folded the new layer into source-contract and regression gates.
+
+### Eighty-round corrective hardening
+- Sensitive free-text, precise-location and personal-weight discovery now uses POST/private-no-store semantics; sensitive GET parameters are rejected.
+- Near-Me coordinates are reduced before transport and cleared when typed location filters change.
+- Saved searches persist only a strict structured-filter allowlist and no longer expose internal notification fingerprints.
+- Shortlist update IDs and hard limits are enforced; File 19 saved-search handoff uses provider-presence gating and a stale-safe worker lock.
+- File 24/File 26 public transparency payloads are field-minimized; public FUT endpoints have bounded rate limits.
+- FUT controls meet the 44px interaction objective; client action links receive same-origin defense; reduced-motion behavior is honored.
+- Cursor continuation prevents false terminal zero-result states; compare/personal fee DTOs and requester timezone handling are corrected.
+- Saved-search matching now includes qualification, experience and fee/currency constraints; empty semantic needles fail closed; JS-generated strings use the localization dictionary.
+- Added `tests/review-80.py` and `docs/REVIEW-CYCLE-80.md`; final post-correction local gate: 80/80 PASS.
 
 ### Preserved
 - Database schema remains `1.1.0`; no new File-07 native table was introduced.
