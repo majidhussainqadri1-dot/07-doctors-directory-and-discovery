@@ -38,7 +38,7 @@ b1a9e57772da2e2877cf8b4e63b63dec2f7a49aa3ed007ee4769099b895f2985  ./doctors-dire
 bb7c18d5490569261bf2be66ccfc49c3c2acbc2f5d2af8bd49192be9336bc153  ./doctors-directory/includes/class-sdd-helpers.php
 7be30eff57fbee0d72d0ccdecc04408c49b6ac400ef768dce7f03e4f59465c64  ./doctors-directory/includes/class-sdd-plugin.php
 3a1ad0b4421cd52ac2a5414b7b8b5b5b163eab3952c3f5a93f39a257061f2fbd  ./doctors-directory/includes/class-sdd-privacy.php
-eb6d2eeb4da1f3a61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-directory/includes/class-sdd-profile.php
+eb6d2eeb4da1a3f61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-directory/includes/class-sdd-profile.php
 a99bf44017d9d2df564d7b3e1aa10697efa4b035c544ad027a30e343e64c73e9  ./doctors-directory/includes/class-sdd-seo.php
 af3a4e9f7a1aa3acfb5e3285d9d0d0a906f041683528c227f0914527f25263e8  ./doctors-directory/readme.txt
 49fa5d98aead2f2ef3126e8fe7fb81aa9cd6ae2268e264c6d56edff151e43f82  ./doctors-directory/uninstall.php
