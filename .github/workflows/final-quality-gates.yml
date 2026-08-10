@@ -32,8 +32,10 @@ jobs:
         run: python3 tests/future-discovery-24.py
       - name: Static architecture, security and privacy audit
         run: bash tests/static-audit.sh
-      - name: Forty-round review gate
+      - name: Forty-round regression gate
         run: python3 tests/review-40.py
+      - name: Eighty-round post-correction gate
+        run: python3 tests/review-80.py
       - name: Stable pagination model
         run: python3 tests/test-pagination.py
       - name: WCAG contrast calculations
