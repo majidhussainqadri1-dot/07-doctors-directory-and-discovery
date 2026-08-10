@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.0 — 2026-08-10
+
+### Added — approved future Doctor Discovery expansion
+- Implemented `F07-FUT-01..24` in one bounded discovery layer: Compare Doctors, Guided Finder, privacy-safe Near Me, Map + List, next availability, local-time availability, serves-country discovery, saved-search alerts, private shortlists, Why This Doctor, user-controlled personal ordering, Ranking Transparency Center, freshness indicators, advanced professional filters, knowledge footprint, communication accessibility, clinic accessibility, natural-language discovery, multilingual semantic expansion, zero-result recovery, anti-gaming integrity advisory, unmet-demand intelligence, emergency safety diversion and offline/low-bandwidth packs.
+- Added owner adapters for File 03 professional public projections, File 08 public clinic/availability/location projections, File 19 notification handoff, File 24 assurance projection and File 26 ranking-policy transparency.
+- Added privacy export/erasure for future discovery preferences. Precise user coordinates remain request-scoped and are explicitly removed from saved searches and aggregate demand telemetry.
+- Added executable `future-discovery-24.py` acceptance contract and folded the new layer into source-contract and forty-round regression gates.
+
+### Preserved
+- Database schema remains `1.1.0`; no new File-07 native table was introduced.
+- Official global merit ranking remains File 26-owned. Personal ordering is labeled as a user preference and never exposed as official rank.
+- Verification, profile, clinic/appointment, notification and assurance truths remain with their canonical owners.
+- Staging/live/operational acceptance remains a separate release gate.
+
 ## 1.1.0 — 2026-08-06
 
 ### Corrected
@@ -20,10 +34,10 @@
 - Added responsive, RTL, keyboard, focus, reduced-motion and contrast foundations.
 
 ### Verification
-- PHP syntax: 10/10 files pass.
+- PHP syntax: pass.
 - JavaScript syntax: pass.
 - Helper/business-rule tests: 17 pass.
-- Architecture/security/privacy source contracts: 27 pass.
+- Architecture/security/privacy source contracts: pass.
 - Stable relevance pagination model: 1,500 records, zero duplicates/omissions.
 - WCAG contrast calculations: 7 pass.
 - Deterministic package rebuild: byte-identical.
