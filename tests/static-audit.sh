@@ -1,65 +1,37 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PLUGIN="$ROOT/doctors-directory"
-
-fail() { echo "FAIL: $*" >&2; exit 1; }
-pass() { echo "PASS: $*"; }
-
-[[ -f "$PLUGIN/doctors-directory.php" ]] || fail "plugin bootstrap missing"
-grep -q "Version: 0.2.0" "$PLUGIN/doctors-directory.php" || fail "plugin header version is not 0.2.0"
-grep -q "define( 'SDD_VERSION', '0.2.0' )" "$PLUGIN/doctors-directory.php" || fail "runtime version is not 0.2.0"
-pass "version contract"
-
-if grep -R "'number'[[:space:]]*=>[[:space:]]*250\|LIMIT 250" "$PLUGIN/includes"; then
-  fail "fixed 250-record ceiling remains"
-fi
-grep -q "LIMIT %d OFFSET %d" "$PLUGIN/includes/class-sdd-directory.php" || fail "bounded public pagination query missing"
-grep -q "doctor_page" "$PLUGIN/includes/class-sdd-directory.php" || fail "public pagination parameter missing"
-pass "unbounded ceiling removed and pagination added"
-
-if grep -R "SDD_Helpers::navigation" "$PLUGIN"; then
-  fail "duplicate File 07 global navigation output remains"
-fi
-grep -q "sdd_before_directory" "$PLUGIN/includes/class-sdd-directory.php" || fail "File 20 integration hook missing"
-pass "File 20 shell boundary"
-
-if grep -n "strpos(.*\[sabri_\|strpos(.*\[sdd_" "$PLUGIN/includes/class-sdd-activator.php"; then
-  fail "broad shortcode page overwrite logic remains"
-fi
-grep -q "in_array( \$content, \$replaceable, true )" "$PLUGIN/includes/class-sdd-activator.php" || fail "exact shortcode replacement guard missing"
-grep -q "_sdd_previous_content" "$PLUGIN/includes/class-sdd-activator.php" || fail "reversible page backup missing"
-pass "safe and reversible page ownership"
-
-grep -q "u.ID <> %d" "$PLUGIN/includes/class-sdd-directory.php" || fail "Founder exclusion missing"
-grep -q "is_founder" "$PLUGIN/includes/class-sdd-helpers.php" || fail "Founder identity helper missing"
-pass "Founder exclusion"
-
-grep -q "verification_status" "$PLUGIN/includes/class-sdd-profile.php" || fail "status-aware profile rendering missing"
-grep -q "Private preview" "$PLUGIN/includes/class-sdd-profile.php" || fail "private status preview notice missing"
-pass "verification-state rendering"
-
-grep -q "sdd_report_audit" "$PLUGIN/includes/class-sdd-activator.php" || fail "report audit table missing"
-grep -q "START TRANSACTION" "$PLUGIN/includes/class-sdd-admin.php" || fail "atomic report transition missing"
-grep -q "review_note" "$PLUGIN/includes/class-sdd-admin.php" || fail "review reason missing"
-pass "moderation audit trail"
-
-grep -q "noarchive" "$PLUGIN/includes/class-sdd-seo.php" || fail "noarchive protection missing"
-grep -q "nocache_headers" "$PLUGIN/includes/class-sdd-plugin.php" || fail "private no-cache headers missing"
-grep -q "SDD_Doctor_Sitemap_Provider" "$PLUGIN/includes/class-sdd-seo.php" || fail "doctor sitemap provider missing"
-pass "SEO and private-cache boundaries"
-
-grep -q "Doctors Directory Reports" "$PLUGIN/includes/class-sdd-privacy.php" || fail "report export missing"
-grep -q "doctor_id.*0\|\['doctor_id'\] = 0" "$PLUGIN/includes/class-sdd-privacy.php" || fail "reported-doctor erasure path missing"
-pass "privacy export and erasure coverage"
-
-if grep -q "background:var(--sdd-orange);color:#fff" "$PLUGIN/assets/css/directory.css"; then
-  fail "known low-contrast orange/white button pair remains"
-fi
-grep -q ":focus-visible" "$PLUGIN/assets/css/directory.css" || fail "keyboard focus style missing"
-grep -q "prefers-reduced-motion" "$PLUGIN/assets/css/directory.css" || fail "reduced-motion style missing"
-grep -q "min-height: 44px" "$PLUGIN/assets/css/directory.css" || fail "touch target contract missing"
-pass "accessibility static contract"
-
-echo "All File 07 static audit gates passed."
+fail(){ echo "FAIL: $1" >&2; exit 1; }
+pass(){ echo "PASS: $1"; }
+! grep -RInE '\$wpdb->replace|REPLACE[[:space:]]+INTO' "$PLUGIN" --include='*.php' || fail 'forbidden replace primitive'
+pass 'no destructive REPLACE primitive'
+python3 - "$ROOT" <<'PY'
+from pathlib import Path
+import re,sys
+root=Path(sys.argv[1])
+hits=[]
+pattern=re.compile(r'''(?i)(?:password|secret|api[_-]?key|access[_-]?token)\s*[:=]\s*['\"]([^'\"]{16,})['\"]''')
+for p in root.rglob('*'):
+    if p.is_file() and p.suffix in {'.php','.js','.json','.yml','.yaml','.md','.txt'}:
+        text=p.read_text(errors='ignore')
+        for m in pattern.finditer(text):
+            value=m.group(1)
+            if not any(x in value for x in ('test-salt','example','placeholder','REDACTED')): hits.append((p,m.group(0)))
+if hits:
+    print('Potential hard-coded secrets:',hits,file=sys.stderr); raise SystemExit(1)
+print('PASS: no obvious hard-coded secret literals')
+PY
+grep -q "identity_contract_unavailable" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'missing fail-closed identity path'
+grep -q "profile_contract_unavailable" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'missing fail-closed profile path'
+grep -q "verification_contract_unavailable" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'missing fail-closed verification path'
+pass 'mandatory contracts fail closed'
+grep -q "same_origin_url" "$PLUGIN/includes/class-sdd-helpers.php" || fail 'same-origin canonical URL gate missing'
+grep -q "reporter:' . \$reporter_id" "$PLUGIN/includes/class-sdd-directory.php" || fail 'actor-scoped idempotency missing'
+grep -q "status='processing' AND locked_at<" "$PLUGIN/includes/class-sdd-directory.php" || fail 'stale outbox recovery missing'
+grep -q "DoctorDirectoryTaxonomyChanged.v1" "$PLUGIN/includes/class-sdd-directory.php" || fail 'taxonomy reindex event missing'
+pass 'security and reliability invariants present'
+grep -q "private, no-store" "$PLUGIN/includes/class-sdd-plugin.php" || fail 'private status cache policy missing'
+grep -q "noindex" "$PLUGIN/includes/class-sdd-seo.php" || fail 'noindex policy missing'
+pass 'privacy-safe cache/index controls present'
+python3 "$ROOT/tests/source-contracts.py"

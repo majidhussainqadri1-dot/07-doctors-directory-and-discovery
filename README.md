@@ -1,31 +1,58 @@
 # File 07 — Doctors Directory and Discovery
 
-Official repository for **File 07** of the **Sabri Social Homeopathy Platform**.
+Canonical repository source for **Sabri Social Homeopathy Platform File 07**.
 
-## Current corrective release candidate
+## Release candidate
 
-- Plugin: `Doctors Directory and Discovery`
-- Corrected version: `0.2.0`
-- Required WordPress: `6.0+`
-- Required PHP: `7.4+`
-- Required dependency: **File 03 — Sabri Profiles and Doctors 0.1.0+**
-- Plugin directory: `doctors-directory/`
-- Corrective branch: `fix/file-07-audit-remediation`
+- Runtime: `1.2.0`
+- Database schema: `1.1.0` (unchanged; the future-discovery expansion adds no File-07 database tables)
+- Contract: `1.2.0`
+- Projection schema: `2`
+- WordPress baseline: `7.0.1`
+- PHP baseline: `8.3`
+- Text domain: `doctors-directory-discovery`
+- PHP prefix: `DDD_`
+- Package folder: `doctors-directory-and-discovery`
 
-## What version 0.2.0 repairs
+## Canonical ownership
 
-Version 0.2.0 corrects the post-upload audit blockers without altering the preserved baseline branch. It introduces safe and reversible page ownership, a database-filtered paginated directory, Founder exclusion, File 20 shell boundaries, status-aware profiles, the expanded professional profile contract, privacy/report audit completion, private-page cache and indexing protection, a public-doctor sitemap provider, and WCAG-oriented interaction styling.
+File 07 owns the rebuildable public discovery projection of verified-eligible doctors, directory search/filter/pagination, directory presentation orchestration, File-26 ranking consumption, public-safe comparison and personal discovery preferences, Founder/featured/recent/all sections, SEO, saved references, listing reports, reconciliation and directory operations.
 
-## Evidence and governance
+It does **not** own membership/identity (File 00), doctor verification decisions/evidence (File 09), professional profile truth (File 03), clinic/location/availability/appointment truth (File 08), notification delivery/preferences (File 19), global shell (File 20), visual design-system ownership (File 25), global merit-ranking orchestration (File 26), or native security enforcement/assurance owned by companion modules.
 
-- [`SOURCE-PROVENANCE.md`](SOURCE-PROVENANCE.md) — identity of the original supplied archive.
-- [`CORRECTIVE-REPAIR.md`](CORRECTIVE-REPAIR.md) — defect-to-repair traceability.
-- [`TEST-EVIDENCE.md`](TEST-EVIDENCE.md) — automated checks and current limits.
-- [`STATUS.md`](STATUS.md) — exact lifecycle classification.
-- [`MANIFEST.md`](MANIFEST.md) — repository and source inventory.
-- [`CHECKSUMS.sha256`](CHECKSUMS.sha256) — corrected source and QA file integrity.
-- [`REVIEW-REQUIRED.md`](REVIEW-REQUIRED.md) — mandatory staging acceptance still required.
+## v1.2.0 — 24 future doctor-discovery enhancements
 
-## Branch policy
+The approved `F07-FUT-01..24` expansion is implemented through a new public-safe discovery layer:
 
-The branch `baseline/file-07-original-import` remains the immutable evidentiary import of version 0.1.0. Corrective development belongs only in later branches and pull requests. The repaired source must not be called production-complete until File 03 integration, database migration, role/privacy workflows, File 20 rendering, rollback, responsive behavior, accessibility, and Hostinger staging acceptance all pass.
+- factual 2–4 doctor comparison and guided finder;
+- user-consented, request-scoped nearby discovery and map/list projection;
+- next availability, local-time conversion and serves-country filtering through File 08;
+- private saved searches, File 19 matching-alert handoff and private shortlists;
+- why-this-doctor explanations and user-controlled personal ordering explicitly separated from official merit rank;
+- File 26 ranking-transparency and optional File 24 assurance projection;
+- freshness, professional, knowledge and accessibility projections through canonical owner adapters;
+- natural-language multilingual discovery, zero-result recovery, anti-gaming advisory and privacy-safe unmet-demand intelligence;
+- emergency-query directory suppression and text-first low-bandwidth/offline-pack endpoint.
+
+Full traceability: `docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md`.
+
+## Local verification
+
+```bash
+find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+find doctors-directory -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+php tests/unit-helpers.php
+python3 tests/source-contracts.py
+python3 tests/central-plan-ranking.py
+python3 tests/central-plan-adversarial.py
+python3 tests/future-discovery-24.py
+python3 tests/review-40.py
+python3 tests/test-pagination.py
+python3 tests/test-contrast.py
+bash tests/static-audit.sh
+bash tests/build-release.sh
+```
+
+## Release truth
+
+Source, deterministic package and automated repository QA are separate from Hostinger staging, real companion-package integration, browser/device acceptance, restore/rollback rehearsal, Founder acceptance, live deployment and operational acceptance. See `docs/STAGING-ACCEPTANCE.md`.

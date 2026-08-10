@@ -1,12 +1,5 @@
+/build/
+*.zip
+*.zip.sha256
 .DS_Store
 Thumbs.db
-*.log
-*.tmp
-*.swp
-.idea/
-.vscode/
-node_modules/
-vendor/
-coverage/
-.phpunit.result.cache
-*.zip
