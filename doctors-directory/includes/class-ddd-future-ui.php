@@ -5,7 +5,47 @@ defined( 'ABSPATH' ) || exit;
 final class DDD_Future_UI {
 	public static function register(){add_action('wp_enqueue_scripts',array(__CLASS__,'assets'));add_filter('the_content',array(__CLASS__,'panel'),8);}
 	private static function active(){$m=(array)get_option(DDD_Activator::PAGE_MAP_OPTION,array());return!empty($m['directory'])&&is_page(absint($m['directory']));}
-	public static function assets(){if(!self::active())return;wp_enqueue_style('ddd-future-discovery',DDD_URL.'assets/css/future-discovery.css',array('ddd-directory'),DDD_VERSION);wp_enqueue_script('ddd-future-discovery',DDD_URL.'assets/js/future-discovery.js',array('ddd-directory'),DDD_VERSION,true);wp_localize_script('ddd-future-discovery','dddFutureDiscovery',array('base'=>esc_url_raw(rest_url(DDD_Future_Discovery::REST_NS.'/future/')),'nonce'=>is_user_logged_in()?wp_create_nonce('wp_rest'):'','loggedIn'=>is_user_logged_in(),'messages'=>array('loading'=>__('Finding verified doctors…',DDD_TEXT_DOMAIN),'noResults'=>__('No exact match was found. Try one of the safe recovery suggestions below.',DDD_TEXT_DOMAIN),'compareLimit'=>__('Select between two and four doctors to compare.',DDD_TEXT_DOMAIN),'locationDenied'=>__('Location was not shared. You can still search by country or city.',DDD_TEXT_DOMAIN))));}
+	public static function assets(){if(!self::active())return;wp_enqueue_style('ddd-future-discovery',DDD_URL.'assets/css/future-discovery.css',array('ddd-directory'),DDD_VERSION);wp_enqueue_script('ddd-future-discovery',DDD_URL.'assets/js/future-discovery.js',array('ddd-directory'),DDD_VERSION,true);wp_localize_script('ddd-future-discovery','dddFutureDiscovery',array('base'=>esc_url_raw(rest_url(DDD_Future_Discovery::REST_NS.'/future/')),'nonce'=>is_user_logged_in()?wp_create_nonce('wp_rest'):'','loggedIn'=>is_user_logged_in(),'messages'=>array(
+'loading'=>__('Finding verified doctors…',DDD_TEXT_DOMAIN),
+'requestFailed'=>__('Request failed.',DDD_TEXT_DOMAIN),
+'noResults'=>__('No exact match was found. Try one of the safe recovery suggestions below.',DDD_TEXT_DOMAIN),
+'compareLimit'=>__('Select between two and four doctors to compare.',DDD_TEXT_DOMAIN),
+'locationDenied'=>__('Location was not shared. You can still search by country or city.',DDD_TEXT_DOMAIN),
+'pageNoMatch'=>__('No match in this page yet. More eligible doctors remain to check.',DDD_TEXT_DOMAIN),
+'moreAvailable'=>__('shown; more are available.',DDD_TEXT_DOMAIN),
+'verifiedResult'=>__('verified doctor result',DDD_TEXT_DOMAIN),
+'specialty'=>__('Specialty',DDD_TEXT_DOMAIN),
+'location'=>__('Location',DDD_TEXT_DOMAIN),
+'languages'=>__('Languages',DDD_TEXT_DOMAIN),
+'experience'=>__('Experience',DDD_TEXT_DOMAIN),
+'fee'=>__('Fee',DDD_TEXT_DOMAIN),
+'distance'=>__('Distance',DDD_TEXT_DOMAIN),
+'availability'=>__('Availability',DDD_TEXT_DOMAIN),
+'years'=>__('years',DDD_TEXT_DOMAIN),
+'kilometers'=>__('km',DDD_TEXT_DOMAIN),
+'nextAvailability'=>__('Next published availability:',DDD_TEXT_DOMAIN),
+'whyResult'=>__('Why this result',DDD_TEXT_DOMAIN),
+'freshness'=>__('Freshness:',DDD_TEXT_DOMAIN),
+'knowledge'=>__('Public knowledge footprint',DDD_TEXT_DOMAIN),
+'profile'=>__('Profile',DDD_TEXT_DOMAIN),
+'appointment'=>__('Appointment',DDD_TEXT_DOMAIN),
+'addShortlist'=>__('Add to My shortlist',DDD_TEXT_DOMAIN),
+'noMap'=>__('Public clinic coordinates are not available for these results.',DDD_TEXT_DOMAIN),
+'mapNote'=>__('Approximate world map using public clinic coordinates; exact user location is not stored by this interface.',DDD_TEXT_DOMAIN),
+'tryBroader'=>__('Try a broader search',DDD_TEXT_DOMAIN),
+'urgentCare'=>__('Seek urgent local care.',DDD_TEXT_DOMAIN),
+'locationUnavailable'=>__('Location unavailable.',DDD_TEXT_DOMAIN),
+'requestingLocation'=>__('Requesting your location only for this search…',DDD_TEXT_DOMAIN),
+'loginSave'=>__('Log in to save searches and receive matching-doctor alerts.',DDD_TEXT_DOMAIN),
+'saveName'=>__('Name this saved search',DDD_TEXT_DOMAIN),
+'savedSearch'=>__('Saved doctor search',DDD_TEXT_DOMAIN),
+'searchSaved'=>__('Search saved. Matching new eligible doctors can notify you through the platform notification system.',DDD_TEXT_DOMAIN),
+'shortlistSaved'=>__('Doctor added to your private shortlist.',DDD_TEXT_DOMAIN),
+'factualCompare'=>__('Factual comparison only.',DDD_TEXT_DOMAIN),
+'officialRankOwner'=>__('Official ranking owner:',DDD_TEXT_DOMAIN),
+'notSupplied'=>__('not supplied',DDD_TEXT_DOMAIN),
+'paidRankProhibited'=>__('Paid/donor/purchased-engagement advantage is prohibited.',DDD_TEXT_DOMAIN)
+)));}
 	public static function panel($content){if(is_admin()||!is_main_query()||!in_the_loop()||!self::active())return$content;ob_start();?>
 <section class="ddd-future" data-ddd-future aria-labelledby="ddd-future-title">
 <header class="ddd-future__header"><h2 id="ddd-future-title"><?php esc_html_e('Advanced Doctor Discovery',DDD_TEXT_DOMAIN);?></h2><p><?php esc_html_e('Compare and discover verified doctors with guided, privacy-safe filters. Official merit rank remains owned by File 26.',DDD_TEXT_DOMAIN);?></p></header>
@@ -16,6 +56,6 @@ final class DDD_Future_UI {
 <label><span><?php esc_html_e('Available within days',DDD_TEXT_DOMAIN);?></span><input name="availability_days" type="number" min="0" max="90" value="0"></label><label><span><?php esc_html_e('Serves country',DDD_TEXT_DOMAIN);?></span><input name="serves_country" maxlength="80"></label><label><span><?php esc_html_e('Books studied',DDD_TEXT_DOMAIN);?></span><input name="books" maxlength="120"></label>
 <details class="ddd-future__advanced"><summary><?php esc_html_e('Advanced professional, accessibility and personal-order filters',DDD_TEXT_DOMAIN);?></summary><div class="ddd-future__advanced-grid"><label><span><?php esc_html_e('Teaching',DDD_TEXT_DOMAIN);?></span><input name="teaching"></label><label><span><?php esc_html_e('Research',DDD_TEXT_DOMAIN);?></span><input name="research"></label><label><span><?php esc_html_e('Practice type',DDD_TEXT_DOMAIN);?></span><input name="practice_type"></label><label><span><?php esc_html_e('Communication accessibility',DDD_TEXT_DOMAIN);?></span><input name="communication_accessibility"></label><label><span><?php esc_html_e('Clinic accessibility',DDD_TEXT_DOMAIN);?></span><input name="clinic_accessibility"></label><label><span><?php esc_html_e('Radius km',DDD_TEXT_DOMAIN);?></span><input name="radius_km" type="number" min="1" max="250" value="25"></label><input name="timezone" type="hidden"><input name="lat" type="hidden"><input name="lng" type="hidden"><label><span><?php esc_html_e('Distance priority 0-10',DDD_TEXT_DOMAIN);?></span><input name="weight_distance" type="number" min="0" max="10" value="0"></label><label><span><?php esc_html_e('Language priority 0-10',DDD_TEXT_DOMAIN);?></span><input name="weight_language" type="number" min="0" max="10" value="0"></label><label><span><?php esc_html_e('Availability priority 0-10',DDD_TEXT_DOMAIN);?></span><input name="weight_availability" type="number" min="0" max="10" value="0"></label><label><span><?php esc_html_e('Fee priority 0-10',DDD_TEXT_DOMAIN);?></span><input name="weight_fee" type="number" min="0" max="10" value="0"></label><label><span><?php esc_html_e('Experience priority 0-10',DDD_TEXT_DOMAIN);?></span><input name="weight_experience" type="number" min="0" max="10" value="0"></label></div></details>
 <div class="ddd-future__buttons"><button class="button button-primary" type="submit"><?php esc_html_e('Find verified doctors',DDD_TEXT_DOMAIN);?></button><button class="button" type="button" data-ddd-nearby><?php esc_html_e('Near me',DDD_TEXT_DOMAIN);?></button><button class="button" type="button" data-ddd-save-search><?php esc_html_e('Save search',DDD_TEXT_DOMAIN);?></button><button class="button" type="button" data-ddd-transparency><?php esc_html_e('Ranking transparency',DDD_TEXT_DOMAIN);?></button><button class="button" type="button" data-ddd-offline><?php esc_html_e('Low-bandwidth pack',DDD_TEXT_DOMAIN);?></button></div></form>
-<p class="ddd-future__status" data-ddd-future-status aria-live="polite"></p><div class="ddd-future__layout"><div class="ddd-future__results" data-ddd-future-results></div><div class="ddd-future__map" data-ddd-future-map aria-label="<?php echo esc_attr__('Approximate map of public clinic locations',DDD_TEXT_DOMAIN);?>"></div></div><div class="ddd-future__recovery" data-ddd-recovery hidden></div><div class="ddd-future__compare" data-ddd-compare hidden><button type="button" class="button" data-ddd-run-compare><?php esc_html_e('Compare selected doctors',DDD_TEXT_DOMAIN);?></button><div data-ddd-compare-output></div></div>
+<p class="ddd-future__status" data-ddd-future-status aria-live="polite"></p><div class="ddd-future__layout"><div class="ddd-future__results" data-ddd-future-results></div><div class="ddd-future__map" data-ddd-future-map aria-label="<?php echo esc_attr__('Approximate map of public clinic locations',DDD_TEXT_DOMAIN);?>"></div></div><p><button type="button" class="button" data-ddd-load-more hidden><?php esc_html_e('Load more matching doctors',DDD_TEXT_DOMAIN);?></button></p><div class="ddd-future__recovery" data-ddd-recovery hidden></div><div class="ddd-future__compare" data-ddd-compare hidden><button type="button" class="button" data-ddd-run-compare><?php esc_html_e('Compare selected doctors',DDD_TEXT_DOMAIN);?></button><div data-ddd-compare-output></div></div>
 </section><?php return ob_get_clean().$content;}
 }
