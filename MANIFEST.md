@@ -38,6 +38,7 @@
 - `tests/future-discovery-24.py`
 - `tests/static-audit.sh`
 - `tests/review-40.py`
+- `tests/review-80.py`
 - `tests/test-pagination.py`
 - `tests/test-contrast.py`
 - `tests/build-release.sh`
@@ -61,6 +62,7 @@
 - `docs/REVIEW-CYCLE-1.md`
 - `docs/REVIEW-CYCLE-2.md`
 - `docs/REVIEW-CYCLE-40.md`
+- `docs/REVIEW-CYCLE-80.md`
 - `docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md`
 - `docs/FILE26-RANKING-CONTRACT-v1.md`
 - `docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md`
