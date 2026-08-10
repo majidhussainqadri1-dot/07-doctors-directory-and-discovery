@@ -6,7 +6,7 @@ ac874fc7c727918d5b8642751c61e3eb62357c16b1c62a71a5af312d1c7b9826  ./CHANGELOG.md
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
 8a908b40085ca739d243b1213a2f48558c13e04986eb71b39ac76fdff4efe16e  ./MANIFEST.md
 0e65a26c2237ad0ed37996f1c4fa6909df991dd13b7af352e8197ca06982199a  ./README.md
-08a3e84082150d0ee2b459c3bb8499c1f07a149b55779a8b28e6a2105eed82e1  ./RELEASE-CANDIDATE.sha256
+15d193b3525e875b4f28ffafe78a4be553ff380a946a733672363c4ab6e6ee20  ./RELEASE-CANDIDATE.sha256
 7510bcb07ff5518070bb292b19a427ed1786a57566c04aea9795c01fa219a285  ./docs/API-CONTRACTS.md
 52d5d2d413eabc07adb12faa454e319c3294c955c71813e949c0bed18aabad74  ./docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md
 3445db4538f8001a6c30f3f59ffe175cfbd77fbfd1771de90de96b83bd564986  ./docs/DATA-DICTIONARY.md
@@ -38,7 +38,7 @@ b1a9e57772da2e2877cf8b4e63b63dec2f7a49aa3ed007ee4769099b895f2985  ./doctors-dire
 bb7c18d5490569261bf2be66ccfc49c3c2acbc2f5d2af8bd49192be9336bc153  ./doctors-directory/includes/class-sdd-helpers.php
 7be30eff57fbee0d72d0ccdecc04408c49b6ac400ef768dce7f03e4f59465c64  ./doctors-directory/includes/class-sdd-plugin.php
 3a1ad0b4421cd52ac2a5414b7b8b5b5b163eab3952c3f5a93f39a257061f2fbd  ./doctors-directory/includes/class-sdd-privacy.php
-eb6d2eeb4da1a3f61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-directory/includes/class-sdd-profile.php
+eb6d2eeb4da1f3a61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-directory/includes/class-sdd-profile.php
 a99bf44017d9d2df564d7b3e1aa10697efa4b035c544ad027a30e343e64c73e9  ./doctors-directory/includes/class-sdd-seo.php
 af3a4e9f7a1aa3acfb5e3285d9d0d0a906f041683528c227f0914527f25263e8  ./doctors-directory/readme.txt
 49fa5d98aead2f2ef3126e8fe7fb81aa9cd6ae2268e264c6d56edff151e43f82  ./doctors-directory/uninstall.php
