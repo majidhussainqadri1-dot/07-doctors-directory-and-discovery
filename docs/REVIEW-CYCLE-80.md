@@ -37,14 +37,15 @@ Each review round was completed against the consolidated central plan, the File 
 | 26 | An empty normalized semantic needle could match every value. | Empty normalized needles now fail closed instead of matching all strings. |
 | 27 | Several JS-created future-discovery labels/messages bypassed localization. | Added localized server dictionary and a safe JS message resolver. |
 | 28 | File 26 transparency nested fields were not sufficiently minimized. | Added strict scalar/signal/url allowlisting for the public policy projection. |
+| 29 | The new 80-round QA script assumed the package-internal `MANIFEST.sha256` also existed in the repository source tree, causing the exact GitHub CI gate to fail before assertions ran. | Removed the unused source-tree manifest read; package manifest verification remains in the deterministic clean-extract workflow. |
 
 ## Clean rounds
 
 No new repository-level defect was found after the preceding corrections in rounds:
 
-`02, 03, 05, 29–80`.
+`02, 03, 05, 30–80`.
 
-That is 55 clean rounds. The 25 defect-bearing rounds above were corrected before proceeding.
+That is 54 clean rounds. The 26 defect-bearing rounds above were corrected before proceeding.
 
 ## Post-correction executable 80-gate
 
