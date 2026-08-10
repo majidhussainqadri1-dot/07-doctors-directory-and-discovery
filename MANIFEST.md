@@ -15,6 +15,7 @@
 - `doctors-directory/includes/class-ddd-ranking-ui.php`
 - `doctors-directory/includes/class-ddd-ranking-appeal.php`
 - `doctors-directory/includes/class-ddd-future-query.php`
+- `doctors-directory/includes/class-ddd-future-mutation-guard.php`
 - `doctors-directory/includes/class-ddd-future-discovery.php`
 - `doctors-directory/includes/class-ddd-future-preferences.php`
 - `doctors-directory/includes/class-ddd-future-ui.php`
@@ -63,6 +64,7 @@
 - `docs/REVIEW-CYCLE-2.md`
 - `docs/REVIEW-CYCLE-40.md`
 - `docs/REVIEW-CYCLE-80.md`
+- `docs/REVIEW-CYCLE-80-FRESH-2026-08-10.md`
 - `docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md`
 - `docs/FILE26-RANKING-CONTRACT-v1.md`
 - `docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md`
