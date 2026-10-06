@@ -187,6 +187,8 @@ final class DDD_Cross_File_Contracts {
 		$professional = is_array( $dto['professional'] ?? null ) ? $dto['professional'] : array();
 		$fields = is_array( $dto['fields'] ?? null ) ? $dto['fields'] : array();
 		$contacts = is_array( $dto['contacts'] ?? null ) ? $dto['contacts'] : array();
+		$media = is_array( $dto['media'] ?? null ) ? $dto['media'] : array();
+		$avatar = is_array( $media['avatar'] ?? null ) ? $media['avatar'] : array();
 		$state = sanitize_key( (string) ( $dto['state'] ?? 'published' ) );
 		$public = ! in_array( $state, array( 'private', 'hidden', 'suspended', 'deleted', 'tombstoned', 'restricted' ), true );
 		$phone = sanitize_text_field( (string) ( $contacts['phone'] ?? '' ) );
@@ -206,6 +208,7 @@ final class DDD_Cross_File_Contracts {
 			'qualification' => sanitize_text_field( (string) self::first( $professional, array( 'qualification', 'qualifications' ), '' ) ),
 			'experience_years' => absint( self::first( $professional, array( 'experience_years', 'years_experience' ), 0 ) ),
 			'avatar_id' => 0,
+			'avatar_url' => DDD_Helpers::same_origin_url( (string) ( $avatar['url'] ?? '' ) ),
 			'profile_url' => DDD_Helpers::same_origin_url( (string) ( $dto['canonical_url'] ?? '' ) ),
 			'phone_public' => '' !== $phone,
 			'phone' => $phone,
