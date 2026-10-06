@@ -298,7 +298,7 @@ final class DDD_Contracts {
 			$defaults,
 			array(
 				'provider_available' => true,
-				'public_id'         => (string) get_user_meta( $user_id, '_ddd_public_id', true ),
+				'public_id'         => '',
 				'public'            => $explicit_public,
 				'discoverable'      => $explicit_public,
 				'display_name'      => (string) $user->display_name,
@@ -432,6 +432,7 @@ final class DDD_Contracts {
 		if ( ! empty( $verification['expires_at'] ) && strtotime( $verification['expires_at'] . ' UTC' ) <= time() ) { $reasons[] = 'verification_expired'; }
 		if ( empty( $profile['public'] ) || empty( $profile['discoverable'] ) ) { $reasons[] = 'profile_private'; }
 		if ( empty( $profile['display_name'] ) || empty( $profile['specialty'] ) || empty( $profile['country'] ) ) { $reasons[] = 'public_fields_incomplete'; }
+		if ( empty( $profile['public_id'] ) || ! DDD_Helpers::valid_public_id( $profile['public_id'] ) ) { $reasons[] = 'canonical_public_id_missing'; }
 		if ( empty( $profile['profile_url'] ) && empty( $clinic['clinic_url'] ) ) { $reasons[] = 'public_destination_missing'; }
 		if ( DDD_Helpers::is_founder( $user_id ) ) { $reasons[] = 'founder_separate'; }
 		$status = empty( $reasons ) ? 'eligible' : 'limited';
@@ -484,27 +485,6 @@ final class DDD_Helpers {
 		return is_string( $value ) && 1 === preg_match( '/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i', $value );
 	}
 
-	public static function uuid_from_user( $user_id ) {
-		$user_id = absint( $user_id );
-		if ( ! $user_id ) {
-			return '';
-		}
-		$existing = (string) get_user_meta( $user_id, '_ddd_public_id', true );
-		if ( self::valid_public_id( $existing ) ) {
-			return strtolower( $existing );
-		}
-		for ( $attempt = 0; $attempt < 5; $attempt++ ) {
-			$uuid = strtolower( wp_generate_uuid4() );
-			if ( add_user_meta( $user_id, '_ddd_public_id', $uuid, true ) ) {
-				return $uuid;
-			}
-			$existing = (string) get_user_meta( $user_id, '_ddd_public_id', true );
-			if ( self::valid_public_id( $existing ) ) {
-				return strtolower( $existing );
-			}
-		}
-		return '';
-	}
 
 	public static function list_value( $value ) {
 		$list = is_array( $value ) ? $value : preg_split( '/[,;\n|]+/u', (string) $value );
