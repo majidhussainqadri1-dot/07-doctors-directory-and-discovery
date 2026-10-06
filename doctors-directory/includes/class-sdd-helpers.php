@@ -189,6 +189,7 @@ final class DDD_Contracts {
 			'qualification'      => '',
 			'experience_years'   => 0,
 			'avatar_id'          => 0,
+			'avatar_url'         => '',
 			'profile_url'        => '',
 			'phone_public'       => false,
 			'phone'              => '',
@@ -221,6 +222,7 @@ final class DDD_Contracts {
 		$profile['languages'] = DDD_Helpers::list_value( $profile['languages'] );
 		$profile['experience_years'] = min( 100, absint( $profile['experience_years'] ) );
 		$profile['avatar_id'] = absint( $profile['avatar_id'] );
+		$profile['avatar_url'] = DDD_Helpers::same_origin_url( $profile['avatar_url'] ?? '' );
 		foreach ( array( 'display_name', 'professional_title', 'specialty', 'country', 'city', 'qualification', 'consent_version', 'profile_version' ) as $key ) {
 			$profile[ $key ] = sanitize_text_field( (string) $profile[ $key ] );
 		}
