@@ -253,6 +253,41 @@ final class DDD_Central_Ranking {
 		return $validated;
 	}
 
+	public static function transparency_policy() {
+		$provider = self::current_file26_provider();
+		$constitution = array();
+		$callback = $provider['ranking_constitution'] ?? null;
+		try {
+			if ( is_callable( $callback ) ) {
+				$constitution = call_user_func( $callback );
+			} elseif ( function_exists( 'sabri_file26_ranking_constitution' ) ) {
+				$constitution = sabri_file26_ranking_constitution();
+			}
+		} catch ( Throwable $exception ) {
+			$constitution = array();
+		}
+		if ( ! is_array( $constitution ) ) { $constitution = array(); }
+
+		$doctor = is_array( $constitution['doctor_ranking'] ?? null ) ? $constitution['doctor_ranking'] : array();
+		$signals = array_keys( is_array( $doctor['signals'] ?? null ) ? $doctor['signals'] : array() );
+		$health = self::current_file26_health();
+		$last_run = sanitize_text_field( (string) ( $health['doctor_ranking']['last_run'] ?? '' ) );
+		$generated = strtotime( $last_run );
+		$out = array(
+			'policy_version' => sanitize_text_field( (string) ( $doctor['policy_version'] ?? '' ) ),
+			'monthly_version' => $generated ? gmdate( 'Y-m', $generated ) : '',
+			'generated_at' => $generated ? gmdate( 'c', $generated ) : '',
+			'signals' => array_values( array_unique( array_filter( array_map( 'sanitize_key', $signals ) ) ) ),
+			'appeal_url' => DDD_Helpers::same_origin_url( home_url( '/doctors/' ) ),
+			'explanation_url' => DDD_Helpers::same_origin_url( rest_url( DDD_REST::NS . '/ranking' ) ),
+		);
+		if ( empty( $out['policy_version'] ) ) {
+			$legacy = apply_filters( 'sabri_file26_ranking_policy_public_v1', null, array( 'consumer'=>'file07', 'contract_version'=>self::CONTRACT_VERSION ) );
+			return is_array( $legacy ) ? $legacy : array();
+		}
+		return $out;
+	}
+
 	public static function snapshot( $tier, $filters ) {
 		$current = self::current_snapshot( $tier, $filters );
 		if ( ! is_wp_error( $current ) ) {
