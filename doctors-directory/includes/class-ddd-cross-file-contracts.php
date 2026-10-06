@@ -24,6 +24,33 @@ final class DDD_Cross_File_Contracts {
 		add_action( 'init', array( __CLASS__, 'register_notification_producer' ), 90 );
 	}
 
+	public static function identity_provider_available() {
+		return function_exists( 'smc_membership_assertions' )
+			&& defined( 'SMC_CONTRACT_VERSION' )
+			&& version_compare( (string) SMC_CONTRACT_VERSION, DDD_MIN_FILE00_CONTRACT_VERSION, '>=' );
+	}
+
+	public static function verification_provider_available() {
+		return class_exists( 'GDO_Integration_Contracts' )
+			&& is_callable( array( 'GDO_Integration_Contracts', 'projection' ) )
+			&& defined( 'GDO_Integration_Contracts::VERSION' )
+			&& version_compare( (string) constant( 'GDO_Integration_Contracts::VERSION' ), DDD_MIN_FILE09_CONTRACT_VERSION, '>=' );
+	}
+
+	public static function profile_provider_available() {
+		if ( ! defined( 'SPD_VERSION' ) || ! defined( 'SPD_CONTRACT_VERSION' )
+			|| version_compare( (string) SPD_VERSION, DDD_MIN_FILE03_VERSION, '<' )
+			|| version_compare( (string) SPD_CONTRACT_VERSION, DDD_MIN_FILE03_CONTRACT_VERSION, '<' )
+		) {
+			return false;
+		}
+		return is_callable( self::$file03_profile_provider ) || function_exists( 'spd_get_personal_site_profile' );
+	}
+
+	public static function clinic_provider_available() {
+		return (bool) has_filter( 'sabri_file08_public_clinic_projection_v1' );
+	}
+
 	public static function register_file03_profile_provider( $owner, $callback ) {
 		if ( 'file03' !== sanitize_key( (string) $owner ) || ! is_callable( $callback ) ) {
 			return;
