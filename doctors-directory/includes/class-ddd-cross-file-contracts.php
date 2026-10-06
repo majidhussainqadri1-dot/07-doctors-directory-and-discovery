@@ -190,6 +190,7 @@ final class DDD_Cross_File_Contracts {
 		$avatar = is_array( $media['avatar'] ?? null ) ? $media['avatar'] : array();
 		$state = sanitize_key( (string) ( $dto['state'] ?? 'published' ) );
 		$public = ! in_array( $state, array( 'private', 'hidden', 'suspended', 'deleted', 'tombstoned', 'restricted' ), true );
+		$discoverable = $public && '1' === (string) DDD_Helpers::meta( $user_id, 'discoverable', '0' );
 		$phone = sanitize_text_field( (string) ( $contacts['phone'] ?? '' ) );
 		$whatsapp = sanitize_text_field( (string) ( $contacts['whatsapp'] ?? '' ) );
 		return array(
@@ -197,7 +198,7 @@ final class DDD_Cross_File_Contracts {
 			'provider_available' => true,
 			'public_id' => $public_id,
 			'public' => $public,
-			'discoverable' => $public,
+			'discoverable' => $discoverable,
 			'display_name' => sanitize_text_field( (string) ( $dto['display_name'] ?? '' ) ),
 			'professional_title' => sanitize_text_field( (string) self::first( $professional, array( 'professional_title', 'headline', 'title' ), '' ) ),
 			'specialty' => sanitize_text_field( (string) self::first( $professional, array( 'specialty', 'specialization' ), '' ) ),
@@ -213,7 +214,7 @@ final class DDD_Cross_File_Contracts {
 			'phone' => $phone,
 			'whatsapp_public' => '' !== $whatsapp,
 			'whatsapp' => $whatsapp,
-			'consent_version' => '',
+			'consent_version' => $discoverable ? 'file07-directory-consent-v1' : '',
 			'profile_version' => 'file03:' . sanitize_text_field( (string) ( $dto['contract_version'] ?? $contract_version ) ) . ':' . absint( $dto['version'] ?? 0 ),
 			'source_updated_at' => '',
 		);
