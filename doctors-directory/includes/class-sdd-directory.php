@@ -48,10 +48,23 @@ final class DDD_Repository {
 			return DDD_Helpers::safe_error( 'version_conflict', __( 'The directory projection changed. Reload and retry.', DDD_TEXT_DOMAIN ), 409 );
 		}
 
-		$public_id = ! empty( $profile['public_id'] ) ? strtolower( (string) $profile['public_id'] ) : ( $existing && DDD_Helpers::valid_public_id( $existing['public_id'] ) ? strtolower( $existing['public_id'] ) : DDD_Helpers::uuid_from_user( $user_id ) );
+		/*
+		 * Public professional identity is owned by File 03. File 07 must never
+		 * mint a competing doctor/profile identifier. An existing File 07 ID may
+		 * be retained only while the row is being driven ineligible during an
+		 * owner outage; it can never make an otherwise ineligible record public.
+		 */
+		$owner_public_id = ! empty( $profile['public_id'] ) ? strtolower( (string) $profile['public_id'] ) : '';
+		$public_id = DDD_Helpers::valid_public_id( $owner_public_id )
+			? $owner_public_id
+			: ( $existing && DDD_Helpers::valid_public_id( $existing['public_id'] ) ? strtolower( $existing['public_id'] ) : '' );
 		if ( ! DDD_Helpers::valid_public_id( $public_id ) ) {
 			$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			return DDD_Helpers::safe_error( 'public_id_unavailable', __( 'A privacy-safe public doctor identifier could not be created.', DDD_TEXT_DOMAIN ), 500 );
+			return DDD_Helpers::safe_error( 'file03_public_id_unavailable', __( 'The canonical File 03 public doctor identifier is unavailable.', DDD_TEXT_DOMAIN ), 503 );
+		}
+		if ( ! DDD_Helpers::valid_public_id( $owner_public_id ) && ! empty( $eligibility['eligible'] ) ) {
+			$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			return DDD_Helpers::safe_error( 'file03_public_id_required', __( 'A doctor cannot become publicly eligible without the canonical File 03 identifier.', DDD_TEXT_DOMAIN ), 503 );
 		}
 
 		$featured = $existing ? absint( $existing['featured'] ) : 0;
