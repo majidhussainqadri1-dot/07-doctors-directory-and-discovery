@@ -4,9 +4,9 @@ Canonical repository source for **Sabri Social Homeopathy Platform File 07**.
 
 ## Release candidate
 
-- Runtime: `1.2.0`
+- Runtime: `1.2.1`
 - Database schema: `1.1.0` (unchanged; the future-discovery expansion adds no File-07 database tables)
-- Contract: `1.2.0`
+- Contract: `1.2.1`
 - Projection schema: `2`
 - WordPress baseline: `7.0.1`
 - PHP baseline: `8.3`
@@ -19,6 +19,10 @@ Canonical repository source for **Sabri Social Homeopathy Platform File 07**.
 File 07 owns the rebuildable public discovery projection of verified-eligible doctors, directory search/filter/pagination, directory presentation orchestration, File-26 ranking consumption, public-safe comparison and personal discovery preferences, Founder/featured/recent/all sections, SEO, saved references, listing reports, reconciliation and directory operations.
 
 It does **not** own membership/identity (File 00), doctor verification decisions/evidence (File 09), professional profile truth (File 03), clinic/location/availability/appointment truth (File 08), notification delivery/preferences (File 19), global shell (File 20), visual design-system ownership (File 25), global merit-ranking orchestration (File 26), or native security enforcement/assurance owned by companion modules.
+
+## v1.2.1 — current cross-file contract reconciliation
+
+The 20-round File 07 audit reconciles repository code with the currently deployed-in-repository contracts of Files 00, 03, 08, 09, 19, 20 and 26. It removes File 07 identity minting, consumes current notification/ranking/appeal owner APIs, publishes a bounded verified-doctor projection to File 20, and keeps File 24 assurance optional/fail-explicit until that owner publishes a supported assurance provider.
 
 ## v1.2.0 — 24 future doctor-discovery enhancements
 
