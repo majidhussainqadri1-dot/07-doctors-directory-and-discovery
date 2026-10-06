@@ -183,7 +183,7 @@ final class DDD_Activator {
 			experience_years smallint(5) unsigned NOT NULL DEFAULT 0, consultation_modes_json text NOT NULL,
 			accepting_patients tinyint(1) unsigned NOT NULL DEFAULT 0, fee_min decimal(14,2) NULL, fee_max decimal(14,2) NULL,
 			currency char(3) NOT NULL DEFAULT '', avatar_id bigint(20) unsigned NOT NULL DEFAULT 0,
-			profile_url text NOT NULL, clinic_url text NOT NULL, appointment_url text NOT NULL,
+			avatar_url text NOT NULL, profile_url text NOT NULL, clinic_url text NOT NULL, appointment_url text NOT NULL,
 			completeness smallint(5) unsigned NOT NULL DEFAULT 0, quality_score decimal(8,3) NOT NULL DEFAULT 0,
 			verified_at datetime NULL, featured tinyint(1) unsigned NOT NULL DEFAULT 0, feature_label varchar(120) NOT NULL DEFAULT '',
 			feature_start datetime NULL, feature_end datetime NULL, feature_reason text NOT NULL,
