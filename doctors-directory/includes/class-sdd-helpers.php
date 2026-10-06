@@ -58,32 +58,26 @@ final class DDD_Contracts {
 
 	private static function identity_provider_available() {
 		return has_filter( self::IDENTITY_FILTER )
-			|| defined( 'SMC_VERSION' )
-			|| class_exists( 'SMC_Contracts' )
-			|| false !== get_option( 'smc_db_version', false )
-			|| false !== get_option( 'smc_version', false );
+			|| function_exists( 'smc_membership_assertions' )
+			|| ( class_exists( 'SMC_Contracts' ) && is_callable( array( 'SMC_Contracts', 'assertions' ) ) );
 	}
 
 	private static function verification_provider_available() {
 		return has_filter( self::VERIFICATION_FILTER )
-			|| defined( 'GDO_VERSION' )
-			|| class_exists( 'GDO_Contracts' )
-			|| class_exists( 'SPD_Helpers' )
-			|| false !== get_option( 'gdo_db_version', false );
+			|| ( class_exists( 'GDO_Integration_Contracts' ) && is_callable( array( 'GDO_Integration_Contracts', 'projection' ) ) )
+			|| has_filter( 'sabri_doctor_verification_public_projection_v1' );
 	}
 
 	private static function profile_provider_available() {
 		return has_filter( self::PROFILE_FILTER )
-			|| class_exists( 'SPD_Helpers' )
-			|| defined( 'SPD_VERSION' )
-			|| false !== get_option( 'spd_db_version', false );
+			|| function_exists( 'spd_get_personal_site_profile' )
+			|| ( class_exists( 'SPD_Contracts' ) && defined( 'SPD_VERSION' ) );
 	}
 
 	private static function clinic_provider_available() {
 		return has_filter( self::CLINIC_FILTER )
-			|| defined( 'WCA_VERSION' )
-			|| class_exists( 'WCA_Contracts' )
-			|| false !== get_option( 'wca_db_version', false );
+			|| function_exists( 'swc_get_public_clinic_projection' )
+			|| function_exists( 'wca_get_public_clinic_projection' );
 	}
 
 	public static function identity_claims( $user_id ) {
@@ -102,8 +96,9 @@ final class DDD_Contracts {
 		);
 		$claims = apply_filters( self::IDENTITY_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( is_array( $claims ) ) {
+			$provider_flag = array_key_exists( 'provider_available', $claims ) ? (bool) $claims['provider_available'] : true;
 			$claims = wp_parse_args( $claims, $defaults );
-			$claims['provider_available'] = true;
+			$claims['provider_available'] = $provider_flag;
 			return self::normalize_identity( $claims );
 		}
 
@@ -169,8 +164,9 @@ final class DDD_Contracts {
 		);
 		$claims = apply_filters( self::VERIFICATION_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( is_array( $claims ) ) {
+			$provider_flag = array_key_exists( 'provider_available', $claims ) ? (bool) $claims['provider_available'] : true;
 			$claims = wp_parse_args( $claims, $defaults );
-			$claims['provider_available'] = true;
+			$claims['provider_available'] = $provider_flag;
 			return self::normalize_verification( $claims );
 		}
 		if ( ! self::verification_provider_available() ) {
@@ -255,8 +251,9 @@ final class DDD_Contracts {
 		);
 		$profile = apply_filters( self::PROFILE_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( is_array( $profile ) ) {
+			$provider_flag = array_key_exists( 'provider_available', $profile ) ? (bool) $profile['provider_available'] : true;
 			$profile = wp_parse_args( $profile, $defaults );
-			$profile['provider_available'] = true;
+			$profile['provider_available'] = $provider_flag;
 			return self::normalize_profile( $profile );
 		}
 		if ( ! self::profile_provider_available() ) {
@@ -345,8 +342,9 @@ final class DDD_Contracts {
 		);
 		$clinic = apply_filters( self::CLINIC_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( is_array( $clinic ) ) {
+			$provider_flag = array_key_exists( 'provider_available', $clinic ) ? (bool) $clinic['provider_available'] : true;
 			$clinic = wp_parse_args( $clinic, $defaults );
-			$clinic['provider_available'] = true;
+			$clinic['provider_available'] = $provider_flag;
 			return self::normalize_clinic( $clinic );
 		}
 		/* File 08 is optional. No speculative URL or direct foreign-page query is created. */
