@@ -38,6 +38,7 @@ require_once DDD_DIR . 'includes/class-sdd-privacy.php';
 require_once DDD_DIR . 'includes/class-sdd-seo.php';
 require_once DDD_DIR . 'includes/class-sdd-plugin.php';
 require_once DDD_DIR . 'includes/class-ddd-review-hardening.php';
+require_once DDD_DIR . 'includes/class-ddd-cross-file-adapters.php';
 require_once DDD_DIR . 'includes/class-ddd-central-ranking.php';
 require_once DDD_DIR . 'includes/class-ddd-ranking-ui.php';
 require_once DDD_DIR . 'includes/class-ddd-ranking-appeal.php';
@@ -95,6 +96,7 @@ function ddd_start_plugin() {
 }
 
 add_action( 'plugins_loaded', array( 'DDD_Cross_File_Contracts', 'register' ), 27 );
+add_action( 'plugins_loaded', array( 'DDD_Cross_File_Adapters', 'register' ), 27 );
 add_action( 'plugins_loaded', array( 'DDD_Future_Mutation_Guard', 'register' ), 28 );
 add_action( 'plugins_loaded', array( 'DDD_Review_Hardening', 'register' ), 29 );
 add_action( 'plugins_loaded', 'ddd_start_plugin', 30 );
