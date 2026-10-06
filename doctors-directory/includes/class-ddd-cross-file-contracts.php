@@ -69,7 +69,11 @@ final class DDD_Cross_File_Contracts {
 			return $current;
 		}
 		$user_id = absint( $user_id );
-		if ( ! $user_id || ! function_exists( 'smc_membership_assertions' ) ) {
+		if ( ! $user_id
+			|| ! function_exists( 'smc_membership_assertions' )
+			|| ! defined( 'SMC_CONTRACT_VERSION' )
+			|| version_compare( (string) SMC_CONTRACT_VERSION, DDD_MIN_FILE00_CONTRACT_VERSION, '<' )
+		) {
 			return $current;
 		}
 		$raw = self::call( 'file00', 'directory_identity', static function () use ( $user_id ) {
@@ -104,7 +108,12 @@ final class DDD_Cross_File_Contracts {
 			return $current;
 		}
 		$user_id = absint( $user_id );
-		if ( ! $user_id || ! class_exists( 'GDO_Integration_Contracts' ) || ! is_callable( array( 'GDO_Integration_Contracts', 'projection' ) ) ) {
+		if ( ! $user_id
+			|| ! class_exists( 'GDO_Integration_Contracts' )
+			|| ! is_callable( array( 'GDO_Integration_Contracts', 'projection' ) )
+			|| ! defined( 'GDO_Integration_Contracts::VERSION' )
+			|| version_compare( (string) constant( 'GDO_Integration_Contracts::VERSION' ), DDD_MIN_FILE09_CONTRACT_VERSION, '<' )
+		) {
 			return $current;
 		}
 		$raw = self::call( 'file09', 'directory_verification', static function () use ( $user_id ) {
@@ -130,6 +139,13 @@ final class DDD_Cross_File_Contracts {
 
 	private static function file03_profile( $user_id ) {
 		$user_id = absint( $user_id );
+		if ( ! defined( 'SPD_VERSION' )
+			|| ! defined( 'SPD_CONTRACT_VERSION' )
+			|| version_compare( (string) SPD_VERSION, DDD_MIN_FILE03_VERSION, '<' )
+			|| version_compare( (string) SPD_CONTRACT_VERSION, DDD_MIN_FILE03_CONTRACT_VERSION, '<' )
+		) {
+			return null;
+		}
 		$provider = self::$file03_profile_provider;
 		if ( ! is_callable( $provider ) && function_exists( 'spd_get_personal_site_profile' ) ) {
 			$provider = 'spd_get_personal_site_profile';
