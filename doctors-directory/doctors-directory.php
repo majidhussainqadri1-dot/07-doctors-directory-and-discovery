@@ -14,14 +14,14 @@
 defined( 'ABSPATH' ) || exit;
 
 define( 'DDD_VERSION', '1.2.1' );
-define( 'DDD_DB_VERSION', '1.1.0' );
+define( 'DDD_DB_VERSION', '1.1.1' );
 define( 'DDD_CONTRACT_VERSION', '1.2.1' );
 define( 'DDD_FILE', __FILE__ );
 define( 'DDD_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DDD_URL', plugin_dir_url( __FILE__ ) );
 define( 'DDD_TEXT_DOMAIN', 'doctors-directory-discovery' );
 define( 'DDD_SLUG', 'doctors-directory-discovery' );
-define( 'DDD_PROJECTION_SCHEMA', 2 );
+define( 'DDD_PROJECTION_SCHEMA', 3 );
 define( 'DDD_MIN_FILE00_CONTRACT_VERSION', '1.2.3' );
 define( 'DDD_MIN_FILE03_VERSION', '1.2.0-rc2' );
 define( 'DDD_MIN_FILE03_CONTRACT_VERSION', '1.4.0' );
