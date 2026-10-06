@@ -8,13 +8,13 @@ future='\n'.join(files.get(x,'') for x in ['doctors-directory/includes/class-ddd
 futurejs=files.get('doctors-directory/assets/js/future-discovery.js','')
 futurecss=files.get('doctors-directory/assets/css/future-discovery.css','')
 checks={
- 'release identity 1.2.0': "Version: 1.2.0" in files['doctors-directory/doctors-directory.php'] and "Stable tag: 1.2.0" in files['doctors-directory/readme.txt'],
+ 'release identity 1.2.1': "Version: 1.2.1" in files['doctors-directory/doctors-directory.php'] and "Stable tag: 1.2.1" in files['doctors-directory/readme.txt'],
  'canonical DDD namespace': "define( 'DDD_VERSION'" in alltext and 'final class DDD_Repository' in alltext,
  'mandatory contracts fail closed': "mandatory_contract_missing" in alltext and "identity_contract_unavailable" in alltext,
  'Founder separation': "founder_separate" in alltext and "never mixed" in alltext,
  'all required filters': all(x in alltext for x in ['country','city','specialty','language','qualification','min_experience','mode','accepting','currency','fee_min','fee_max']),
  'filter-bound signed cursor': "filter_hash" in alltext and "cursor_decode" in alltext and "hash_hmac" in alltext and "relevance_score" in alltext,
- 'opaque public UUID': "wp_generate_uuid4" in alltext and "_ddd_public_id" in alltext,
+ 'File03 canonical public UUID': "canonical_public_id_missing" in alltext and "file03_public_id_required" in alltext and "uuid_from_user" not in alltext,
  'same-origin destinations': alltext.count('same_origin_url') >= 5 and "hash_equals( $home_host, $target_host )" in alltext,
  'no paid boost': 'no paid boost' in alltext.lower(),
  'taxonomy governance': "taxonomy_upsert" in alltext and "DoctorDirectoryTaxonomyChanged.v1" in alltext,
@@ -36,7 +36,7 @@ checks={
  'no SQL REPLACE primitive': not re.search(r'\$wpdb->replace|\bREPLACE\s+INTO\b', alltext, re.I),
  'no public internal avatar ID': "'avatar_id' =>" not in re.search(r'public static function public_dto.*?\n\t}',files['doctors-directory/includes/class-sdd-directory.php'],re.S).group(0),
  'future discovery runtime loaded': 'DDD_Future_Discovery::register()' in alltext and 'class-ddd-future-discovery.php' in files['doctors-directory/doctors-directory.php'],
- 'future canonical owner boundaries': all(x in future for x in ['ddd_file08_public_discovery_v1','ddd_file03_public_professional_discovery_v1','ddd_public_knowledge_footprint_v1','sabri_file19_notification_event_v1','sabri_file26_ranking_policy_public_v1']),
+ 'current cross-file owner boundaries': all(x in alltext for x in ['sabri_file07_register_profile_provider','sabri_file08_public_clinic_projection_v1','sun_register_notification_producer','sun_ingest_domain_event','sabri_file25_search_provider','GDO_Integration_Contracts']) and 'ddd_public_knowledge_footprint_v1' in future,
  'future privacy safe location': "unset($f['lat'],$f['lng']" in future and 'precise user location' in future.lower(),
  'future emergency diversion': 'possible_emergency' in future and 'directory_suppressed' in future,
  'future personal order not merit rank': 'personal_order_notice' in future and 'not the official global merit rank' in future,
