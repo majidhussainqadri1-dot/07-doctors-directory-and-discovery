@@ -21,6 +21,7 @@ final class DDD_Cross_File_Contracts {
 		add_filter( DDD_Contracts::VERIFICATION_FILTER, array( __CLASS__, 'verification_claims' ), 5, 3 );
 		add_filter( DDD_Contracts::PROFILE_FILTER, array( __CLASS__, 'profile_claims' ), 5, 3 );
 		add_filter( DDD_Contracts::CLINIC_FILTER, array( __CLASS__, 'clinic_claims' ), 5, 3 );
+		add_filter( 'sabri_shell_verified_doctor_user_ids', array( __CLASS__, 'shell_verified_doctor_user_ids' ), 10, 2 );
 		add_action( 'init', array( __CLASS__, 'register_notification_producer' ), 90 );
 	}
 
@@ -254,6 +255,32 @@ final class DDD_Cross_File_Contracts {
 			'clinic_version' => sanitize_text_field( (string) ( $raw['owner_version'] ?? $raw['contract_version'] ?? $contract_version ) ),
 			'source_updated_at' => sanitize_text_field( (string) ( $raw['generated_at'] ?? '' ) ),
 		);
+	}
+
+	public static function shell_verified_doctor_user_ids( $current, $limit = 5 ) {
+		global $wpdb;
+		$limit = max( 1, min( 20, absint( $limit ) ) );
+		$ids = is_array( $current ) ? array_values( array_unique( array_filter( array_map( 'absint', $current ) ) ) ) : array();
+		$table = DDD_Repository::table( 'projection' );
+		if ( ! $table ) {
+			return array_slice( $ids, 0, $limit );
+		}
+		$rows = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT doctor_id FROM {$table} WHERE eligible=1 ORDER BY display_name_norm ASC,doctor_id ASC LIMIT %d",
+				$limit
+			)
+		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		foreach ( (array) $rows as $doctor_id ) {
+			$doctor_id = absint( $doctor_id );
+			if ( $doctor_id && ! in_array( $doctor_id, $ids, true ) ) {
+				$ids[] = $doctor_id;
+			}
+			if ( count( $ids ) >= $limit ) {
+				break;
+			}
+		}
+		return array_slice( $ids, 0, $limit );
 	}
 
 	public static function register_notification_producer() {
