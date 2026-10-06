@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-VERSION=1.2.0
+VERSION=1.2.1
 TOP=doctors-directory-and-discovery
 BUILD="$ROOT/build"
 STAGE="$BUILD/stage/$TOP"
