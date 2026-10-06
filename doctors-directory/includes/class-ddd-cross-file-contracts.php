@@ -205,53 +205,38 @@ final class DDD_Cross_File_Contracts {
 			return $current;
 		}
 		$user_id = absint( $user_id );
-		$dto = self::file03_profile( $user_id );
-		$clinic = is_array( $dto ) && is_array( $dto['clinic'] ?? null ) ? $dto['clinic'] : array();
-		if ( $clinic ) {
-			$url = DDD_Helpers::same_origin_url( (string) ( $clinic['url'] ?? $clinic['clinic_url'] ?? '' ) );
-			$appointment = DDD_Helpers::same_origin_url( (string) ( $clinic['appointment_url'] ?? '' ) );
-			return array(
-				'user_id' => $user_id,
-				'provider_available' => true,
-				'public' => true,
-				'clinic_name' => sanitize_text_field( (string) ( $clinic['name'] ?? '' ) ),
-				'clinic_url' => $url,
-				'appointment_url' => $appointment,
-				'consultation_modes' => $clinic['consultation_modes'] ?? array(),
-				'accepting_patients' => ! empty( $clinic['accepting_patients'] ),
-				'fee_min' => $clinic['fee_min'] ?? null,
-				'fee_max' => $clinic['fee_max'] ?? null,
-				'currency' => sanitize_text_field( (string) ( $clinic['currency'] ?? '' ) ),
-				'availability_label' => sanitize_text_field( (string) ( $clinic['availability_label'] ?? '' ) ),
-				'clinic_version' => sanitize_text_field( (string) ( $clinic['owner_version'] ?? $clinic['contract_version'] ?? $contract_version ) ),
-				'source_updated_at' => sanitize_text_field( (string) ( $clinic['updated_at'] ?? '' ) ),
-			);
-		}
-		if ( ! function_exists( 'swc_get_public_clinic_projection' ) ) {
+		if ( ! $user_id || ! has_filter( 'sabri_file08_public_clinic_projection_v1' ) ) {
 			return $current;
 		}
-		$raw = self::call( 'file08', 'directory_clinic', static function () use ( $user_id ) {
-			return swc_get_public_clinic_projection( $user_id );
+
+		$raw = self::call( 'file08', 'directory_clinic', static function () use ( $user_id, $contract_version ) {
+			return apply_filters( 'sabri_file08_public_clinic_projection_v1', null, $user_id, 0, $contract_version );
 		}, null );
-		if ( is_wp_error( $raw ) || ! is_array( $raw ) ) {
+		if ( is_wp_error( $raw ) || ! is_array( $raw ) || empty( $raw ) ) {
 			return array( 'user_id' => $user_id, 'provider_available' => false );
 		}
-		$basic = is_array( $raw['clinic'] ?? null ) ? $raw['clinic'] : array();
+		if ( absint( $raw['doctor_user_id'] ?? 0 ) !== $user_id
+			|| 'active' !== sanitize_key( (string) ( $raw['status'] ?? '' ) )
+			|| 'public' !== sanitize_key( (string) ( $raw['visibility'] ?? '' ) )
+		) {
+			return array( 'user_id' => $user_id, 'provider_available' => true, 'public' => false );
+		}
+
 		return array(
 			'user_id' => $user_id,
 			'provider_available' => true,
-			'public' => ! empty( $basic ),
-			'clinic_name' => sanitize_text_field( (string) ( $basic['name'] ?? '' ) ),
-			'clinic_url' => '',
-			'appointment_url' => '',
-			'consultation_modes' => array(),
-			'accepting_patients' => false,
-			'fee_min' => null,
-			'fee_max' => null,
-			'currency' => '',
-			'availability_label' => sanitize_text_field( (string) ( $basic['hours'] ?? '' ) ),
-			'clinic_version' => sanitize_text_field( (string) ( $raw['contract_version'] ?? $contract_version ) ),
-			'source_updated_at' => '',
+			'public' => true,
+			'clinic_name' => sanitize_text_field( (string) ( $raw['name'] ?? '' ) ),
+			'clinic_url' => DDD_Helpers::same_origin_url( (string) ( $raw['url'] ?? '' ) ),
+			'appointment_url' => DDD_Helpers::same_origin_url( (string) ( $raw['appointment_url'] ?? '' ) ),
+			'consultation_modes' => DDD_Helpers::consultation_modes( $raw['consultation_modes'] ?? array() ),
+			'accepting_patients' => ! empty( $raw['accepting_patients'] ),
+			'fee_min' => $raw['fee_min'] ?? null,
+			'fee_max' => $raw['fee_max'] ?? null,
+			'currency' => sanitize_text_field( (string) ( $raw['currency'] ?? '' ) ),
+			'availability_label' => sanitize_text_field( (string) ( $raw['availability_label'] ?? '' ) ),
+			'clinic_version' => sanitize_text_field( (string) ( $raw['owner_version'] ?? $raw['contract_version'] ?? $contract_version ) ),
+			'source_updated_at' => sanitize_text_field( (string) ( $raw['generated_at'] ?? '' ) ),
 		);
 	}
 
