@@ -3,7 +3,7 @@
  * Plugin Name: Doctors Directory and Discovery
  * Plugin URI: https://www.sabrihomeopathy.com/
  * Description: Canonical verified-doctor directory, discovery, eligibility projection, search, moderation, SEO and operational controls for the Sabri Social Homeopathy Platform.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Requires at least: 7.0
  * Requires PHP: 8.0
  * Author: Dr. Allamah Majid Hussain Sabri Muhaddith Mursheed
@@ -13,9 +13,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DDD_VERSION', '1.2.0' );
+define( 'DDD_VERSION', '1.2.1' );
 define( 'DDD_DB_VERSION', '1.1.0' );
-define( 'DDD_CONTRACT_VERSION', '1.2.0' );
+define( 'DDD_CONTRACT_VERSION', '1.2.1' );
 define( 'DDD_FILE', __FILE__ );
 define( 'DDD_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DDD_URL', plugin_dir_url( __FILE__ ) );
@@ -26,6 +26,7 @@ define( 'DDD_MIN_FILE03_VERSION', '0.1.0' );
 define( 'DDD_SAFE_MODE_OPTION', 'ddd_safe_mode' );
 
 require_once DDD_DIR . 'includes/class-sdd-helpers.php';
+require_once DDD_DIR . 'includes/class-ddd-cross-file-contracts.php';
 require_once DDD_DIR . 'includes/class-sdd-activator.php';
 require_once DDD_DIR . 'includes/class-sdd-directory.php';
 require_once DDD_DIR . 'includes/class-sdd-profile.php';
@@ -90,6 +91,7 @@ function ddd_start_plugin() {
 	DDD_Future_Discovery::register();
 }
 
+add_action( 'plugins_loaded', array( 'DDD_Cross_File_Contracts', 'register' ), 27 );
 add_action( 'plugins_loaded', array( 'DDD_Future_Mutation_Guard', 'register' ), 28 );
 add_action( 'plugins_loaded', array( 'DDD_Review_Hardening', 'register' ), 29 );
 add_action( 'plugins_loaded', 'ddd_start_plugin', 30 );
