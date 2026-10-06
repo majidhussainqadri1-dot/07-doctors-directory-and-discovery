@@ -32,7 +32,7 @@ Status vocabulary: **Implemented** means present in source and covered by reposi
 
 ## Release linkage
 
-- Release: `1.1.0`
-- Package: `07-doctors-directory-and-discovery-1.1.0.zip`
-- Exact commit and SHA-256 are recorded after GitHub commit/CI in PR and `RELEASE-CANDIDATE.sha256`.
+- Release: `1.2.1`
+- Package: `07-doctors-directory-and-discovery-1.2.1.zip`
+- Exact commit and deterministic package SHA-256 are emitted by the final GitHub Actions candidate and attached to the release evidence.
 - Staging, Founder, live and operational evidence are intentionally not fabricated; they remain the gates in `STAGING-ACCEPTANCE.md`.
