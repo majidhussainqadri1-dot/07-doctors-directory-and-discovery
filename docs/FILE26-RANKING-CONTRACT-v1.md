@@ -6,9 +6,9 @@ File 07 owns the public-safe verified-doctor directory projection, filters, card
 
 ## Read contract
 
-WordPress filter: `sabri_file26_doctor_ranking_v1`
+Current owner registry: `sabri_file25_search_provider` → provider `file26` → callable `doctor_ranking`. The older `sabri_file26_doctor_ranking_v1` filter is retained only as a bounded compatibility path.
 
-File 07 sends a versioned request containing `tier`, `limit`, cursor, active directory filters, nested-tier requirement, monthly-version requirement, explanation requirement, appeal requirement, bias-audit requirement and the prohibited ranking signals.
+File 07 maps its public tiers to File 26's current `top_10`, `top_100`, `top_1000`, and `all_verified` contract, passes a bounded context/cursor request, and then validates the owner response against monthly freshness, ranking constitution, tier limits, explanations and current File 07 eligibility.
 
 A valid File 26 response must provide:
 
@@ -41,9 +41,9 @@ If File 26 is missing, incompatible, stale, malformed, oversized, or fails its b
 
 ## Appeal contract
 
-Filter: `sabri_file26_doctor_ranking_appeal_v1`.
+Current owner service: `Sabri\File26\Plugin::instance()->doctor_appeals()->submit(...)`. The older `sabri_file26_doctor_ranking_appeal_v1` filter remains compatibility-only.
 
-Only a logged-in, currently eligible doctor may appeal their own public identifier. File 07 enforces nonce, object ownership, current eligibility, bounded reason/details and rate limiting, then hands the appeal to File 26. File 07 stores only a redacted handoff audit record, not the appeal narrative.
+Only a logged-in, currently eligible doctor may appeal their own File 03 public identifier. File 07 enforces nonce, object ownership, current eligibility, bounded reason/details and rate limiting, resolves the current File 26 doctor key through the owner ranking provider, then hands the appeal to File 26. File 07 stores only a redacted handoff audit record, not the appeal narrative.
 
 ## Fairness assurance
 
@@ -53,4 +53,4 @@ Absence of File 24 assurance is shown as unverified; File 07 does not turn a Fil
 
 ## Release boundary
 
-This contract is repository/source behavior. It does not establish Hostinger staging acceptance, live deployment or operational acceptance. Real File 26 and File 24 provider contracts, real-role journeys, browser/accessibility tests, migration/rollback and Founder acceptance remain external release gates.
+This contract is repository/source behavior. It does not establish Hostinger staging acceptance, live deployment or operational acceptance. Real File 26 owner service and File 24 assurance contracts, real-role journeys, browser/accessibility tests, migration/rollback and Founder acceptance remain external release gates.
