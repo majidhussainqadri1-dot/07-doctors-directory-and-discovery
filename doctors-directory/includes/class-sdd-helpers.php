@@ -81,19 +81,19 @@ final class DDD_Contracts {
 	}
 
 	private static function identity_provider_available() {
-		return (bool) has_filter( self::IDENTITY_FILTER );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::identity_provider_available();
 	}
 
 	private static function verification_provider_available() {
-		return (bool) has_filter( self::VERIFICATION_FILTER );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::verification_provider_available();
 	}
 
 	private static function profile_provider_available() {
-		return (bool) has_filter( self::PROFILE_FILTER );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::profile_provider_available();
 	}
 
 	private static function clinic_provider_available() {
-		return (bool) has_filter( self::CLINIC_FILTER );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::clinic_provider_available();
 	}
 
 	public static function identity_claims( $user_id ) {
