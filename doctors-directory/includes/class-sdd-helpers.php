@@ -26,11 +26,35 @@ final class DDD_Contracts {
 			'file08' => self::clinic_provider_available() ? 'available' : 'optional-unavailable',
 		);
 
-		if ( defined( 'SPD_VERSION' ) && version_compare( SPD_VERSION, DDD_MIN_FILE03_VERSION, '<' ) ) {
+		if ( defined( 'SMC_CONTRACT_VERSION' ) && version_compare( (string) SMC_CONTRACT_VERSION, DDD_MIN_FILE00_CONTRACT_VERSION, '<' ) ) {
+			return array(
+				'ready'   => false,
+				'code'    => 'file00_contract_incompatible',
+				'message' => sprintf( __( 'File 00 contract must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE00_CONTRACT_VERSION ),
+				'details' => $details,
+			);
+		}
+		if ( defined( 'SPD_VERSION' ) && version_compare( (string) SPD_VERSION, DDD_MIN_FILE03_VERSION, '<' ) ) {
 			return array(
 				'ready'   => false,
 				'code'    => 'file03_version_incompatible',
 				'message' => sprintf( __( 'File 03 must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE03_VERSION ),
+				'details' => $details,
+			);
+		}
+		if ( defined( 'SPD_CONTRACT_VERSION' ) && version_compare( (string) SPD_CONTRACT_VERSION, DDD_MIN_FILE03_CONTRACT_VERSION, '<' ) ) {
+			return array(
+				'ready'   => false,
+				'code'    => 'file03_contract_incompatible',
+				'message' => sprintf( __( 'File 03 contract must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE03_CONTRACT_VERSION ),
+				'details' => $details,
+			);
+		}
+		if ( class_exists( 'GDO_Integration_Contracts' ) && defined( 'GDO_Integration_Contracts::VERSION' ) && version_compare( (string) constant( 'GDO_Integration_Contracts::VERSION' ), DDD_MIN_FILE09_CONTRACT_VERSION, '<' ) ) {
+			return array(
+				'ready'   => false,
+				'code'    => 'file09_contract_incompatible',
+				'message' => sprintf( __( 'File 09 contract must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE09_CONTRACT_VERSION ),
 				'details' => $details,
 			);
 		}
@@ -57,26 +81,23 @@ final class DDD_Contracts {
 	}
 
 	private static function identity_provider_available() {
-		return has_filter( self::IDENTITY_FILTER )
-			|| function_exists( 'smc_membership_assertions' )
+		return function_exists( 'smc_membership_assertions' )
 			|| ( class_exists( 'SMC_Contracts' ) && is_callable( array( 'SMC_Contracts', 'assertions' ) ) );
 	}
 
 	private static function verification_provider_available() {
-		return has_filter( self::VERIFICATION_FILTER )
-			|| ( class_exists( 'GDO_Integration_Contracts' ) && is_callable( array( 'GDO_Integration_Contracts', 'projection' ) ) )
+		return ( class_exists( 'GDO_Integration_Contracts' ) && is_callable( array( 'GDO_Integration_Contracts', 'projection' ) ) )
 			|| has_filter( 'sabri_doctor_verification_public_projection_v1' );
 	}
 
 	private static function profile_provider_available() {
-		return has_filter( self::PROFILE_FILTER )
-			|| function_exists( 'spd_get_personal_site_profile' )
+		return function_exists( 'spd_get_personal_site_profile' )
+			|| function_exists( 'spd_get_public_profile' )
 			|| ( class_exists( 'SPD_Contracts' ) && defined( 'SPD_VERSION' ) );
 	}
 
 	private static function clinic_provider_available() {
-		return has_filter( self::CLINIC_FILTER )
-			|| function_exists( 'swc_get_public_clinic_projection' )
+		return has_filter( 'sabri_file08_public_clinic_projection_v1' )
 			|| function_exists( 'wca_get_public_clinic_projection' );
 	}
 
