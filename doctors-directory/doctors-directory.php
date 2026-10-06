@@ -22,7 +22,10 @@ define( 'DDD_URL', plugin_dir_url( __FILE__ ) );
 define( 'DDD_TEXT_DOMAIN', 'doctors-directory-discovery' );
 define( 'DDD_SLUG', 'doctors-directory-discovery' );
 define( 'DDD_PROJECTION_SCHEMA', 2 );
-define( 'DDD_MIN_FILE03_VERSION', '0.1.0' );
+define( 'DDD_MIN_FILE00_CONTRACT_VERSION', '1.2.3' );
+define( 'DDD_MIN_FILE03_VERSION', '1.2.0-rc2' );
+define( 'DDD_MIN_FILE03_CONTRACT_VERSION', '1.4.0' );
+define( 'DDD_MIN_FILE09_CONTRACT_VERSION', '1.1.0' );
 define( 'DDD_SAFE_MODE_OPTION', 'ddd_safe_mode' );
 
 require_once DDD_DIR . 'includes/class-sdd-helpers.php';
