@@ -10,6 +10,16 @@
 - Node.js syntax checker
 - Python 3 standard library
 - POSIX shell, `zip`, `unzip`, `sha256sum`, `cmp`
-- GitHub Actions `actions/checkout@v4`
+- GitHub Actions `actions/checkout@v5`
 
 No bundled third-party binary, remote script, tracking SDK, analytics SDK or payment library is included.
+
+## Current cross-file contracts reviewed 2026-10-06
+- File 00: `SMC_CONTRACT_VERSION >= 1.2.3`; identity via `smc_membership_assertions()`.
+- File 03: `SPD_VERSION >= 1.2.0-rc2`, `SPD_CONTRACT_VERSION >= 1.4.0`; public profile provider registered through `sabri_file07_register_profile_provider`.
+- File 08: doctor-scoped public clinic projection through `sabri_file08_public_clinic_projection_v1`; richer FUT24 geo/availability data remains an optional owner extension and is never fabricated.
+- File 09: `GDO_Integration_Contracts::VERSION >= 1.1.0`; verification projection via `GDO_Integration_Contracts::projection(..., 'file07')`.
+- File 19: `sun_register_notification_producer()` + `sun_ingest_domain_event()` using `sun.event.v1`.
+- File 20: File 07 supplies a bounded current `sabri_shell_verified_doctor_user_ids` projection; File 20 remains shell owner.
+- File 24: fairness/security assurance is optional and must remain explicitly unverified when no supported provider is present.
+- File 26: current ranking provider is discovered through `sabri_file25_search_provider`; ranking constitution and appeal service remain File 26-owned.
