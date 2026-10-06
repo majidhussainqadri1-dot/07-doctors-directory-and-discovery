@@ -11,8 +11,8 @@ jobs:
       - uses: actions/checkout@v5
       - name: Release identity
         run: |
-          grep -q "Version: 1.2.0" doctors-directory/doctors-directory.php
-          grep -q "Stable tag: 1.2.0" doctors-directory/readme.txt
+          grep -q "Version: 1.2.1" doctors-directory/doctors-directory.php
+          grep -q "Stable tag: 1.2.1" doctors-directory/readme.txt
       - name: PHP syntax
         run: find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: JavaScript syntax
