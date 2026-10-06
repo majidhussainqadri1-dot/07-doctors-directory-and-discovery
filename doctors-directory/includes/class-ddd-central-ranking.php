@@ -130,7 +130,26 @@ final class DDD_Central_Ranking {
 				if ( DDD_Helpers::valid_public_id( $id ) ) { return $id; }
 			}
 		}
-		return '';
+
+		/*
+		 * File 26 canonical keys are deliberately opaque and do not have to be
+		 * File 03 UUIDs. Resolve a current same-origin canonical URL against the
+		 * local rebuildable File 07 projection instead of guessing identity from
+		 * File 26's private key format.
+		 */
+		$url = DDD_Helpers::same_origin_url( (string) ( $item['url'] ?? $item['canonical_url'] ?? '' ) );
+		if ( ! $url ) { return ''; }
+		global $wpdb;
+		$table = DDD_Repository::table( 'projection' );
+		if ( ! $table ) { return ''; }
+		$id = strtolower(
+			sanitize_text_field(
+				(string) $wpdb->get_var(
+					$wpdb->prepare( "SELECT public_id FROM {$table} WHERE eligible=1 AND profile_url=%s LIMIT 1", $url )
+				)
+			)
+		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return DDD_Helpers::valid_public_id( $id ) ? $id : '';
 	}
 
 	private static function current_bias_attestation( $constitution ) {
