@@ -1,6 +1,6 @@
 # File 07 — Future Doctor Discovery 24 Enhancements
 
-Status: implemented repository candidate for File 07 v1.2.0. These are File-07 discovery capabilities only; canonical truth remains with the owning modules. Official global merit ranking remains File 26-owned. Clinic/availability/location truth remains File 08-owned; professional-profile truth File 03-owned; verification File 09/00-owned; notifications File 19-owned; assurance File 24-owned.
+Status: implemented repository candidate for File 07 v1.2.1. These are File-07 discovery capabilities only; canonical truth remains with the owning modules. Official global merit ranking remains File 26-owned. Clinic/availability/location truth remains File 08-owned; professional-profile truth File 03-owned; verification File 09/00-owned; notifications File 19-owned; assurance File 24-owned.
 
 | ID | Enhancement | Canonical implementation rule | Acceptance evidence |
 |---|---|---|---|
@@ -31,13 +31,21 @@ Status: implemented repository candidate for File 07 v1.2.0. These are File-07 d
 
 ## Shared contracts
 
-- `ddd_file08_public_discovery_v1`: public clinic coordinates, timezone, availability, countries served and clinic accessibility.
-- `ddd_file03_public_professional_discovery_v1`: public books studied, teaching/research/practice and communication accessibility.
+### Current canonical companion contracts
+- File 03: `sabri_file07_register_profile_provider` supplies the canonical public profile DTO and File 03 public UUID.
+- File 08: `sabri_file08_public_clinic_projection_v1` supplies the doctor-scoped public clinic projection.
+- File 19: `sun_register_notification_producer()` + `sun_ingest_domain_event()`; File 07 emits `DoctorDiscovery.SavedSearchMatched` under the registered `file07-doctor-discovery` producer.
+- File 26: `sabri_file25_search_provider` supplies the current doctor-ranking callable and ranking constitution. Legacy File 07 ranking/policy filters remain compatibility-only.
+- File 24: assurance is consumed only from a supported public assurance provider; absence is represented as unavailable/unverified.
+
+### Optional advanced discovery extension points
+These hooks are not treated as proof that a sibling owner currently implements the richer data. They remain fail-empty until an owning module publishes the corresponding public-safe contract:
+- `ddd_file08_public_discovery_v1`: coordinates, timezone, next availability, countries served and clinic accessibility.
+- `ddd_file03_public_professional_discovery_v1`: books studied, teaching/research/practice and communication accessibility.
 - `ddd_public_knowledge_footprint_v1`: public aggregate knowledge contribution projection.
-- `sabri_file19_notification_event_v1`: notification event handoff only; File 19 owns delivery/preferences.
-- `sabri_file26_ranking_policy_public_v1`: public ranking-policy transparency only; File 26 owns ranking.
-- `sabri_file24_doctor_ranking_assurance_public_v1`: optional independent assurance projection.
 - `ddd_file07_discovery_integrity_v1`: File 07 anti-manipulation advisory contract for ranking/discovery consumers.
+
+No optional extension may be fabricated from private owner tables or inferred from missing data.
 
 ## Privacy and safety invariants
 
