@@ -60,7 +60,7 @@ Verification is not an endorsement, cure claim or treatment guarantee. Emergency
 * Saved-search alerts now use File 19 producer registration + domain-event ingestion, and only advance notification fingerprints after accepted ingestion.
 * Ranking, transparency and appeals now consume the current File 26 owner services; Top tiers fail closed while All Verified keeps a neutral non-merit fallback.
 * Added reviewed owner-contract compatibility floors and the File 20 verified-doctor projection contract.
-* Database schema remains 1.1.0; live/staging acceptance remains separate.
+* Database schema is 1.1.1 and projection schema is 3; the additive projection migration adds the public-safe avatar URL column and no new File-07 table. Live/staging acceptance remains separate.
 
 = 1.2.0 =
 * Added F07-FUT-01 through F07-FUT-24: compare, guided finder, privacy-safe nearby/map discovery, availability/local-time/country coverage, saved-search alerts, shortlists, explanations, personal ordering, ranking transparency, freshness, advanced professional/knowledge/accessibility filters, natural-language multilingual discovery, zero-result recovery, anti-gaming integrity, unmet-demand intelligence, emergency diversion and offline packs.
