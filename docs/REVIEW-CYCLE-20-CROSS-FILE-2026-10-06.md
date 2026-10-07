@@ -15,7 +15,7 @@ Each round was completed as a separate concern against the File 07 master plan, 
 | 01 | Source/evidence manifest integrity | **Defect** | Manifest referenced the 20-round register and 1.2.1 release note before those files existed. Both evidence files were created. |
 | 02 | Runtime/release/schema identity | **Defect** | Runtime was 1.2.1 / DB 1.1.1 / projection 3 while README/readme/changelog still described DB 1.1.0 / projection 2. Documentation was reconciled to executable constants. |
 | 03 | Runtime require graph | **Clean** | Every required PHP runtime file exists; no dangling include was found. |
-| 04 | Source-integrity inventory | **Defect** | Root source checksum evidence did not yet include the new cross-file contract layer and later corrective files. Integrity evidence is regenerated only after the final source change. |
+| 04 | Source-integrity inventory | **Defect** | Root source checksum evidence did not include the new cross-file contract layer and later corrective files. A deterministic tracked-source generator and CI verification gate were added, and the manifest is regenerated after the final source changes. |
 | 05 | File 00 identity/membership boundary | **Clean** | Current File 00 assertions are consumed through the canonical contract; stale membership meta is not accepted as owner truth. |
 | 06 | File 03 public profile/public ID boundary | **Clean** | File 03 remains canonical public-profile/public-ID owner; File 07 does not mint a competing public doctor ID. |
 | 07 | File 09 verification boundary | **Clean** | File 09 current integration projection is consumed; stale verification display/meta is not accepted as canonical truth. |
@@ -31,15 +31,16 @@ Each round was completed as a separate concern against the File 07 master plan, 
 | 17 | Migration/rollback truth | **Defect** | Migration/rollback docs did not describe DB 1.1.1 / projection 3. They now record the additive `avatar_url` projection migration and database-aware rollback requirement. |
 | 18 | Accessibility/RTL/reduced motion | **Clean** | 44px targets, focus visibility, RTL handling, reduced motion and contrast regression coverage remain present. |
 | 19 | Regression-gate parity | **Defect** | Tests asserted the legacy File 24 surface and did not enforce File 25 token ownership. Central-ranking and source-contract gates now cover the current File 24 evaluator and File 25 token bridge. |
-| 20 | Package/release checksum truth | **Defect** | Root release checksum still named the 1.2.0 ZIP. It must be replaced only with the exact deterministic 1.2.1 artifact SHA-256 produced by the final exact-head workflow; until then release checksum status remains pending rather than fabricated. |
+| 20 | Package/release checksum truth | **Defect** | The stale 1.2.0 checksum was replaced only after exact-head deterministic build/clean-extract verification. Canonical 1.2.1 SHA-256: `f06032e1ca39501f0f540e1336011335f0f0ec9ed4a787c376412cb79ba11dfc`. |
 
-## Count before final checksum closure
+## Final twenty-round count
 
 - Total rounds: **20**
 - Defect-bearing rounds: **8** — 01, 02, 04, 11, 12, 17, 19, 20
 - Clean rounds: **12** — 03, 05–10, 13–16, 18
-- Source defects corrected before this register was written: **7 of 8**
-- Remaining evidence closure: **Round 20 exact deterministic 1.2.1 package SHA-256**, plus regeneration of the final source checksum manifest after the last source change.
+- Defect-bearing rounds corrected: **8 of 8**
+- Post-correction package evidence: deterministic build A/B match, clean-extract verification, **80/80** regression pass, and canonical package SHA-256 recorded above.
+- Exact tracked-source checksum generation/verification is part of the final CI gate; `CHECKSUMS.sha256` excludes itself to avoid self-reference.
 
 ## Truth boundary
 
