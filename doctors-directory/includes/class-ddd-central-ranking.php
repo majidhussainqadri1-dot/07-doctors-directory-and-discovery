@@ -53,8 +53,116 @@ final class DDD_Central_Ranking {
 			if ( 'public_report_url' === $key ) { $value = DDD_Helpers::same_origin_url( $value ); if ( ! $value ) { continue; } }
 			$out[ $key ] = $value;
 		}
-		if ( 'pass' !== sanitize_key( (string) ( $out['status'] ?? '' ) ) ) { $out['status'] = 'unverified'; }
+		$status = sanitize_key( (string) ( $out['status'] ?? '' ) );
+		$out['status'] = in_array( $status, array( 'pass', 'blocked', 'unverified' ), true ) ? $status : 'unverified';
 		return $out;
+	}
+
+
+	private static function current_file24_assurance( $bias, $policy, $monthly, $generated, $response ) {
+		if ( ! has_filter( 'spcrc/evaluate_ranking_fairness' ) ) {
+			return null;
+		}
+		$provider = self::current_file26_provider();
+		$constitution = array();
+		$constitution_cb = $provider['ranking_constitution'] ?? null;
+		try {
+			if ( is_callable( $constitution_cb ) ) {
+				$constitution = call_user_func( $constitution_cb );
+			} elseif ( function_exists( 'sabri_file26_ranking_constitution' ) ) {
+				$constitution = sabri_file26_ranking_constitution();
+			}
+		} catch ( Throwable $exception ) {
+			$constitution = array();
+		}
+		if ( ! is_array( $constitution ) ) {
+			$constitution = array();
+		}
+		$doctor = is_array( $constitution['doctor_ranking'] ?? null ) ? $constitution['doctor_ranking'] : array();
+		$signals = array_map( 'sanitize_key', array_keys( is_array( $doctor['signals'] ?? null ) ? $doctor['signals'] : array() ) );
+		$prohibited = array_map( 'sanitize_key', (array) ( $constitution['prohibited_signals'] ?? array() ) );
+
+		$native_controls = array();
+		try {
+			$manifests = apply_filters( 'sabri_file24_module_manifest', array() );
+			if ( is_array( $manifests ) && is_array( $manifests['file26'] ?? null ) ) {
+				$native_controls = array_map( 'sanitize_key', (array) ( $manifests['file26']['native_controls'] ?? array() ) );
+			}
+		} catch ( Throwable $exception ) {
+			$native_controls = array();
+		}
+
+		$controls = array();
+		if ( is_callable( $provider['doctor_ranking'] ?? null ) && ! empty( $provider['contract_version'] ) ) { $controls[] = 'file26_owner_contract'; }
+		if ( '' !== trim( (string) $policy ) ) { $controls[] = 'versioned_policy'; }
+		if ( ! empty( $constitution['why_this_result_required'] ) ) { $controls[] = 'explainability'; }
+		if ( in_array( 'audit', $native_controls, true ) ) { $controls[] = 'audit_log'; }
+		if ( in_array( 'doctor-ranking-appeals', $native_controls, true ) ) { $controls[] = 'appeal_path'; }
+		if ( in_array( 'manipulation_resistant_engagement_score', $signals, true ) ) { $controls[] = 'manipulation_resistance'; }
+		if ( in_array( 'patient_verified_review_score', $signals, true ) ) { $controls[] = 'verified_review_weighting'; }
+		if ( false !== stripos( (string) ( $doctor['recompute'] ?? '' ), 'monthly' ) && $generated > 0 ) { $controls[] = 'monthly_recomputation'; }
+		if ( in_array( 'donation', $prohibited, true ) && empty( $bias['donor_boost'] ) ) { $controls[] = 'donation_independence'; }
+		if ( in_array( 'payment', $prohibited, true ) && empty( $bias['paid_boost'] ) ) { $controls[] = 'payment_independence'; }
+		if ( in_array( 'founder_favoritism', $prohibited, true ) ) { $controls[] = 'founder_non_favoritism'; }
+
+		$active_influences = array_values(
+			array_intersect(
+				array( 'donation', 'payment', 'paid_promotion', 'founder_favoritism', 'purchased_engagement', 'undisclosed_manual_boost' ),
+				$signals
+			)
+		);
+		$snapshot_id = sanitize_text_field( (string) ( $response['snapshot_id'] ?? '' ) );
+		$evidence_ref = preg_match( '/^[a-z][a-z0-9_-]{1,31}:[A-Za-z0-9][A-Za-z0-9._:-]{2,220}$/', $snapshot_id )
+			? $snapshot_id
+			: 'file26:' . substr( hash( 'sha256', (string) $policy . '|' . (string) $monthly . '|' . (string) $generated ), 0, 48 );
+
+		$evidence = array(
+			'controls'      => array_values( array_unique( $controls ) ),
+			'influences'    => $active_influences,
+			'policy_version'=> (string) $policy,
+			'evidence_ref'  => $evidence_ref,
+			'tested_at'     => gmdate( 'c' ),
+			'recomputed_at' => gmdate( 'c', $generated ),
+		);
+		try {
+			$result = apply_filters( 'spcrc/evaluate_ranking_fairness', $evidence );
+		} catch ( Throwable $exception ) {
+			DDD_Observability::record_health( 'file24-ranking-assurance', 'degraded', 'file24_assurance_provider_failed' );
+			return array(
+				'status'          => 'unverified',
+				'policy_version'  => (string) $policy,
+				'monthly_version' => (string) $monthly,
+				'generated_at'    => gmdate( 'c', $generated ),
+				'summary'         => __( 'File 24 ranking assurance is temporarily unavailable.', DDD_TEXT_DOMAIN ),
+			);
+		}
+		if ( ! is_array( $result ) ) {
+			return array(
+				'status'          => 'unverified',
+				'policy_version'  => (string) $policy,
+				'monthly_version' => (string) $monthly,
+				'generated_at'    => gmdate( 'c', $generated ),
+				'summary'         => __( 'File 24 returned no usable ranking-assurance decision.', DDD_TEXT_DOMAIN ),
+			);
+		}
+		$state = sanitize_key( (string) ( $result['state'] ?? '' ) );
+		$status = 'verified' === $state ? 'pass' : ( 'blocked' === $state ? 'blocked' : 'unverified' );
+		DDD_Observability::record_health(
+			'file24-ranking-assurance',
+			'pass' === $status ? 'pass' : 'degraded',
+			'pass' === $status ? 'file24_assurance_verified' : ( 'blocked' === $status ? 'file24_assurance_blocked' : 'file24_assurance_unverified' )
+		);
+		return array(
+			'status'          => $status,
+			'policy_version'  => (string) $policy,
+			'monthly_version' => (string) $monthly,
+			'generated_at'    => gmdate( 'c', $generated ),
+			'summary'         => 'pass' === $status
+				? __( 'Current File 24 fairness assurance verified the File 26 ranking evidence.', DDD_TEXT_DOMAIN )
+				: ( 'blocked' === $status
+					? __( 'Current File 24 fairness assurance did not verify this ranking evidence.', DDD_TEXT_DOMAIN )
+					: __( 'Current File 24 fairness assurance is not yet verified for this ranking evidence.', DDD_TEXT_DOMAIN ) ),
+		);
 	}
 
 	private static function request( $tier, $filters ) {
@@ -364,8 +472,8 @@ final class DDD_Central_Ranking {
 		}
 		usort( $items, static function ( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
 
-		$assurance = null;
-		if ( has_filter( self::ASSURANCE_FILTER ) ) {
+		$assurance = self::current_file24_assurance( $bias, $policy, $monthly, $generated, $response );
+		if ( null === $assurance && has_filter( self::ASSURANCE_FILTER ) ) {
 			$assurance = self::public_assurance(
 				apply_filters(
 					self::ASSURANCE_FILTER,
@@ -378,6 +486,8 @@ final class DDD_Central_Ranking {
 					)
 				)
 			);
+		} elseif ( is_array( $assurance ) ) {
+			$assurance = self::public_assurance( $assurance );
 		}
 		return array( 'source' => 'file26', 'ready' => true, 'policy_version' => $policy, 'monthly_version' => $monthly, 'generated_at' => gmdate( 'Y-m-d H:i:s', $generated ), 'items' => $items, 'next_cursor' => sanitize_text_field( substr( (string) ( $response['next_cursor'] ?? '' ), 0, self::MAX_CURSOR ) ), 'assurance' => $assurance );
 	}
