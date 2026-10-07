@@ -1,5 +1,8 @@
 # Rollback Guide
 
+The 1.2.1 source candidate targets database schema `1.1.1` / projection schema `3`. Because rollback may cross an additive projection-column migration, files-only rollback is insufficient: restore or verify the matching database snapshot/schema before declaring rollback successful.
+
+
 - Do not delete companion-module truth.
 - Put File 07 in Safe Mode and stop nonessential mutations.
 - Preserve current package, database snapshot, page map, queue state and logs.
