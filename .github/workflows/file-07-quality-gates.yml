@@ -13,6 +13,10 @@ jobs:
         run: |
           grep -q "Version: 1.2.1" doctors-directory/doctors-directory.php
           grep -q "Stable tag: 1.2.1" doctors-directory/readme.txt
+      - name: Exact source checksum manifest
+        run: |
+          bash tests/generate-source-checksums.sh | tee /tmp/CHECKSUMS.generated
+          diff -u CHECKSUMS.sha256 /tmp/CHECKSUMS.generated
       - name: PHP syntax
         run: find doctors-directory -type f -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: JavaScript syntax
