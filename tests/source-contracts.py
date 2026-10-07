@@ -45,6 +45,7 @@ checks={
  'future ranking integrity': all(x in future for x in ['donation','payment','paid_promotion','founder_favoritism','purchased_engagement','engagement_requires_manipulation_screen']),
  'future UI safe DOM': 'innerHTML = data' not in futurejs and 'textContent' in futurejs,
  'future accessible responsive UI': all(x in futurecss for x in ['focus-visible','min-height:44px','prefers-reduced-motion','html[dir="rtl"]']),
+ 'File25 visual-token ownership bridge': all(x in files.get('doctors-directory/assets/css/directory.css','') for x in ['--sabri-primary','--sabri-text','--sabri-border','--sabri-focus']) and all(x in futurecss for x in ['--sabri-primary','--sabri-surface','--sabri-border','--sabri-focus']),
 }
 failed=[name for name,result in checks.items() if not result]
 for name,result in checks.items(): print(('PASS' if result else 'FAIL')+': '+name)
