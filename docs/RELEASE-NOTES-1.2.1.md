@@ -30,11 +30,11 @@ Release candidate 1.2.1 reconciles File 07 with the current repository contracts
 
 ## Review evidence
 
-See `docs/REVIEW-CYCLE-20-CROSS-FILE-2026-10-06.md`. The twenty-round register records 8 defect-bearing rounds and 12 initially clean rounds. Seven source/evidence defects were corrected before the final deterministic package checksum closure.
+See `docs/REVIEW-CYCLE-20-CROSS-FILE-2026-10-06.md`. The twenty-round register records 8 defect-bearing rounds and 12 initially clean rounds. All eight defect-bearing rounds were corrected before final source/package evidence closure.
 
 ## Package truth
 
-The canonical 1.2.1 package checksum must come from the deterministic exact-head final workflow. It is intentionally not guessed or copied from 1.2.0. `RELEASE-CANDIDATE.sha256` is valid only after it is updated from that exact artifact and the final workflow is re-verified.
+The canonical 1.2.1 package was built twice deterministically and clean-extract verified by the final quality workflow. SHA-256: `f06032e1ca39501f0f540e1336011335f0f0ec9ed4a787c376412cb79ba11dfc`. `RELEASE-CANDIDATE.sha256` records this exact artifact. Root tracked-source integrity is separately generated and verified through `tests/generate-source-checksums.sh` and `CHECKSUMS.sha256`.
 
 ## Release truth
 
