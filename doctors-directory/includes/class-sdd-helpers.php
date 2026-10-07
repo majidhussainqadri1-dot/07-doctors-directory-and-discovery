@@ -110,9 +110,6 @@ final class DDD_Contracts {
 			'claim_version'      => '',
 			'source_updated_at'  => '',
 		);
-		if ( ! self::identity_provider_available() ) {
-			return $defaults;
-		}
 		$claims = apply_filters( self::IDENTITY_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( ! is_array( $claims ) ) {
 			return $defaults;
@@ -146,9 +143,6 @@ final class DDD_Contracts {
 			'decision_version'   => '',
 			'source_updated_at'  => '',
 		);
-		if ( ! self::verification_provider_available() ) {
-			return $defaults;
-		}
 		$claims = apply_filters( self::VERIFICATION_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( ! is_array( $claims ) ) {
 			return $defaults;
@@ -199,9 +193,6 @@ final class DDD_Contracts {
 			'profile_version'    => '',
 			'source_updated_at'  => '',
 		);
-		if ( ! self::profile_provider_available() ) {
-			return $defaults;
-		}
 		$profile = apply_filters( self::PROFILE_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( ! is_array( $profile ) ) {
 			return $defaults;
