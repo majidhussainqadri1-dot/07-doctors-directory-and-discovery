@@ -3,6 +3,9 @@ import re,sys
 root=Path(__file__).resolve().parents[1]
 text='\n'.join((root/'doctors-directory/includes'/n).read_text() for n in ['class-ddd-central-ranking.php','class-ddd-ranking-ui.php','class-ddd-ranking-appeal.php'])
 compact=text.replace(' ','')
+audit_start=text.find("DDD_Repository::audit_admin(")
+audit_end=text.find("$back =",audit_start)
+appeal_audit=text[audit_start:audit_end] if audit_start>=0 and audit_end>audit_start else ''
 checks={
  'top tier fails closed without File26': "return'all'===$tier?self::neutral($filters):$current" in compact and 'file26_ranking_unavailable' in text,
  'stale snapshot rejected': 'file26_snapshot_stale' in text and 'MAX_SNAPSHOT_AGE' in text,
@@ -18,7 +21,7 @@ checks={
  'neutral signed filter cursor': 'DDD_Helpers::cursor_decode' in text and 'DDD_Helpers::cursor_encode' in text and 'filter_hash' in text,
  'appeal requires valid File26 versions': "empty($snapshot['policy_version'])" in compact and "empty($snapshot['monthly_version'])" in compact,
  'appeal nonce': 'check_admin_referer' in text and 'wp_nonce_field' in text,
- 'appeal narrative not in local audit context': "ranking_appeal_handoff" in text and "array('reason_code'=>$reason,'policy_version'" in compact,
+ 'appeal narrative not in local audit context': "ranking_appeal_handoff" in appeal_audit and all(x in appeal_audit for x in ["reason_code","policy_version","monthly_version","provider_error"]) and '$details' not in appeal_audit,
  'no arbitrary callback execution': 'is_callable' in text and 'call_user_func' in text and 'eval(' not in text,
  'no direct File26 table ownership': not re.search(r'\$wpdb->[^\n;]*file26',text,re.I),
 }
