@@ -177,7 +177,7 @@ final class DDD_Plugin {
 		( new DDD_Directory() )->hooks(); ( new DDD_Profile() )->hooks(); ( new DDD_Admin() )->hooks(); ( new DDD_Privacy() )->hooks(); ( new DDD_SEO() )->hooks(); ( new DDD_REST() )->hooks();
 		add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) ); add_action( 'admin_enqueue_scripts', array( $this, 'admin_assets' ) ); add_action( 'template_redirect', array( $this, 'private_headers' ), 1 );
 		add_action( 'ddd_reconcile_tick', array( $this, 'cron_reconcile' ) ); add_action( 'ddd_expire_features_tick', array( $this, 'cron_expire_features' ) ); add_action( 'ddd_process_outbox_tick', array( $this, 'process_outbox' ) ); add_action( 'ddd_continue_legacy_migration', array( 'DDD_Activator', 'continue_legacy_migration' ) );
-		add_action( 'shutdown', array( $this, 'process_outbox' ) ); add_action( 'ddd_native_event', array( $this, 'native_event' ), 10, 3 ); add_action( 'deleted_user', array( $this, 'deleted_user' ) ); add_action( 'profile_update', array( $this, 'profile_update' ), 20, 2 ); add_action( 'set_user_role', array( $this, 'role_update' ), 20, 3 ); add_filter( 'ddd_public_index_document_v1', array( $this, 'index_document' ), 10, 2 );
+		add_action( 'shutdown', array( $this, 'process_outbox' ) ); add_action( 'ddd_native_event', array( $this, 'native_event' ), 10, 3 ); add_action( 'deleted_user', array( $this, 'deleted_user' ) ); add_action( 'profile_update', array( $this, 'profile_update' ), 20, 2 ); add_action( 'set_user_role', array( $this, 'role_update' ), 20, 3 ); add_filter( 'ddd_public_index_document_v1', array( $this, 'index_document' ), 10, 2 ); add_filter( 'sabri_shell_verified_doctor_user_ids', array( $this, 'shell_verified_doctor_user_ids' ), 10, 2 );
 	}
 
 	public function assets() {
@@ -217,6 +217,32 @@ final class DDD_Plugin {
 			$result = DDD_Repository::rebuild_doctor( $user_id, 'role_update' );
 			if ( is_wp_error( $result ) ) { DDD_Observability::record_health( 'role_projection', 'degraded', $result->get_error_code(), array( 'doctor_ref' => DDD_Helpers::hash_identifier( (string) $user_id ) ) ); }
 		}
+	}
+
+	public function shell_verified_doctor_user_ids( $ids, $limit = 5 ) {
+		global $wpdb;
+		$limit = max( 1, min( 20, absint( $limit ) ) );
+		$table = DDD_Repository::table( 'projection' );
+		if ( ! $table ) { return is_array( $ids ) ? $ids : array(); }
+		$seed = is_array( $ids ) ? array_values( array_unique( array_filter( array_map( 'absint', $ids ) ) ) ) : array();
+		$needed = max( 0, $limit - count( $seed ) );
+		if ( ! $needed ) { return array_slice( $seed, 0, $limit ); }
+
+		$candidates = (array) $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT doctor_id FROM {$table} WHERE eligible=1 ORDER BY verified_at DESC, doctor_id ASC LIMIT %d",
+				min( 100, $needed * 5 )
+			)
+		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		foreach ( $candidates as $doctor_id ) {
+			$doctor_id = absint( $doctor_id );
+			if ( ! $doctor_id || in_array( $doctor_id, $seed, true ) ) { continue; }
+			$live = DDD_Repository::get_live_status( $doctor_id );
+			if ( empty( $live['eligible'] ) ) { continue; }
+			$seed[] = $doctor_id;
+			if ( count( $seed ) >= $limit ) { break; }
+		}
+		return array_slice( $seed, 0, $limit );
 	}
 
 	public function index_document( $document, $doctor_id ) {

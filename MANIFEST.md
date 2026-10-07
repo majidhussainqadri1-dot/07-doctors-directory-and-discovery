@@ -1,8 +1,9 @@
-# Source Manifest — File 07 v1.2.0
+# Source Manifest — File 07 v1.2.1
 
 ## Runtime
 - `doctors-directory/doctors-directory.php`
 - `doctors-directory/includes/class-sdd-helpers.php`
+- `doctors-directory/includes/class-ddd-cross-file-contracts.php`
 - `doctors-directory/includes/class-sdd-activator.php`
 - `doctors-directory/includes/class-sdd-directory.php`
 - `doctors-directory/includes/class-sdd-profile.php`
@@ -44,6 +45,7 @@
 - `tests/test-pagination.py`
 - `tests/test-contrast.py`
 - `tests/build-release.sh`
+- `tests/generate-source-checksums.sh`
 
 ## Governance/release evidence
 - `README.md`
@@ -67,9 +69,11 @@
 - `docs/REVIEW-CYCLE-80.md`
 - `docs/REVIEW-CYCLE-80-FRESH-2026-08-10.md`
 - `docs/REVIEW-CYCLE-80-FRESH-2-2026-08-10.md`
+- `docs/REVIEW-CYCLE-20-CROSS-FILE-2026-10-06.md`
 - `docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md`
 - `docs/FILE26-RANKING-CONTRACT-v1.md`
 - `docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md`
 - `docs/RELEASE-NOTES-1.1.0.md`
 - `docs/RELEASE-NOTES-1.2.0.md`
+- `docs/RELEASE-NOTES-1.2.1.md`
 - `docs/DEPENDENCY-INVENTORY.md`

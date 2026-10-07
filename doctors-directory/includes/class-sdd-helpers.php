@@ -26,11 +26,35 @@ final class DDD_Contracts {
 			'file08' => self::clinic_provider_available() ? 'available' : 'optional-unavailable',
 		);
 
-		if ( defined( 'SPD_VERSION' ) && version_compare( SPD_VERSION, DDD_MIN_FILE03_VERSION, '<' ) ) {
+		if ( defined( 'SMC_CONTRACT_VERSION' ) && version_compare( (string) SMC_CONTRACT_VERSION, DDD_MIN_FILE00_CONTRACT_VERSION, '<' ) ) {
+			return array(
+				'ready'   => false,
+				'code'    => 'file00_contract_incompatible',
+				'message' => sprintf( __( 'File 00 contract must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE00_CONTRACT_VERSION ),
+				'details' => $details,
+			);
+		}
+		if ( defined( 'SPD_VERSION' ) && version_compare( (string) SPD_VERSION, DDD_MIN_FILE03_VERSION, '<' ) ) {
 			return array(
 				'ready'   => false,
 				'code'    => 'file03_version_incompatible',
 				'message' => sprintf( __( 'File 03 must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE03_VERSION ),
+				'details' => $details,
+			);
+		}
+		if ( defined( 'SPD_CONTRACT_VERSION' ) && version_compare( (string) SPD_CONTRACT_VERSION, DDD_MIN_FILE03_CONTRACT_VERSION, '<' ) ) {
+			return array(
+				'ready'   => false,
+				'code'    => 'file03_contract_incompatible',
+				'message' => sprintf( __( 'File 03 contract must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE03_CONTRACT_VERSION ),
+				'details' => $details,
+			);
+		}
+		if ( class_exists( 'GDO_Integration_Contracts' ) && defined( 'GDO_Integration_Contracts::VERSION' ) && version_compare( (string) constant( 'GDO_Integration_Contracts::VERSION' ), DDD_MIN_FILE09_CONTRACT_VERSION, '<' ) ) {
+			return array(
+				'ready'   => false,
+				'code'    => 'file09_contract_incompatible',
+				'message' => sprintf( __( 'File 09 contract must be version %s or newer.', DDD_TEXT_DOMAIN ), DDD_MIN_FILE09_CONTRACT_VERSION ),
 				'details' => $details,
 			);
 		}
@@ -57,91 +81,43 @@ final class DDD_Contracts {
 	}
 
 	private static function identity_provider_available() {
-		return has_filter( self::IDENTITY_FILTER )
-			|| defined( 'SMC_VERSION' )
-			|| class_exists( 'SMC_Contracts' )
-			|| false !== get_option( 'smc_db_version', false )
-			|| false !== get_option( 'smc_version', false );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::identity_provider_available();
 	}
 
 	private static function verification_provider_available() {
-		return has_filter( self::VERIFICATION_FILTER )
-			|| defined( 'GDO_VERSION' )
-			|| class_exists( 'GDO_Contracts' )
-			|| class_exists( 'SPD_Helpers' )
-			|| false !== get_option( 'gdo_db_version', false );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::verification_provider_available();
 	}
 
 	private static function profile_provider_available() {
-		return has_filter( self::PROFILE_FILTER )
-			|| class_exists( 'SPD_Helpers' )
-			|| defined( 'SPD_VERSION' )
-			|| false !== get_option( 'spd_db_version', false );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::profile_provider_available();
 	}
 
 	private static function clinic_provider_available() {
-		return has_filter( self::CLINIC_FILTER )
-			|| defined( 'WCA_VERSION' )
-			|| class_exists( 'WCA_Contracts' )
-			|| false !== get_option( 'wca_db_version', false );
+		return class_exists( 'DDD_Cross_File_Contracts' ) && DDD_Cross_File_Contracts::clinic_provider_available();
 	}
 
 	public static function identity_claims( $user_id ) {
 		$user_id = absint( $user_id );
 		$defaults = array(
-			'user_id'           => $user_id,
+			'user_id'            => $user_id,
 			'provider_available' => false,
-			'account_active'    => false,
-			'suspended'         => true,
-			'risk_blocked'      => true,
-			'age_eligible'      => false,
-			'guardian_valid'    => false,
-			'institutional'     => false,
-			'claim_version'     => '',
-			'source_updated_at' => '',
+			'account_active'     => false,
+			'suspended'          => true,
+			'risk_blocked'       => true,
+			'age_eligible'       => false,
+			'guardian_valid'     => false,
+			'institutional'      => false,
+			'claim_version'      => '',
+			'source_updated_at'  => '',
 		);
 		$claims = apply_filters( self::IDENTITY_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
-		if ( is_array( $claims ) ) {
-			$claims = wp_parse_args( $claims, $defaults );
-			$claims['provider_available'] = true;
-			return self::normalize_identity( $claims );
-		}
-
-		if ( ! self::identity_provider_available() ) {
+		if ( ! is_array( $claims ) ) {
 			return $defaults;
 		}
-
-		/*
-		 * Compatibility adapter. It requires explicit positive canonical states;
-		 * missing metadata never grants public eligibility.
-		 */
-		$status       = sanitize_key( (string) get_user_meta( $user_id, '_smc_membership_status', true ) );
-		$suspension   = sanitize_key( (string) get_user_meta( $user_id, '_smc_suspension_status', true ) );
-		$risk         = sanitize_key( (string) get_user_meta( $user_id, '_smc_risk_status', true ) );
-		$age_status   = sanitize_key( (string) get_user_meta( $user_id, '_smc_age_eligibility', true ) );
-		$guardian     = sanitize_key( (string) get_user_meta( $user_id, '_smc_guardian_status', true ) );
-		$active       = in_array( $status, array( 'approved', 'active', 'verified', 'institutional' ), true );
-		$not_suspended= in_array( $suspension, array( '', 'none', 'clear', 'active' ), true );
-		$risk_clear   = in_array( $risk, array( '', 'none', 'clear', 'low', 'approved' ), true );
-		$age_ok       = in_array( $age_status, array( 'eligible', 'adult', 'approved', 'verified' ), true );
-		$guardian_ok  = in_array( $guardian, array( 'not-required', 'not_required', 'approved', 'verified', 'valid', 'adult' ), true );
-		$institutional= DDD_Helpers::is_founder( $user_id ) || 'institutional' === $status;
-
-		return self::normalize_identity(
-			array_merge(
-				$defaults,
-				array(
-					'provider_available' => true,
-					'account_active'    => $active,
-					'suspended'         => ! $not_suspended,
-					'risk_blocked'      => ! $risk_clear,
-					'age_eligible'      => $age_ok,
-					'guardian_valid'    => $guardian_ok,
-					'institutional'     => $institutional,
-					'claim_version'     => 'file00-compat-v1',
-				)
-			)
-		);
+		$provider_flag = array_key_exists( 'provider_available', $claims ) ? (bool) $claims['provider_available'] : true;
+		$claims = wp_parse_args( $claims, $defaults );
+		$claims['provider_available'] = $provider_flag;
+		return self::normalize_identity( $claims );
 	}
 
 	private static function normalize_identity( $claims ) {
@@ -157,61 +133,24 @@ final class DDD_Contracts {
 	public static function verification_claims( $user_id ) {
 		$user_id = absint( $user_id );
 		$defaults = array(
-			'user_id'           => $user_id,
+			'user_id'            => $user_id,
 			'provider_available' => false,
-			'doctor'            => false,
-			'verified'          => false,
-			'status'            => 'unavailable',
-			'effective_at'      => '',
-			'expires_at'        => '',
-			'decision_version'  => '',
-			'source_updated_at' => '',
+			'doctor'             => false,
+			'verified'           => false,
+			'status'             => 'unavailable',
+			'effective_at'       => '',
+			'expires_at'         => '',
+			'decision_version'   => '',
+			'source_updated_at'  => '',
 		);
 		$claims = apply_filters( self::VERIFICATION_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
-		if ( is_array( $claims ) ) {
-			$claims = wp_parse_args( $claims, $defaults );
-			$claims['provider_available'] = true;
-			return self::normalize_verification( $claims );
-		}
-		if ( ! self::verification_provider_available() ) {
+		if ( ! is_array( $claims ) ) {
 			return $defaults;
 		}
-
-		$doctor = false;
-		$status = '';
-		if ( class_exists( 'SPD_Helpers' ) && is_callable( array( 'SPD_Helpers', 'is_doctor' ) ) ) {
-			$doctor = (bool) SPD_Helpers::is_doctor( $user_id );
-		}
-		if ( class_exists( 'SPD_Helpers' ) && is_callable( array( 'SPD_Helpers', 'verification_status' ) ) ) {
-			$status = sanitize_key( (string) SPD_Helpers::verification_status( $user_id ) );
-		}
-		if ( '' === $status ) {
-			$status = sanitize_key( (string) get_user_meta( $user_id, '_gdo_verification_status', true ) );
-		}
-		if ( '' === $status ) {
-			$status = sanitize_key( (string) get_user_meta( $user_id, '_spd_verification_status', true ) );
-		}
-		if ( ! $doctor ) {
-			$doctor = 'verified' === $status && '1' === (string) get_user_meta( $user_id, '_spd_is_doctor', true );
-		}
-		$effective = (string) get_user_meta( $user_id, '_gdo_verified_at', true );
-		if ( '' === $effective ) {
-			$effective = (string) get_user_meta( $user_id, '_spd_verified_at', true );
-		}
-		return self::normalize_verification(
-			array_merge(
-				$defaults,
-				array(
-					'provider_available' => true,
-					'doctor'            => $doctor,
-					'verified'          => $doctor && 'verified' === $status,
-					'status'            => $status ?: 'unverified',
-					'effective_at'      => $effective,
-					'expires_at'        => (string) get_user_meta( $user_id, '_gdo_verification_expires_at', true ),
-					'decision_version'  => 'file09-compat-v1',
-				)
-			)
-		);
+		$provider_flag = array_key_exists( 'provider_available', $claims ) ? (bool) $claims['provider_available'] : true;
+		$claims = wp_parse_args( $claims, $defaults );
+		$claims['provider_available'] = $provider_flag;
+		return self::normalize_verification( $claims );
 	}
 
 	private static function normalize_verification( $claims ) {
@@ -230,77 +169,37 @@ final class DDD_Contracts {
 	public static function public_profile( $user_id ) {
 		$user_id = absint( $user_id );
 		$defaults = array(
-			'user_id'           => $user_id,
+			'user_id'            => $user_id,
 			'provider_available' => false,
-			'public_id'         => '',
-			'public'            => false,
-			'discoverable'      => false,
-			'display_name'      => '',
-			'professional_title'=> '',
-			'specialty'         => '',
-			'country'           => '',
-			'city'              => '',
-			'languages'         => array(),
-			'qualification'     => '',
-			'experience_years'  => 0,
-			'avatar_id'         => 0,
-			'profile_url'       => '',
-			'phone_public'      => false,
-			'phone'             => '',
-			'whatsapp_public'   => false,
-			'whatsapp'          => '',
-			'consent_version'   => '',
-			'profile_version'   => '',
-			'source_updated_at' => '',
+			'public_id'          => '',
+			'public'             => false,
+			'discoverable'       => false,
+			'display_name'       => '',
+			'professional_title' => '',
+			'specialty'          => '',
+			'country'            => '',
+			'city'               => '',
+			'languages'          => array(),
+			'qualification'      => '',
+			'experience_years'   => 0,
+			'avatar_id'          => 0,
+			'avatar_url'         => '',
+			'profile_url'        => '',
+			'phone_public'       => false,
+			'phone'              => '',
+			'whatsapp_public'    => false,
+			'whatsapp'           => '',
+			'consent_version'    => '',
+			'profile_version'    => '',
+			'source_updated_at'  => '',
 		);
 		$profile = apply_filters( self::PROFILE_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
-		if ( is_array( $profile ) ) {
-			$profile = wp_parse_args( $profile, $defaults );
-			$profile['provider_available'] = true;
-			return self::normalize_profile( $profile );
-		}
-		if ( ! self::profile_provider_available() ) {
+		if ( ! is_array( $profile ) ) {
 			return $defaults;
 		}
-		$user = get_userdata( $user_id );
-		if ( ! $user ) {
-			return array_merge( $defaults, array( 'provider_available' => true ) );
-		}
-		$get = static function ( $key, $default = '' ) use ( $user_id ) {
-			if ( class_exists( 'SPD_Helpers' ) && is_callable( array( 'SPD_Helpers', 'get' ) ) ) {
-				return SPD_Helpers::get( $user_id, $key, $default );
-			}
-			$value = get_user_meta( $user_id, '_spd_' . $key, true );
-			return '' === $value ? $default : $value;
-		};
-		$discoverable = (string) DDD_Helpers::meta( $user_id, 'discoverable', '' );
-		$public_state = sanitize_key( (string) $get( 'visibility', '' ) );
-		$explicit_public = '1' === $discoverable && in_array( $public_state, array( '', 'public', 'published' ), true );
-		$profile = array_merge(
-			$defaults,
-			array(
-				'provider_available' => true,
-				'public_id'         => (string) get_user_meta( $user_id, '_ddd_public_id', true ),
-				'public'            => $explicit_public,
-				'discoverable'      => $explicit_public,
-				'display_name'      => (string) $user->display_name,
-				'professional_title'=> (string) $get( 'headline', $get( 'specialty', '' ) ),
-				'specialty'         => (string) $get( 'specialty', '' ),
-				'country'           => (string) $get( 'country', '' ),
-				'city'              => (string) $get( 'city', '' ),
-				'languages'         => $get( 'languages', '' ),
-				'qualification'     => (string) $get( 'qualification', '' ),
-				'experience_years'  => absint( $get( 'experience_years', 0 ) ),
-				'avatar_id'         => absint( $get( 'profile_photo_id', 0 ) ),
-				'profile_url'       => class_exists( 'SPD_Helpers' ) && is_callable( array( 'SPD_Helpers', 'profile_url' ) ) ? (string) SPD_Helpers::profile_url( $user_id ) : '',
-				'phone'             => (string) $get( 'phone', '' ),
-				'whatsapp'          => (string) $get( 'whatsapp', '' ),
-				'phone_public'      => '1' === (string) DDD_Helpers::meta( $user_id, 'public_phone', '0' ),
-				'whatsapp_public'   => '1' === (string) DDD_Helpers::meta( $user_id, 'public_whatsapp', '0' ),
-				'consent_version'   => sanitize_text_field( (string) DDD_Helpers::meta( $user_id, 'consent_version', '' ) ),
-				'profile_version'   => 'file03-compat-v1',
-			)
-		);
+		$provider_flag = array_key_exists( 'provider_available', $profile ) ? (bool) $profile['provider_available'] : true;
+		$profile = wp_parse_args( $profile, $defaults );
+		$profile['provider_available'] = $provider_flag;
 		return self::normalize_profile( $profile );
 	}
 
@@ -314,6 +213,7 @@ final class DDD_Contracts {
 		$profile['languages'] = DDD_Helpers::list_value( $profile['languages'] );
 		$profile['experience_years'] = min( 100, absint( $profile['experience_years'] ) );
 		$profile['avatar_id'] = absint( $profile['avatar_id'] );
+		$profile['avatar_url'] = DDD_Helpers::same_origin_url( $profile['avatar_url'] ?? '' );
 		foreach ( array( 'display_name', 'professional_title', 'specialty', 'country', 'city', 'qualification', 'consent_version', 'profile_version' ) as $key ) {
 			$profile[ $key ] = sanitize_text_field( (string) $profile[ $key ] );
 		}
@@ -345,8 +245,9 @@ final class DDD_Contracts {
 		);
 		$clinic = apply_filters( self::CLINIC_FILTER, null, $user_id, DDD_CONTRACT_VERSION );
 		if ( is_array( $clinic ) ) {
+			$provider_flag = array_key_exists( 'provider_available', $clinic ) ? (bool) $clinic['provider_available'] : true;
 			$clinic = wp_parse_args( $clinic, $defaults );
-			$clinic['provider_available'] = true;
+			$clinic['provider_available'] = $provider_flag;
 			return self::normalize_clinic( $clinic );
 		}
 		/* File 08 is optional. No speculative URL or direct foreign-page query is created. */
@@ -413,6 +314,7 @@ final class DDD_Contracts {
 		if ( ! empty( $verification['expires_at'] ) && strtotime( $verification['expires_at'] . ' UTC' ) <= time() ) { $reasons[] = 'verification_expired'; }
 		if ( empty( $profile['public'] ) || empty( $profile['discoverable'] ) ) { $reasons[] = 'profile_private'; }
 		if ( empty( $profile['display_name'] ) || empty( $profile['specialty'] ) || empty( $profile['country'] ) ) { $reasons[] = 'public_fields_incomplete'; }
+		if ( empty( $profile['public_id'] ) || ! DDD_Helpers::valid_public_id( $profile['public_id'] ) ) { $reasons[] = 'canonical_public_id_missing'; }
 		if ( empty( $profile['profile_url'] ) && empty( $clinic['clinic_url'] ) ) { $reasons[] = 'public_destination_missing'; }
 		if ( DDD_Helpers::is_founder( $user_id ) ) { $reasons[] = 'founder_separate'; }
 		$status = empty( $reasons ) ? 'eligible' : 'limited';
@@ -465,27 +367,6 @@ final class DDD_Helpers {
 		return is_string( $value ) && 1 === preg_match( '/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i', $value );
 	}
 
-	public static function uuid_from_user( $user_id ) {
-		$user_id = absint( $user_id );
-		if ( ! $user_id ) {
-			return '';
-		}
-		$existing = (string) get_user_meta( $user_id, '_ddd_public_id', true );
-		if ( self::valid_public_id( $existing ) ) {
-			return strtolower( $existing );
-		}
-		for ( $attempt = 0; $attempt < 5; $attempt++ ) {
-			$uuid = strtolower( wp_generate_uuid4() );
-			if ( add_user_meta( $user_id, '_ddd_public_id', $uuid, true ) ) {
-				return $uuid;
-			}
-			$existing = (string) get_user_meta( $user_id, '_ddd_public_id', true );
-			if ( self::valid_public_id( $existing ) ) {
-				return strtolower( $existing );
-			}
-		}
-		return '';
-	}
 
 	public static function list_value( $value ) {
 		$list = is_array( $value ) ? $value : preg_split( '/[,;\n|]+/u', (string) $value );

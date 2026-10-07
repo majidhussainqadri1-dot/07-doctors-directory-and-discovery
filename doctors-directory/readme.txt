@@ -4,7 +4,7 @@ Tags: doctors, directory, discovery, homeopathy, verified-professionals
 Requires at least: 7.0
 Tested up to: 7.0.1
 Requires PHP: 8.0
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 
 Canonical verified-doctor public projection, search, filtering, ranking, moderation, SEO, privacy and operational controls for the Sabri Social Homeopathy Platform.
@@ -53,6 +53,14 @@ Highlights:
 Verification is not an endorsement, cure claim or treatment guarantee. Emergency care is outside this directory. Emergency-type natural-language queries suppress directory recommendations and show an urgent-care diversion. Public fields are allowlisted and must be consented. Private identity evidence, patient data and internal risk details are never indexed or exposed. Precise user coordinates are request-scoped and not persisted by the future-discovery layer.
 
 == Changelog ==
+
+= 1.2.1 =
+* Reconciled File 07 with current File 00/03/08/09/19/20/26 runtime contracts after the 20-round cross-file audit.
+* File 03 now remains the sole public doctor/profile ID owner; File 07 no longer mints a competing identity.
+* Saved-search alerts now use File 19 producer registration + domain-event ingestion, and only advance notification fingerprints after accepted ingestion.
+* Ranking, transparency and appeals now consume the current File 26 owner services; Top tiers fail closed while All Verified keeps a neutral non-merit fallback.
+* Added reviewed owner-contract compatibility floors and the File 20 verified-doctor projection contract.
+* Database schema is 1.1.1 and projection schema is 3; the additive projection migration adds the public-safe avatar URL column and no new File-07 table. Live/staging acceptance remains separate.
 
 = 1.2.0 =
 * Added F07-FUT-01 through F07-FUT-24: compare, guided finder, privacy-safe nearby/map discovery, availability/local-time/country coverage, saved-search alerts, shortlists, explanations, personal ordering, ranking transparency, freshness, advanced professional/knowledge/accessibility filters, natural-language multilingual discovery, zero-result recovery, anti-gaming integrity, unmet-demand intelligence, emergency diversion and offline packs.

@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.1 — 2026-10-06
+
+### Corrected — twenty-round plan/central/cross-file reconciliation
+- Added a current cross-file adapter layer for File 00 identity claims, File 03 canonical public profile identity, File 09 verification, and File 08 public clinic projection.
+- Removed File 07 as a competing public profile-ID issuer: newly public doctors now require File 03's canonical public UUID.
+- Replaced the obsolete saved-search notification action with File 19 producer registration and `sun.event.v1` ingestion. Notification fingerprints advance only after accepted owner ingestion.
+- Reconciled official doctor ranking and transparency with File 26's current `sabri_file25_search_provider` registry and ranking constitution while retaining a bounded legacy compatibility adapter.
+- Routed doctor ranking appeals into File 26's canonical appeal service after current ownership/rate/nonce checks.
+- Added reviewed compatibility floors for current File 00, File 03 and File 09 contracts and fail-closed provider health.
+- Added File 20's `sabri_shell_verified_doctor_user_ids` read projection without transferring directory ownership.
+- Added current File 24 fairness-assurance consumption through `spcrc/evaluate_ranking_fairness`; non-compatible or incomplete owner evidence remains blocked/unverified rather than being promoted to a pass.
+- Bridged native File 07 directory/future-discovery fallbacks to File 25-owned `--sabri-*` visual tokens while preserving accessible local fallbacks when File 25 is unavailable.
+- Database schema is `1.1.1` and projection schema is `3`; the additive `dbDelta` migration adds the public-safe `avatar_url` projection field and no new File-07 table. This source correction does not by itself prove staging or live deployment.
+
 ## 1.2.0 — 2026-08-10
 
 ### Added — approved future Doctor Discovery expansion

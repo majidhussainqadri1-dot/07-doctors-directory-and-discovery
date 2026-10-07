@@ -4,10 +4,10 @@ Canonical repository source for **Sabri Social Homeopathy Platform File 07**.
 
 ## Release candidate
 
-- Runtime: `1.2.0`
-- Database schema: `1.1.0` (unchanged; the future-discovery expansion adds no File-07 database tables)
-- Contract: `1.2.0`
-- Projection schema: `2`
+- Runtime: `1.2.1`
+- Database schema: `1.1.1` (projection-only additive migration; no new File-07 database table)
+- Contract: `1.2.1`
+- Projection schema: `3`
 - WordPress baseline: `7.0.1`
 - PHP baseline: `8.3`
 - Text domain: `doctors-directory-discovery`
@@ -19,6 +19,10 @@ Canonical repository source for **Sabri Social Homeopathy Platform File 07**.
 File 07 owns the rebuildable public discovery projection of verified-eligible doctors, directory search/filter/pagination, directory presentation orchestration, File-26 ranking consumption, public-safe comparison and personal discovery preferences, Founder/featured/recent/all sections, SEO, saved references, listing reports, reconciliation and directory operations.
 
 It does **not** own membership/identity (File 00), doctor verification decisions/evidence (File 09), professional profile truth (File 03), clinic/location/availability/appointment truth (File 08), notification delivery/preferences (File 19), global shell (File 20), visual design-system ownership (File 25), global merit-ranking orchestration (File 26), or native security enforcement/assurance owned by companion modules.
+
+## v1.2.1 — current cross-file contract reconciliation
+
+The 20-round File 07 audit reconciles repository code with the current repository contracts of Files 00, 03, 08, 09, 19, 20, 24, 25 and 26. It removes File 07 identity minting, consumes current notification/ranking/appeal owner APIs, publishes a bounded verified-doctor projection to File 20, consumes File 24's current `spcrc/evaluate_ranking_fairness` assurance without fabricating a pass, and bridges File 07 visual fallbacks to File 25-owned design tokens. The source review remains separate from staging/live evidence.
 
 ## v1.2.0 — 24 future doctor-discovery enhancements
 

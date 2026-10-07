@@ -48,10 +48,23 @@ final class DDD_Repository {
 			return DDD_Helpers::safe_error( 'version_conflict', __( 'The directory projection changed. Reload and retry.', DDD_TEXT_DOMAIN ), 409 );
 		}
 
-		$public_id = ! empty( $profile['public_id'] ) ? strtolower( (string) $profile['public_id'] ) : ( $existing && DDD_Helpers::valid_public_id( $existing['public_id'] ) ? strtolower( $existing['public_id'] ) : DDD_Helpers::uuid_from_user( $user_id ) );
+		/*
+		 * Public professional identity is owned by File 03. File 07 must never
+		 * mint a competing doctor/profile identifier. An existing File 07 ID may
+		 * be retained only while the row is being driven ineligible during an
+		 * owner outage; it can never make an otherwise ineligible record public.
+		 */
+		$owner_public_id = ! empty( $profile['public_id'] ) ? strtolower( (string) $profile['public_id'] ) : '';
+		$public_id = DDD_Helpers::valid_public_id( $owner_public_id )
+			? $owner_public_id
+			: ( $existing && DDD_Helpers::valid_public_id( $existing['public_id'] ) ? strtolower( $existing['public_id'] ) : '' );
 		if ( ! DDD_Helpers::valid_public_id( $public_id ) ) {
 			$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			return DDD_Helpers::safe_error( 'public_id_unavailable', __( 'A privacy-safe public doctor identifier could not be created.', DDD_TEXT_DOMAIN ), 500 );
+			return DDD_Helpers::safe_error( 'file03_public_id_unavailable', __( 'The canonical File 03 public doctor identifier is unavailable.', DDD_TEXT_DOMAIN ), 503 );
+		}
+		if ( ! DDD_Helpers::valid_public_id( $owner_public_id ) && ! empty( $eligibility['eligible'] ) ) {
+			$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			return DDD_Helpers::safe_error( 'file03_public_id_required', __( 'A doctor cannot become publicly eligible without the canonical File 03 identifier.', DDD_TEXT_DOMAIN ), 503 );
 		}
 
 		$featured = $existing ? absint( $existing['featured'] ) : 0;
@@ -84,7 +97,7 @@ final class DDD_Repository {
 			'qualification' => sanitize_textarea_field( (string) $profile['qualification'] ), 'qualification_norm' => DDD_Helpers::normalize_token( (string) $profile['qualification'] ),
 			'search_text_norm' => $search_text, 'experience_years' => min( 100, absint( $profile['experience_years'] ) ), 'consultation_modes_json' => wp_json_encode( $modes ),
 			'accepting_patients' => ! empty( $clinic['accepting_patients'] ) ? 1 : 0, 'fee_min' => $clinic['fee_min'], 'fee_max' => $clinic['fee_max'], 'currency' => (string) $clinic['currency'],
-			'avatar_id' => absint( $profile['avatar_id'] ), 'profile_url' => esc_url_raw( (string) $profile['profile_url'] ), 'clinic_url' => esc_url_raw( (string) $clinic['clinic_url'] ),
+			'avatar_id' => absint( $profile['avatar_id'] ), 'avatar_url' => DDD_Helpers::same_origin_url( (string) ( $profile['avatar_url'] ?? '' ) ), 'profile_url' => esc_url_raw( (string) $profile['profile_url'] ), 'clinic_url' => esc_url_raw( (string) $clinic['clinic_url'] ),
 			'appointment_url' => esc_url_raw( (string) $clinic['appointment_url'] ), 'completeness' => $completeness, 'quality_score' => $quality,
 			'verified_at' => ! empty( $verification['effective_at'] ) ? $verification['effective_at'] : null,
 			'featured' => $featured, 'feature_label' => $feature_label, 'feature_start' => $feature_start, 'feature_end' => $feature_end,
@@ -123,7 +136,7 @@ final class DDD_Repository {
 	}
 
 	private static function completeness( $profile, $clinic ) {
-		$checks = array( ! empty( $profile['display_name'] ), ! empty( $profile['professional_title'] ), ! empty( $profile['specialty'] ), ! empty( $profile['country'] ), ! empty( $profile['city'] ), ! empty( $profile['languages'] ), ! empty( $profile['qualification'] ), ! empty( $profile['experience_years'] ), ! empty( $profile['avatar_id'] ), ! empty( $profile['profile_url'] ), ! empty( $clinic['consultation_modes'] ), ! empty( $clinic['clinic_url'] ) || ! empty( $clinic['appointment_url'] ) );
+		$checks = array( ! empty( $profile['display_name'] ), ! empty( $profile['professional_title'] ), ! empty( $profile['specialty'] ), ! empty( $profile['country'] ), ! empty( $profile['city'] ), ! empty( $profile['languages'] ), ! empty( $profile['qualification'] ), ! empty( $profile['experience_years'] ), ( ! empty( $profile['avatar_url'] ) || ! empty( $profile['avatar_id'] ) ), ! empty( $profile['profile_url'] ), ! empty( $clinic['consultation_modes'] ), ! empty( $clinic['clinic_url'] ) || ! empty( $clinic['appointment_url'] ) );
 		return (int) round( 100 * count( array_filter( $checks ) ) / count( $checks ) );
 	}
 
@@ -340,7 +353,9 @@ final class DDD_Repository {
 		$modes = json_decode( (string) $row['consultation_modes_json'], true );
 		$fee = null;
 		if ( null !== $row['fee_min'] && '' !== $row['fee_min'] ) { $fee = array( 'min' => (float) $row['fee_min'], 'max' => null !== $row['fee_max'] ? (float) $row['fee_max'] : null, 'currency' => (string) $row['currency'] ); }
-		$avatar_url = absint( $row['avatar_id'] ) ? wp_get_attachment_image_url( absint( $row['avatar_id'] ), 'thumbnail' ) : '';
+		$avatar_url = DDD_Helpers::same_origin_url( (string) ( $row['avatar_url'] ?? '' ) );
+		if ( ! $avatar_url && ! empty( $row['avatar_id'] ) ) { $avatar_url = wp_get_attachment_image_url( absint( $row['avatar_id'] ), 'thumbnail' ); }
+		$avatar_url = DDD_Helpers::same_origin_url( (string) $avatar_url );
 		$active_featured = isset( $row['active_featured'] ) ? (bool) $row['active_featured'] : ( ! empty( $row['featured'] ) && ( empty( $row['feature_start'] ) || strtotime( $row['feature_start'] . ' UTC' ) <= time() ) && ( empty( $row['feature_end'] ) || strtotime( $row['feature_end'] . ' UTC' ) > time() ) );
 		return array( 'public_id' => (string) $row['public_id'], 'display_name' => (string) $row['display_name'], 'professional_title' => (string) $row['professional_title'], 'specialty' => (string) $row['specialty'], 'country' => (string) $row['country'], 'city' => (string) $row['city'], 'languages' => is_array( $languages ) ? $languages : array(), 'qualification' => (string) $row['qualification'], 'experience_years' => absint( $row['experience_years'] ), 'consultation_modes' => is_array( $modes ) ? $modes : array(), 'accepting_patients' => ! empty( $row['accepting_patients'] ), 'fee' => $fee, 'avatar_url' => $avatar_url ? esc_url_raw( $avatar_url ) : '', 'profile_url' => DDD_Helpers::same_origin_url( (string) $row['profile_url'] ), 'clinic_url' => DDD_Helpers::same_origin_url( (string) $row['clinic_url'] ), 'appointment_url' => DDD_Helpers::same_origin_url( (string) $row['appointment_url'] ), 'public_directory_url' => DDD_Helpers::public_profile_url( $row['public_id'] ), 'completeness' => absint( $row['completeness'] ), 'verified_at' => $row['verified_at'], 'featured' => $active_featured, 'feature_label' => $active_featured ? (string) $row['feature_label'] : '', 'ranking_explanation' => self::ranking_explanation( $row, $active_featured ) );
 	}

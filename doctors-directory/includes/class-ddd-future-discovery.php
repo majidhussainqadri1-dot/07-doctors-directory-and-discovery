@@ -347,7 +347,7 @@ final class DDD_Future_Discovery {
 		if ( ! self::public_rate_limit( 'future_transparency', 60 ) ) {
 			return DDD_Helpers::safe_error( 'future_transparency_rate_limited', __( 'Transparency endpoint rate limit exceeded.', DDD_TEXT_DOMAIN ), 429 );
 		}
-		$policy = self::public_policy( apply_filters( 'sabri_file26_ranking_policy_public_v1', null, array( 'consumer' => 'file07', 'contract_version' => self::CONTRACT_VERSION ) ) );
+		$policy = self::public_policy( DDD_Central_Ranking::transparency_policy() );
 		$assurance = self::public_assurance( apply_filters( 'sabri_file24_doctor_ranking_assurance_public_v1', null, array( 'consumer' => 'file07' ) ) );
 		return self::public_response(
 			array(

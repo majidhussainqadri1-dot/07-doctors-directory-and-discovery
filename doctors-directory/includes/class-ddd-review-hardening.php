@@ -2,119 +2,15 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Forty-round review hardening.
- *
- * This adapter does not take canonical ownership from Files 00, 03, 08 or 09.
- * It only makes the documented legacy compatibility path fail closed and
- * replaces the privacy eraser with a terminating legal-hold-safe batch worker.
+ * Post-review hardening that does not take canonical ownership from companion
+ * modules. Canonical identity/profile/verification/clinic reads are installed by
+ * DDD_Cross_File_Adapters; this class only narrows Founder claims and supplies
+ * the terminating legal-hold-safe privacy eraser.
  */
 final class DDD_Review_Hardening {
 	public static function register() {
-		if ( self::identity_provider_present() ) {
-			add_filter( DDD_Contracts::IDENTITY_FILTER, array( __CLASS__, 'identity_claims' ), 99, 3 );
-		}
-		if ( self::verification_provider_present() ) {
-			add_filter( DDD_Contracts::VERIFICATION_FILTER, array( __CLASS__, 'verification_claims' ), 99, 3 );
-		}
 		add_filter( DDD_Contracts::FOUNDER_FILTER, array( __CLASS__, 'founder_claim' ), 99, 2 );
 		add_filter( 'wp_privacy_personal_data_erasers', array( __CLASS__, 'replace_privacy_eraser' ), 99 );
-	}
-
-	private static function identity_provider_present() {
-		return has_filter( DDD_Contracts::IDENTITY_FILTER )
-			|| defined( 'SMC_VERSION' )
-			|| class_exists( 'SMC_Contracts' )
-			|| false !== get_option( 'smc_db_version', false )
-			|| false !== get_option( 'smc_version', false );
-	}
-
-	private static function verification_provider_present() {
-		return has_filter( DDD_Contracts::VERIFICATION_FILTER )
-			|| defined( 'GDO_VERSION' )
-			|| class_exists( 'GDO_Contracts' )
-			|| class_exists( 'SPD_Helpers' )
-			|| false !== get_option( 'gdo_db_version', false );
-	}
-
-	public static function identity_claims( $claims, $user_id, $contract_version ) {
-		if ( is_array( $claims ) ) {
-			return $claims;
-		}
-		$user_id = absint( $user_id );
-		if ( ! $user_id || ! self::identity_provider_present() ) {
-			return $claims;
-		}
-
-		$status      = sanitize_key( (string) get_user_meta( $user_id, '_smc_membership_status', true ) );
-		$suspension  = sanitize_key( (string) get_user_meta( $user_id, '_smc_suspension_status', true ) );
-		$risk        = sanitize_key( (string) get_user_meta( $user_id, '_smc_risk_status', true ) );
-		$age         = sanitize_key( (string) get_user_meta( $user_id, '_smc_age_eligibility', true ) );
-		$guardian    = sanitize_key( (string) get_user_meta( $user_id, '_smc_guardian_status', true ) );
-
-		$account_active = in_array( $status, array( 'approved', 'active', 'verified', 'institutional' ), true );
-		$risk_clear = in_array( $risk, array( 'none', 'clear', 'low', 'approved' ), true );
-		$not_suspended = in_array( $suspension, array( 'none', 'clear', 'active' ), true );
-		$age_eligible = in_array( $age, array( 'eligible', 'adult', 'approved', 'verified' ), true );
-		$guardian_valid = 'adult' === $age || in_array( $guardian, array( 'not-required', 'not_required', 'approved', 'verified', 'valid', 'adult' ), true );
-
-		return array(
-			'user_id'            => $user_id,
-			'provider_available' => true,
-			'account_active'     => $account_active,
-			'suspended'          => ! $not_suspended,
-			'risk_blocked'       => ! $risk_clear,
-			'age_eligible'       => $age_eligible,
-			'guardian_valid'     => $guardian_valid,
-			'institutional'      => DDD_Helpers::is_founder( $user_id ) || 'institutional' === $status,
-			'claim_version'      => 'file00-compat-v1.1-hardening',
-			'source_updated_at'  => '',
-		);
-	}
-
-	public static function verification_claims( $claims, $user_id, $contract_version ) {
-		if ( is_array( $claims ) ) {
-			return $claims;
-		}
-		$user_id = absint( $user_id );
-		if ( ! $user_id || ! self::verification_provider_present() ) {
-			return $claims;
-		}
-
-		$status = '';
-		$doctor = false;
-		if ( class_exists( 'SPD_Helpers' ) && is_callable( array( 'SPD_Helpers', 'is_doctor' ) ) ) {
-			$doctor = (bool) SPD_Helpers::is_doctor( $user_id );
-		}
-		if ( class_exists( 'SPD_Helpers' ) && is_callable( array( 'SPD_Helpers', 'verification_status' ) ) ) {
-			$status = sanitize_key( (string) SPD_Helpers::verification_status( $user_id ) );
-		}
-		if ( '' === $status ) {
-			$status = sanitize_key( (string) get_user_meta( $user_id, '_gdo_verification_status', true ) );
-		}
-		if ( '' === $status ) {
-			$status = sanitize_key( (string) get_user_meta( $user_id, '_spd_verification_status', true ) );
-		}
-
-		$positive = in_array( $status, array( 'verified', 'approved', 'active' ), true );
-		if ( ! $doctor ) {
-			$doctor = $positive && '1' === (string) get_user_meta( $user_id, '_spd_is_doctor', true );
-		}
-		$effective = (string) get_user_meta( $user_id, '_gdo_verified_at', true );
-		if ( '' === $effective ) {
-			$effective = (string) get_user_meta( $user_id, '_spd_verified_at', true );
-		}
-
-		return array(
-			'user_id'            => $user_id,
-			'provider_available' => true,
-			'doctor'             => $doctor,
-			'verified'           => $doctor && $positive,
-			'status'             => $status ?: 'unverified',
-			'effective_at'       => $effective,
-			'expires_at'         => (string) get_user_meta( $user_id, '_gdo_verification_expires_at', true ),
-			'decision_version'   => 'file09-compat-v1.1-hardening',
-			'source_updated_at'  => '',
-		);
 	}
 
 	public static function founder_claim( $founder, $contract_version ) {
@@ -239,3 +135,4 @@ final class DDD_Privacy_Hardening {
 		);
 	}
 }
+

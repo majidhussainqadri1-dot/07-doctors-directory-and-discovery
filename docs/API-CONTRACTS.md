@@ -36,3 +36,13 @@
 - taxonomy/change events used by registered consumers.
 
 Events are past-tense facts, delivered at least once. Consumers must deduplicate. An event never grants authorization.
+
+## Current companion read/action contracts — 2026-10-06
+- File 00 identity: `smc_membership_assertions(user_id)`; missing/incompatible current claims deny public eligibility.
+- File 03 profile: provider registration action `sabri_file07_register_profile_provider`; File 03 public UUID is canonical and File 07 does not mint a second profile identity.
+- File 08 clinic: `sabri_file08_public_clinic_projection_v1`; File 07 consumes only the owner-published public DTO.
+- File 09 verification: `GDO_Integration_Contracts::projection(user_id, 'file07')`.
+- File 19 saved-search alert: producer `file07-doctor-discovery`, event `DoctorDiscovery.SavedSearchMatched`, ingested through `sun_ingest_domain_event()`.
+- File 20 shell: `sabri_shell_verified_doctor_user_ids` receives current eligible File 07 doctor IDs only.
+- File 26 ranking: current provider registry `sabri_file25_search_provider` → `file26.doctor_ranking` and `ranking_constitution`; ranking appeals are handed to File 26's owner service.
+- File 24 assurance: optional public allowlist only; absence never becomes a positive assurance claim.

@@ -279,7 +279,7 @@ final class DDD_Future_Preferences {
 			if ( ! $doctor ) {
 				return;
 			}
-			if ( ! has_action( 'sabri_file19_notification_event_v1' ) ) {
+			if ( ! function_exists( 'sun_ingest_domain_event' ) || ! function_exists( 'sun_register_notification_producer' ) ) {
 				DDD_Observability::record_health( 'file19-notification', 'degraded', 'notification_provider_unavailable' );
 				return;
 			}
@@ -311,18 +311,21 @@ final class DDD_Future_Preferences {
 					if ( in_array( $fingerprint, $seen, true ) ) {
 						continue;
 					}
-					do_action(
-						'sabri_file19_notification_event_v1',
-						array(
-							'event'             => 'DoctorSavedSearchMatched.v1',
-							'recipient_user_id' => absint( $row['user_id'] ),
-							'category'          => 'doctor_discovery',
-							'priority'          => 'normal',
-							'object_public_id'  => $doctor['public_id'],
-							'search_id'         => sanitize_key( (string) ( $search['id'] ?? '' ) ),
-							'deep_link'         => home_url( '/doctors/' ),
-						)
+					$delivery = DDD_Cross_File_Contracts::notify_saved_search_match(
+						absint( $row['user_id'] ),
+						$doctor,
+						$search,
+						$fingerprint
 					);
+					if ( is_wp_error( $delivery ) || false === $delivery || null === $delivery ) {
+						DDD_Observability::record_health(
+							'file19-notification',
+							'degraded',
+							is_wp_error( $delivery ) ? $delivery->get_error_code() : 'notification_ingest_failed'
+						);
+						continue;
+					}
+					DDD_Observability::record_health( 'file19-notification', 'pass', 'notification_ingested' );
 					$seen[] = $fingerprint;
 					$search['last_notified'] = array_slice( array_values( array_unique( $seen ) ), -20 );
 					$changed = true;
