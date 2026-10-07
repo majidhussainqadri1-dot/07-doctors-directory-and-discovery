@@ -1,5 +1,8 @@
 # Migration Guide
 
+Current source target: runtime `1.2.1`, database schema `1.1.1`, projection schema `3`. The 1.1.1 upgrade is additive: `dbDelta` adds the public-safe `avatar_url` field to the rebuildable doctor projection; it introduces no new File-07 table and does not transfer media ownership from File 03.
+
+
 1. Record exact current version, schema, package and active companion contract versions.
 2. Verify files+database backup by isolated restore before mutation.
 3. Install on staging; activation lock prevents concurrent schema owners.
