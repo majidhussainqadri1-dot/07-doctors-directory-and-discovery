@@ -17,7 +17,7 @@ checks={
  'File24 current fairness assurance': 'spcrc/evaluate_ranking_fairness' in text and 'file24-ranking-assurance' in text and 'file26_owner_contract' in text and 'monthly_recomputation' in text,
  'File24 legacy assurance fallback bounded': 'sabri_file24_doctor_ranking_assurance_v1' in text and 'null === $assurance' in text,
  'zero paid donor favoritism': all(x in text for x in ['donation','payment','paid_promotion','founder_favoritism','purchased_engagement']) and 'paid_boost' in text and 'donor_boost' in text,
- 'no fabricated top tiers': 'Top tiers are not fabricated' in text and 'No synthetic result is created' in text,
+ 'no fabricated top tiers': 'file26_ranking_safe_fallback' in text and "return'all'===$tier?self::neutral($filters):$current;" in compact,
  'neutral fallback not a merit rank': 'Neutral alphabetical fallback; no merit rank is asserted' in text and "'rank'=>0" in compact,
  'live owner eligibility recheck': text.count('DDD_Repository::get_by_public_id')>=2 and 'get_live_status' in text,
  'legacy local rank removed from DOM': 'Remove the legacy File-07-local ranked All/Search section from the rendered DOM' in text and "strpos($output,'</section>'" in compact,
