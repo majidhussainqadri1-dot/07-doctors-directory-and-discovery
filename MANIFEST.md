@@ -45,6 +45,7 @@
 - `tests/test-pagination.py`
 - `tests/test-contrast.py`
 - `tests/build-release.sh`
+- `tests/generate-source-checksums.sh`
 
 ## Governance/release evidence
 - `README.md`
