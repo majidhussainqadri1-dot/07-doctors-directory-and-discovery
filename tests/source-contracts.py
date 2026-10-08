@@ -47,7 +47,7 @@ checks={
  'future accessible responsive UI': all(x in futurecss for x in ['focus-visible','min-height:44px','prefers-reduced-motion','html[dir="rtl"]']),
  'File25 visual-token ownership bridge': all(x in files.get('doctors-directory/assets/css/directory.css','') for x in ['--sabri-primary','--sabri-text','--sabri-border','--sabri-focus']) and all(x in futurecss for x in ['--sabri-primary','--sabri-surface','--sabri-border','--sabri-focus']),
  'File24 blocked ranking fails closed': 'file24_ranking_assurance_blocked' in alltext and 'MAX_SNAPSHOT_AGE = 2678400' in alltext,
- 'unknown owner fee cannot satisfy bounded filter': 'fee_max IS NOT NULL AND fee_max>=%f' in alltext.replace(' ','') and 'fee_min IS NOT NULL AND fee_min<=%f' in alltext.replace(' ','') and "!isset($fee['max'])" in alltext.replace(' ',''),
+ 'unknown owner fee cannot satisfy bounded filter': 'fee_maxISNOTNULLANDfee_max>=%f' in alltext.replace(' ','') and 'fee_minISNOTNULLANDfee_min<=%f' in alltext.replace(' ','') and "!isset($fee['max'])" in alltext.replace(' ',''),
 }
 failed=[name for name,result in checks.items() if not result]
 for name,result in checks.items(): print(('PASS' if result else 'FAIL')+': '+name)
