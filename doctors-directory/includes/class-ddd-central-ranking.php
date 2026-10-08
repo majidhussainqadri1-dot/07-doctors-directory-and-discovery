@@ -511,8 +511,8 @@ final class DDD_Central_Ranking {
 		if ( $f['mode'] ) { $where[]='consultation_modes_json LIKE %s'; $p[]='%"'.$wpdb->esc_like($f['mode']).'"%'; }
 		if ( $f['accepting'] ) { $where[]='accepting_patients=1'; }
 		if ( $f['currency'] ) { $where[]='currency=%s'; $p[]=strtoupper(substr($f['currency'],0,3)); }
-		if ( null !== $f['fee_min'] ) { $where[]='(fee_max IS NULL OR fee_max>=%f)'; $p[]=(float)$f['fee_min']; }
-		if ( null !== $f['fee_max'] ) { $where[]='(fee_min IS NULL OR fee_min<=%f)'; $p[]=(float)$f['fee_max']; }
+		if ( null !== $f['fee_min'] ) { $where[]='fee_max IS NOT NULL AND fee_max>=%f'; $p[]=(float)$f['fee_min']; }
+		if ( null !== $f['fee_max'] ) { $where[]='fee_min IS NOT NULL AND fee_min<=%f'; $p[]=(float)$f['fee_max']; }
 		$hash = DDD_Helpers::filter_hash( $f ); $raw = isset($_GET['doctor_rank_cursor']) ? sanitize_text_field(wp_unslash($_GET['doctor_rank_cursor'])) : ''; $cursor = $raw ? DDD_Helpers::cursor_decode($raw,$hash) : array();
 		if ( $raw && ! $cursor ) { return new WP_Error( 'neutral_cursor_invalid', __( 'The All Verified cursor expired or does not match these filters. Restart the view.', DDD_TEXT_DOMAIN ) ); }
 		if ( $cursor ) { $where[]='(display_name_norm>%s OR (display_name_norm=%s AND public_id>%s))'; $p[]=(string)($cursor['n']??''); $p[]=(string)($cursor['n']??''); $p[]=(string)($cursor['p']??''); }
@@ -543,9 +543,9 @@ final class DDD_Central_Ranking {
 		if ( ! empty( $f['mode'] ) && ! in_array( $f['mode'], (array) ( $doctor['consultation_modes'] ?? array() ), true ) ) { return false; }
 		if ( ! empty( $f['accepting'] ) && empty( $doctor['accepting_patients'] ) ) { return false; }
 		$fee = is_array( $doctor['fee'] ?? null ) ? $doctor['fee'] : array();
-		if ( ! empty( $f['currency'] ) && ! empty( $fee['currency'] ) && 0 !== strcasecmp( (string) $fee['currency'], (string) $f['currency'] ) ) { return false; }
-		if ( null !== $f['fee_min'] && isset( $fee['max'] ) && null !== $fee['max'] && (float) $fee['max'] < (float) $f['fee_min'] ) { return false; }
-		if ( null !== $f['fee_max'] && isset( $fee['min'] ) && null !== $fee['min'] && (float) $fee['min'] > (float) $f['fee_max'] ) { return false; }
+		if ( ! empty( $f['currency'] ) && ( empty( $fee['currency'] ) || 0 !== strcasecmp( (string) $fee['currency'], (string) $f['currency'] ) ) ) { return false; }
+		if ( null !== $f['fee_min'] && ( ! isset( $fee['max'] ) || null === $fee['max'] || ! is_numeric( $fee['max'] ) || (float) $fee['max'] < (float) $f['fee_min'] ) ) { return false; }
+		if ( null !== $f['fee_max'] && ( ! isset( $fee['min'] ) || null === $fee['min'] || ! is_numeric( $fee['min'] ) || (float) $fee['min'] > (float) $f['fee_max'] ) ) { return false; }
 		return true;
 	}
 
