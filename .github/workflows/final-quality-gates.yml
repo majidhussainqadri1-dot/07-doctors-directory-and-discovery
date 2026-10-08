@@ -30,6 +30,8 @@ jobs:
         run: |
           php tests/unit-helpers.php
           python3 tests/source-contracts.py
+      - name: Fresh twenty-round cross-file audit
+        run: python3 tests/review-20-cross-file-20261008.py
       - name: Central-plan File 26 ranking contract
         run: python3 tests/central-plan-ranking.py
       - name: Central-plan adversarial ranking review
