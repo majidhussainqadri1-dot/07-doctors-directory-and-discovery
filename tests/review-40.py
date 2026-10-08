@@ -19,7 +19,7 @@ add('Release identity 1.2.2',all(x in rd(y) for x,y in [('Version: 1.2.2','docto
 listed=[]
 add('Exact-source CI integrity', 'git rev-parse HEAD' in wf and 'git diff --exit-code' in wf)
 add('No obsolete pre-1.2.2 CI package path','1.2.1.zip' not in wb and '1.2.2' in wb)
-core=['unit-helpers.php','source-contracts.py','central-plan-ranking.py','central-plan-adversarial.py','future-discovery-24.py','static-audit.sh','review-40.py','test-pagination.py','test-contrast.py']
+core=['unit-helpers.php','source-contracts.py','review-20-cross-file-20261008.py','central-plan-ranking.py','central-plan-adversarial.py','future-discovery-24.py','static-audit.sh','review-40.py','test-pagination.py','test-contrast.py']
 add('Workflow core-gate parity',all(x in wb and x in wf for x in core))
 add('Final workflow exact-source integrity','git rev-parse HEAD' in wf and 'git diff --exit-code' in wf)
 add('Manifest covers future/review/release evidence',all(x in m for x in ['class-ddd-future-discovery.php','class-ddd-future-mutation-guard.php','class-ddd-cross-file-contracts.php','future-discovery.js','future-discovery.css','tests/future-discovery-24.py','docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md','.github/workflows/final-quality-gates.yml']))
