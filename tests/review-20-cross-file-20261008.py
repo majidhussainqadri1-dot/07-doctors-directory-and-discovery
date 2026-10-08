@@ -30,7 +30,7 @@ add('File00 membership identity consumed canonically',
 add('File03 public profile and public ID remain owner truth',
     'spd_get_personal_site_profile' in xc and 'canonical_public_id_missing' in h and 'uuid_from_user' not in allphp)
 add('File08 clinic boundary is owner-only and bounded fee filters exclude unknowns',
-    'sabri_file08_public_clinic_projection_v1' in xc and 'fee_max IS NOT NULL AND fee_max>=%f' in d.replace(' ','') and 'fee_min IS NOT NULL AND fee_min<=%f' in d.replace(' ',''))
+    'sabri_file08_public_clinic_projection_v1' in xc and 'fee_maxISNOTNULLANDfee_max>=%f' in d.replace(' ','') and 'fee_minISNOTNULLANDfee_min<=%f' in d.replace(' ',''))
 add('File09 verification projection is current and fail-closed',
     'GDO_Integration_Contracts::projection' in xc and 'authorization_rechecked' in xc and 'verification_contract_unavailable' in h)
 add('File17 communications ownership is not duplicated',
