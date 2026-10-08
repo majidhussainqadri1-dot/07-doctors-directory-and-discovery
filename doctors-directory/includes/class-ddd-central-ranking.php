@@ -12,7 +12,7 @@ final class DDD_Central_Ranking {
 	const RANKING_FILTER = 'sabri_file26_doctor_ranking_v1'; // Legacy compatibility only.
 	const ASSURANCE_FILTER = 'sabri_file24_doctor_ranking_assurance_v1';
 	const CONTRACT_VERSION = '1.0';
-	const MAX_SNAPSHOT_AGE = 3024000; // 35 days.
+	const MAX_SNAPSHOT_AGE = 2678400; // 31 days; aligned with File 24 fairness freshness policy.
 	const LIMIT = 24;
 	const MAX_CURSOR = 512;
 
@@ -488,6 +488,13 @@ final class DDD_Central_Ranking {
 			);
 		} elseif ( is_array( $assurance ) ) {
 			$assurance = self::public_assurance( $assurance );
+		}
+		if ( is_array( $assurance ) && 'blocked' === sanitize_key( (string) ( $assurance['status'] ?? '' ) ) ) {
+			DDD_Observability::record_health( 'file24-ranking-assurance', 'degraded', 'file24_assurance_blocked_merit_ranking' );
+			return new WP_Error(
+				'file24_ranking_assurance_blocked',
+				__( 'Official merit ranking is withheld because File 24 did not verify the current ranking evidence.', DDD_TEXT_DOMAIN )
+			);
 		}
 		return array( 'source' => 'file26', 'ready' => true, 'policy_version' => $policy, 'monthly_version' => $monthly, 'generated_at' => gmdate( 'Y-m-d H:i:s', $generated ), 'items' => $items, 'next_cursor' => sanitize_text_field( substr( (string) ( $response['next_cursor'] ?? '' ), 0, self::MAX_CURSOR ) ), 'assurance' => $assurance );
 	}
