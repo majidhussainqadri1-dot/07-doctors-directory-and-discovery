@@ -26,7 +26,7 @@ checks={
  'appeal rate and object gate': "rate_limit('ranking-appeal'" in compact and 'appeal only your own eligible doctor ranking' in text,
  'public ranking REST route': "'/ranking'" in text and 'rest_ranking' in text,
  'public ranking REST rate limited': "rate_limit('ranking'" in compact and 'ranking_rate_limited' in text,
- 'bounded fee filters reject unknown values': 'fee_max IS NOT NULL AND fee_max>=%f' in compact and 'fee_min IS NOT NULL AND fee_min<=%f' in compact and "empty($fee['currency'])" in compact,
+ 'bounded fee filters reject unknown values': 'fee_maxISNOTNULLANDfee_max>=%f' in compact and 'fee_minISNOTNULLANDfee_min<=%f' in compact and "empty($fee['currency'])" in compact,
 }
 failed=[k for k,v in checks.items() if not v]
 for k,v in checks.items(): print(('PASS' if v else 'FAIL')+': '+k)
