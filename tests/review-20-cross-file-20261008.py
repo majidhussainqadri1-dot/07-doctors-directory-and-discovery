@@ -4,6 +4,7 @@ R=Path(__file__).resolve().parents[1]
 rd=lambda p:(R/p).read_text(encoding='utf-8',errors='ignore')
 plug=rd('doctors-directory/doctors-directory.php')
 xc=rd('doctors-directory/includes/class-ddd-cross-file-contracts.php')
+shell=rd('doctors-directory/includes/class-sdd-plugin.php')
 h=rd('doctors-directory/includes/class-sdd-helpers.php')
 d=rd('doctors-directory/includes/class-sdd-directory.php')
 rank=rd('doctors-directory/includes/class-ddd-central-ranking.php')
@@ -38,7 +39,7 @@ add('File17 communications ownership is not duplicated',
 add('File19 notification producer and ingestion are canonical',
     all(x in xc for x in ['sun_register_notification_producer','sun_ingest_domain_event','schema_versions','allowed_data_fields']))
 add('File20 shell compatibility projection and page map are present',
-    'sabri_shell_verified_doctor_user_ids' in xc and "PAGE_MAP_OPTION = 'ddd_page_map'" in act and "update_option( 'sdd_page_map'" in act)
+    'sabri_shell_verified_doctor_user_ids' in shell and "PAGE_MAP_OPTION = 'ddd_page_map'" in act and "update_option( 'sdd_page_map'" in act)
 add('File21 Home/News ownership is not duplicated',
     not re.search(r'CREATE TABLE[^;]*(news_feed|home_feed|post_feed)',allphp,re.I))
 add('File22 Composer ownership is not duplicated',
@@ -54,7 +55,7 @@ add('File26 current provider ranking constitution and appeal service are consume
 add('F07-FUT-01..24 and advanced fee truth are enforced',
     all(f'F07-FUT-{i:02d}' in rd('docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md') for i in range(1,25)) and "!isset($fee['max'])" in fq.replace(' ','') and "!isset($fee['min'])" in fq.replace(' ',''))
 add('Security privacy abuse controls remain present',
-    all(x in allphp for x in ['wp_verify_nonce','rate_limit','same_origin_url']) and 'wp_privacy_personal_data_exporters' in privacy and 'wp_privacy_personal_data_erasers' in privacy)
+    all(x in allphp for x in ['check_admin_referer','wp_nonce_field','rate_limit','same_origin_url']) and 'wp_privacy_personal_data_exporters' in privacy and 'wp_privacy_personal_data_erasers' in privacy)
 add('Accessibility RTL reduced-motion and 44px targets remain present',
     all(x in css for x in ['focus-visible','prefers-reduced-motion','html[dir="rtl"]','44px']))
 add('Migration packaging and exact-source gates remain reproducible',
