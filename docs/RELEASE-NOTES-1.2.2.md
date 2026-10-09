@@ -29,9 +29,9 @@ See `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md` for the exact companion 
 
 Deterministic package: `07-doctors-directory-and-discovery-1.2.2.zip`.
 
-SHA-256: `1008d0365d9569d2583a006e6ec116bbadaa39cc07f676eb6166c25c2c502478`.
+SHA-256: `bef2554ac6ad233e9d98a8cac280f00d8e904844399d2a71fe419af7f86fe8ad`.
 
-Evidence: the deterministic build in Final Quality Gates run 37967697111 at corrective HEAD `3394a1d2075a84b4c4d43f43bc42c4da9f0c4ce0` generated this digest. That run failed because the prior declared digest was stale after the semantic-search plugin change; this correction updates the declaration. The package is assembled exclusively from `doctors-directory/`. The final workflow checks the declared checksum against the freshly built package. If packaged source changes, rebuild and refresh this checksum.
+Evidence: deterministic package built from corrective HEAD `1dee44293d7b8c6fce4f77e6d656d2658dc4e24f` in Final Quality Gates run 37988920515 yielded this SHA-256. That run passed the code, regression, source-manifest and deterministic-build steps, but failed the declared checksum parity because the earlier digest remained in the release declaration. Exact-head CI confirmation of this corrected declaration is required. The package is assembled exclusively from `doctors-directory/`. The final workflow checks the declared checksum against the freshly built package. If packaged source changes, rebuild and refresh this checksum.
 
 ## Release truth
 
