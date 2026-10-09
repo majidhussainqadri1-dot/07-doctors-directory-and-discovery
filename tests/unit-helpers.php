@@ -67,4 +67,23 @@ ok(!isset($parsed['language']),'semantic language does not match within a longer
 $parsed=DDD_Future_Query::interpret('اردو ڈاکٹر لاہور');
 ok(($parsed['language']??'')==='Urdu','whole-word Urdu language intent recognized');
 
+
+$availability_params=DDD_Future_Query::sanitize(array('availability_days'=>7,'timezone'=>'Asia/Karachi'));
+$availability_doctor=array('public_id'=>'12345678-1234-4abc-8def-123456789abc','verified_at'=>gmdate('c'),'languages'=>array('Urdu'),'consultation_modes'=>array('online'));
+$GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']=array(function(){return array('next_available_at'=>gmdate('c',time()-DAY_IN_SECONDS),'clinic_timezone'=>'UTC');});
+$expired=DDD_Future_Query::enrich($availability_doctor,$availability_params);
+ok(!DDD_Future_Query::matches($expired,$availability_params),'expired next appointment cannot satisfy upcoming availability filter');
+ok(empty($expired['local_availability']),'expired next appointment cannot be advertised as upcoming');
+$GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']=array(function(){return array('next_available_at'=>gmdate('c',time()+DAY_IN_SECONDS),'clinic_timezone'=>'UTC');});
+$upcoming=DDD_Future_Query::enrich($availability_doctor,$availability_params);
+ok(DDD_Future_Query::matches($upcoming,$availability_params),'genuine future appointment inside window is included');
+ok(!empty($upcoming['local_availability']['next_local']),'genuine future appointment has local-time projection');
+$GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']=array(function(){return array('next_available_at'=>gmdate('c',time()+10*DAY_IN_SECONDS),'clinic_timezone'=>'UTC');});
+$distant=DDD_Future_Query::enrich($availability_doctor,$availability_params);
+ok(!DDD_Future_Query::matches($distant,$availability_params),'appointment outside requested window is excluded');
+$GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']=array(function(){return array('next_available_at'=>'not-a-date','clinic_timezone'=>'UTC');});
+$invalid=DDD_Future_Query::enrich($availability_doctor,$availability_params);
+ok(!DDD_Future_Query::matches($invalid,$availability_params),'invalid availability timestamp fails closed');
+unset($GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']);
+
 echo "TOTAL PASS: $tests\n";

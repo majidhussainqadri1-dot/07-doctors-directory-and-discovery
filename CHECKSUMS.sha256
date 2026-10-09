@@ -16,6 +16,7 @@ ec1a4e7b5a5e4629a2131a1952ad4f7aefc98930e5a223161d14f2b061a82b2e  ./docs/API-CON
 281b7790072ee73df080f345986808c0f186a311ff28cbc8378bfe45e54b6538  ./docs/FILE26-RANKING-CONTRACT-v1.md
 432f4b542a622bca6bdee224d086e096e046d3cf93ec057ed1bd8f0a8abc2d72  ./docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md
 ef4045964bd167fbb656e1dfe003ffd61713494d8ab0d549f69cead3bd8844a5  ./docs/HOURLY-AUDIT-2026-10-09-ROUND-02.md
+cfd3a55dc65a9ac50f2c4777b05e53f7042fd744571cd6e5ecc044d608edfdae  ./docs/HOURLY-AUDIT-2026-10-10-ROUND-03.md
 951bd8fe9236e1c885c39f7225605181ef9fd20b9f5e4fadf86362e787bf12de  ./docs/MIGRATION.md
 da96c03f9d5119563ea139c0c165663cf9b3404f03ee8700345d174681a4ad14  ./docs/OPERATIONS-RUNBOOK.md
 742cdc94f561be498ac96eaf287f35882cbbb41cbd681d14ce9e3d4270665f55  ./docs/PRIVACY-RETENTION.md
@@ -47,7 +48,7 @@ e7a875b651c97d30b564613499cd6736dd8a92103e128d1858192a341a11b55b  ./doctors-dire
 ff789f0cb7f2bb3e531cbfa3fcdc4ba2f41893e6535ab1025e273ae15d4c4a3d  ./doctors-directory/includes/class-ddd-future-discovery.php
 fac1b2d44493b8f9eaee488a515eaab927566a0dee046e764270c71917328846  ./doctors-directory/includes/class-ddd-future-mutation-guard.php
 2b2299772be3857f909102a721e2928f541a6e6193b69e6b209a985194b2cdfb  ./doctors-directory/includes/class-ddd-future-preferences.php
-bbcfd32b9504e801554a9cb1f73610405b5a015b4b2837c03fad00e0ee169ca0  ./doctors-directory/includes/class-ddd-future-query.php
+27a5346581d5a4c822823ee7c68833b32301901e87465e88f19d9849aa0eb724  ./doctors-directory/includes/class-ddd-future-query.php
 a141aef4db5c9193e0e9c357c89cd981eb9f1e0cf56fbfa1217e8a81ccffb4ee  ./doctors-directory/includes/class-ddd-future-ui.php
 a5c6fba42726f796c53c21f35a6b6dc0fca95c563d3d9f1dc9175b2b2dafd5f9  ./doctors-directory/includes/class-ddd-ranking-appeal.php
 95de1c1c66bdbd642a6600de40544748713e44dcd93c47aab390cdb5bf3aafdf  ./doctors-directory/includes/class-ddd-ranking-ui.php
@@ -75,5 +76,5 @@ e4d836582f274987a8b617e009ef39486837ae53f704c64993da9b0ae5021379  ./tests/source
 567936f95230782ede761eff8e4581cd5d84f96b7a239471b2bc1710abb64a1e  ./tests/static-audit.sh
 4d394cd971ba73d5fd3478f1997e488f2fcb5776d4958e4941865d3e1d49e1f9  ./tests/test-contrast.py
 6b1d7aea191f5a6b27f2720c530178e2490693fb1e1eb4039823beb6d675f7b7  ./tests/test-pagination.py
-bd43e5934e1a2e9d2c04b8abb0156e445daf9d0526c47c18b81ecb8010f29e33  ./tests/unit-helpers.php
+ca51f50e4b7eb35f0e6b936367f59b3552ff01fd4e01805668562d0e64cecb02  ./tests/unit-helpers.php
 619b612a9c887618d3aba05af24a25e56c2c0f93c775c435a8923bbcb5631278  ./tests/verify-package-paths.py
