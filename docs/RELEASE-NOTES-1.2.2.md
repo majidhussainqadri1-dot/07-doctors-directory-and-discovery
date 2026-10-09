@@ -29,9 +29,9 @@ See `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md` for the exact companion 
 
 Deterministic package: `07-doctors-directory-and-discovery-1.2.2.zip`.
 
-SHA-256: `3607e59f9d080cfe97a1835346dda9c4c426d5a56f4e653b8adb63b02fe2e64b`.
+SHA-256: `1008d0365d9569d2583a006e6ec116bbadaa39cc07f676eb6166c25c2c502478`.
 
-Evidence: File 07 v1.2.2 Final Quality Gates, run 37924897538, corrective source HEAD `2bfe174b1af850a3825cedf2163608e39ab59121`. The package is assembled exclusively from `doctors-directory/`; these release-document and workflow changes do not modify the packaged plugin. The final quality workflow checks the declared checksum against the freshly built package. If packaged source changes, rebuild and refresh this checksum.
+Evidence: the deterministic build in Final Quality Gates run 37967697111 at corrective HEAD `3394a1d2075a84b4c4d43f43bc42c4da9f0c4ce0` generated this digest. That run failed because the prior declared digest was stale after the semantic-search plugin change; this correction updates the declaration. The package is assembled exclusively from `doctors-directory/`. The final workflow checks the declared checksum against the freshly built package. If packaged source changes, rebuild and refresh this checksum.
 
 ## Release truth
 
