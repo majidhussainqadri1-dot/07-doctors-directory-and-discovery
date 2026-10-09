@@ -8,7 +8,7 @@ future='\n'.join(files.get(x,'') for x in ['doctors-directory/includes/class-ddd
 futurejs=files.get('doctors-directory/assets/js/future-discovery.js','')
 futurecss=files.get('doctors-directory/assets/css/future-discovery.css','')
 checks={
- 'release identity 1.2.1': "Version: 1.2.1" in files['doctors-directory/doctors-directory.php'] and "Stable tag: 1.2.1" in files['doctors-directory/readme.txt'],
+ 'release identity 1.2.2': "Version: 1.2.2" in files['doctors-directory/doctors-directory.php'] and "Stable tag: 1.2.2" in files['doctors-directory/readme.txt'],
  'canonical DDD namespace': "define( 'DDD_VERSION'" in alltext and 'final class DDD_Repository' in alltext,
  'mandatory contracts fail closed': "mandatory_contract_missing" in alltext and "identity_contract_unavailable" in alltext,
  'Founder separation': "founder_separate" in alltext and "never mixed" in alltext,
@@ -46,6 +46,8 @@ checks={
  'future UI safe DOM': 'innerHTML = data' not in futurejs and 'textContent' in futurejs,
  'future accessible responsive UI': all(x in futurecss for x in ['focus-visible','min-height:44px','prefers-reduced-motion','html[dir="rtl"]']),
  'File25 visual-token ownership bridge': all(x in files.get('doctors-directory/assets/css/directory.css','') for x in ['--sabri-primary','--sabri-text','--sabri-border','--sabri-focus']) and all(x in futurecss for x in ['--sabri-primary','--sabri-surface','--sabri-border','--sabri-focus']),
+ 'File24 blocked ranking fails closed': 'file24_ranking_assurance_blocked' in alltext and 'MAX_SNAPSHOT_AGE = 2678400' in alltext,
+ 'unknown owner fee cannot satisfy bounded filter': 'fee_maxISNOTNULLANDfee_max>=%f' in alltext.replace(' ','') and 'fee_minISNOTNULLANDfee_min<=%f' in alltext.replace(' ','') and "!isset($fee['max'])" in alltext.replace(' ',''),
 }
 failed=[name for name,result in checks.items() if not result]
 for name,result in checks.items(): print(('PASS' if result else 'FAIL')+': '+name)

@@ -33,6 +33,14 @@ function wp_strip_all_tags($v){ return strip_tags((string)$v); }
 function remove_accents($v){ return (string)$v; }
 function wp_json_encode($v){ return json_encode($v, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES); }
 function wp_parse_args($args,$defaults=array()){ return array_merge($defaults,(array)$args); }
+// Mirror the WordPress REST boolean sanitizer in the isolated test runtime.
+function rest_sanitize_boolean($value){
+    if (is_string($value)) {
+        $value = strtolower($value);
+        if (in_array($value, array('false', '0'), true)) $value = false;
+    }
+    return (bool) $value;
+}
 function wp_salt($scheme='auth'){ return 'test-salt-'.$scheme; }
 function wp_hash($v){ return hash('sha256',(string)$v); }
 function wp_rand($min=0,$max=0){ return $max ? $min : 123456; }

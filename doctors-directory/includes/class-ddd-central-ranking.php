@@ -12,7 +12,7 @@ final class DDD_Central_Ranking {
 	const RANKING_FILTER = 'sabri_file26_doctor_ranking_v1'; // Legacy compatibility only.
 	const ASSURANCE_FILTER = 'sabri_file24_doctor_ranking_assurance_v1';
 	const CONTRACT_VERSION = '1.0';
-	const MAX_SNAPSHOT_AGE = 3024000; // 35 days.
+	const MAX_SNAPSHOT_AGE = 2678400; // 31 days; aligned with File 24 fairness freshness policy.
 	const LIMIT = 24;
 	const MAX_CURSOR = 512;
 
@@ -489,6 +489,13 @@ final class DDD_Central_Ranking {
 		} elseif ( is_array( $assurance ) ) {
 			$assurance = self::public_assurance( $assurance );
 		}
+		if ( is_array( $assurance ) && 'blocked' === sanitize_key( (string) ( $assurance['status'] ?? '' ) ) ) {
+			DDD_Observability::record_health( 'file24-ranking-assurance', 'degraded', 'file24_assurance_blocked_merit_ranking' );
+			return new WP_Error(
+				'file24_ranking_assurance_blocked',
+				__( 'Official merit ranking is withheld because File 24 did not verify the current ranking evidence.', DDD_TEXT_DOMAIN )
+			);
+		}
 		return array( 'source' => 'file26', 'ready' => true, 'policy_version' => $policy, 'monthly_version' => $monthly, 'generated_at' => gmdate( 'Y-m-d H:i:s', $generated ), 'items' => $items, 'next_cursor' => sanitize_text_field( substr( (string) ( $response['next_cursor'] ?? '' ), 0, self::MAX_CURSOR ) ), 'assurance' => $assurance );
 	}
 
@@ -504,8 +511,8 @@ final class DDD_Central_Ranking {
 		if ( $f['mode'] ) { $where[]='consultation_modes_json LIKE %s'; $p[]='%"'.$wpdb->esc_like($f['mode']).'"%'; }
 		if ( $f['accepting'] ) { $where[]='accepting_patients=1'; }
 		if ( $f['currency'] ) { $where[]='currency=%s'; $p[]=strtoupper(substr($f['currency'],0,3)); }
-		if ( null !== $f['fee_min'] ) { $where[]='(fee_max IS NULL OR fee_max>=%f)'; $p[]=(float)$f['fee_min']; }
-		if ( null !== $f['fee_max'] ) { $where[]='(fee_min IS NULL OR fee_min<=%f)'; $p[]=(float)$f['fee_max']; }
+		if ( null !== $f['fee_min'] ) { $where[]='fee_max IS NOT NULL AND fee_max>=%f'; $p[]=(float)$f['fee_min']; }
+		if ( null !== $f['fee_max'] ) { $where[]='fee_min IS NOT NULL AND fee_min<=%f'; $p[]=(float)$f['fee_max']; }
 		$hash = DDD_Helpers::filter_hash( $f ); $raw = isset($_GET['doctor_rank_cursor']) ? sanitize_text_field(wp_unslash($_GET['doctor_rank_cursor'])) : ''; $cursor = $raw ? DDD_Helpers::cursor_decode($raw,$hash) : array();
 		if ( $raw && ! $cursor ) { return new WP_Error( 'neutral_cursor_invalid', __( 'The All Verified cursor expired or does not match these filters. Restart the view.', DDD_TEXT_DOMAIN ) ); }
 		if ( $cursor ) { $where[]='(display_name_norm>%s OR (display_name_norm=%s AND public_id>%s))'; $p[]=(string)($cursor['n']??''); $p[]=(string)($cursor['n']??''); $p[]=(string)($cursor['p']??''); }
@@ -536,9 +543,9 @@ final class DDD_Central_Ranking {
 		if ( ! empty( $f['mode'] ) && ! in_array( $f['mode'], (array) ( $doctor['consultation_modes'] ?? array() ), true ) ) { return false; }
 		if ( ! empty( $f['accepting'] ) && empty( $doctor['accepting_patients'] ) ) { return false; }
 		$fee = is_array( $doctor['fee'] ?? null ) ? $doctor['fee'] : array();
-		if ( ! empty( $f['currency'] ) && ! empty( $fee['currency'] ) && 0 !== strcasecmp( (string) $fee['currency'], (string) $f['currency'] ) ) { return false; }
-		if ( null !== $f['fee_min'] && isset( $fee['max'] ) && null !== $fee['max'] && (float) $fee['max'] < (float) $f['fee_min'] ) { return false; }
-		if ( null !== $f['fee_max'] && isset( $fee['min'] ) && null !== $fee['min'] && (float) $fee['min'] > (float) $f['fee_max'] ) { return false; }
+		if ( ! empty( $f['currency'] ) && ( empty( $fee['currency'] ) || 0 !== strcasecmp( (string) $fee['currency'], (string) $f['currency'] ) ) ) { return false; }
+		if ( null !== $f['fee_min'] && ( ! isset( $fee['max'] ) || null === $fee['max'] || ! is_numeric( $fee['max'] ) || (float) $fee['max'] < (float) $f['fee_min'] ) ) { return false; }
+		if ( null !== $f['fee_max'] && ( ! isset( $fee['min'] ) || null === $fee['min'] || ! is_numeric( $fee['min'] ) || (float) $fee['min'] > (float) $f['fee_max'] ) ) { return false; }
 		return true;
 	}
 

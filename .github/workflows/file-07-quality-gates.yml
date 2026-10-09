@@ -11,8 +11,8 @@ jobs:
       - uses: actions/checkout@v5
       - name: Release identity
         run: |
-          grep -q "Version: 1.2.1" doctors-directory/doctors-directory.php
-          grep -q "Stable tag: 1.2.1" doctors-directory/readme.txt
+          grep -q "Version: 1.2.2" doctors-directory/doctors-directory.php
+          grep -q "Stable tag: 1.2.2" doctors-directory/readme.txt
       - name: Exact source checksum manifest
         run: |
           bash tests/generate-source-checksums.sh | tee /tmp/CHECKSUMS.generated
@@ -25,6 +25,8 @@ jobs:
         run: |
           php tests/unit-helpers.php
           python3 tests/source-contracts.py
+      - name: Fresh twenty-round cross-file audit
+        run: python3 tests/review-20-cross-file-20261008.py
       - name: Central-plan File 26 ranking contract
         run: python3 tests/central-plan-ranking.py
       - name: Central-plan adversarial ranking review

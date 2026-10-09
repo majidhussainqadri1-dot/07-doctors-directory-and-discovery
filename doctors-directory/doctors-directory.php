@@ -3,7 +3,7 @@
  * Plugin Name: Doctors Directory and Discovery
  * Plugin URI: https://www.sabrihomeopathy.com/
  * Description: Canonical verified-doctor directory, discovery, eligibility projection, search, moderation, SEO and operational controls for the Sabri Social Homeopathy Platform.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Requires at least: 7.0
  * Requires PHP: 8.0
  * Author: Dr. Allamah Majid Hussain Sabri Muhaddith Mursheed
@@ -13,9 +13,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DDD_VERSION', '1.2.1' );
+define( 'DDD_VERSION', '1.2.2' );
 define( 'DDD_DB_VERSION', '1.1.1' );
-define( 'DDD_CONTRACT_VERSION', '1.2.1' );
+define( 'DDD_CONTRACT_VERSION', '1.2.2' );
 define( 'DDD_FILE', __FILE__ );
 define( 'DDD_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DDD_URL', plugin_dir_url( __FILE__ ) );

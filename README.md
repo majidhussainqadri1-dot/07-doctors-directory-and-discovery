@@ -4,9 +4,9 @@ Canonical repository source for **Sabri Social Homeopathy Platform File 07**.
 
 ## Release candidate
 
-- Runtime: `1.2.1`
+- Runtime: `1.2.2`
 - Database schema: `1.1.1` (projection-only additive migration; no new File-07 database table)
-- Contract: `1.2.1`
+- Contract: `1.2.2`
 - Projection schema: `3`
 - WordPress baseline: `7.0.1`
 - PHP baseline: `8.3`
@@ -20,7 +20,11 @@ File 07 owns the rebuildable public discovery projection of verified-eligible do
 
 It does **not** own membership/identity (File 00), doctor verification decisions/evidence (File 09), professional profile truth (File 03), clinic/location/availability/appointment truth (File 08), notification delivery/preferences (File 19), global shell (File 20), visual design-system ownership (File 25), global merit-ranking orchestration (File 26), or native security enforcement/assurance owned by companion modules.
 
-## v1.2.1 — current cross-file contract reconciliation
+## v1.2.2 — fresh 20-round current-contract audit
+
+A fresh exact-HEAD audit on 2026-10-08 rechecked File 07 against its master plan, the central plan and the current repository states of Files 00, 03, 08, 09, 17, 19, 20, 21, 22, 23, 24, 25 and 26. Three File 07 defects were found and corrected: unknown File 08 fee values no longer satisfy bounded fee filters, ranking freshness now matches File 24's 31-day fairness window, and an explicit File 24 blocked decision now withholds official merit tiers. Current external owner-side limitations are documented rather than fabricated. See `docs/REVIEW-CYCLE-20-CROSS-FILE-2026-10-08.md` and `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md`.
+
+## v1.2.1 — prior cross-file contract reconciliation
 
 The 20-round File 07 audit reconciles repository code with the current repository contracts of Files 00, 03, 08, 09, 19, 20, 24, 25 and 26. It removes File 07 identity minting, consumes current notification/ranking/appeal owner APIs, publishes a bounded verified-doctor projection to File 20, consumes File 24's current `spcrc/evaluate_ranking_fairness` assurance without fabricating a pass, and bridges File 07 visual fallbacks to File 25-owned design tokens. The source review remains separate from staging/live evidence.
 
@@ -56,4 +60,4 @@ bash tests/build-release.sh
 
 ## Release truth
 
-Source, deterministic package and automated repository QA are separate from Hostinger staging, real companion-package integration, browser/device acceptance, restore/rollback rehearsal, Founder acceptance, live deployment and operational acceptance. See `docs/STAGING-ACCEPTANCE.md`.
+Source, deterministic package and automated repository QA are separate from Hostinger staging, real companion-package integration, browser/device acceptance, restore/rollback rehearsal, Founder acceptance, live deployment and operational acceptance. v1.2.2 does not claim staging or live parity. See `docs/STAGING-ACCEPTANCE.md`.

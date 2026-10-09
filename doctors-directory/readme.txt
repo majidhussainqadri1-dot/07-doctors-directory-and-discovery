@@ -4,7 +4,7 @@ Tags: doctors, directory, discovery, homeopathy, verified-professionals
 Requires at least: 7.0
 Tested up to: 7.0.1
 Requires PHP: 8.0
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 
 Canonical verified-doctor public projection, search, filtering, ranking, moderation, SEO, privacy and operational controls for the Sabri Social Homeopathy Platform.
@@ -53,6 +53,13 @@ Highlights:
 Verification is not an endorsement, cure claim or treatment guarantee. Emergency care is outside this directory. Emergency-type natural-language queries suppress directory recommendations and show an urgent-care diversion. Public fields are allowlisted and must be consented. Private identity evidence, patient data and internal risk details are never indexed or exposed. Precise user coordinates are request-scoped and not persisted by the future-discovery layer.
 
 == Changelog ==
+
+= 1.2.2 =
+* Fresh 20-round exact-HEAD audit against the File 07 master plan, central plan and current companion repository contracts.
+* Official merit tiers now fail closed when current File 24 fairness assurance explicitly blocks the File 26 ranking evidence; All Verified can still use the clearly labeled neutral non-merit fallback.
+* Ranking freshness is aligned to File 24's 31-day fairness-evidence window.
+* Bounded fee/currency filters now exclude doctors whose File 08 canonical fee data is absent instead of treating unknown values as matches.
+* File 08 currently does not publish all richer clinic-filter fields consumed by File 07; File 07 does not fabricate them and staging acceptance remains dependent on a compatible owner projection.
 
 = 1.2.1 =
 * Reconciled File 07 with current File 00/03/08/09/19/20/26 runtime contracts after the 20-round cross-file audit.

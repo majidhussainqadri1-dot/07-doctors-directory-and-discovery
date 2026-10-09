@@ -1,4 +1,4 @@
-# Source Manifest — File 07 v1.2.1
+# Source Manifest — File 07 v1.2.2
 
 ## Runtime
 - `doctors-directory/doctors-directory.php`
@@ -35,6 +35,7 @@
 - `tests/bootstrap.php`
 - `tests/unit-helpers.php`
 - `tests/source-contracts.py`
+- `tests/review-20-cross-file-20261008.py`
 - `tests/central-plan-ranking.py`
 - `tests/central-plan-adversarial.py`
 - `tests/future-discovery-24.py`
@@ -70,10 +71,14 @@
 - `docs/REVIEW-CYCLE-80-FRESH-2026-08-10.md`
 - `docs/REVIEW-CYCLE-80-FRESH-2-2026-08-10.md`
 - `docs/REVIEW-CYCLE-20-CROSS-FILE-2026-10-06.md`
+- `docs/REVIEW-CYCLE-20-CROSS-FILE-2026-10-08.md`
+- `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md`
+- `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-09.md`
 - `docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md`
 - `docs/FILE26-RANKING-CONTRACT-v1.md`
 - `docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md`
 - `docs/RELEASE-NOTES-1.1.0.md`
 - `docs/RELEASE-NOTES-1.2.0.md`
 - `docs/RELEASE-NOTES-1.2.1.md`
+- `docs/RELEASE-NOTES-1.2.2.md`
 - `docs/DEPENDENCY-INVENTORY.md`
