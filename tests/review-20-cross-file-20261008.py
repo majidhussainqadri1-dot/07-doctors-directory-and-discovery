@@ -14,7 +14,7 @@ privacy=rd('doctors-directory/includes/class-sdd-privacy.php')
 css=rd('doctors-directory/assets/css/directory.css')+'\n'+rd('doctors-directory/assets/css/future-discovery.css')
 act=rd('doctors-directory/includes/class-sdd-activator.php')
 wf=rd('.github/workflows/final-quality-gates.yml')
-snap=rd('docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md')
+snap=rd('docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-09.md')
 readme=rd('README.md')
 manifest=rd('MANIFEST.md')
 allphp='\n'.join(p.read_text(encoding='utf-8',errors='ignore') for p in (R/'doctors-directory').rglob('*.php'))
@@ -65,7 +65,7 @@ expected_heads=[
 '8ae656e51796d1f05865d8be5dca2480443d79ca','04078025b643ab7696e4cb4e37826bf152defa18',
 '8a4dbcaf4fef8e926b9b834ecfde16c21a0f00ca','f2eb7e95ddea327af36ea725ffb923b029f885e6',
 'b7a7f2e69411cbd32f0574fd12d766fb70c01b7a','dcae138e6073f4d0ff596623deb05b9940b8271b',
-'a5b8d49968a7a5a7d6f3f4655bea541bf38a9acb','e35563b7f3d8ebf0acbbc80982b7bcf2e1b78c0a',
+'a5b8d49968a7a5a7d6f3f4655bea541bf38a9acb','347a4ff4d4c233c5ea6cd82c7786ee5398ea9d1e',
 'bbea3aad466792a4a6a62b53532bbd45c7c592de']
 add('Fresh companion HEAD evidence and status honesty are recorded',
     all(x in snap for x in expected_heads) and 'staging' in readme.lower() and 'live' in readme.lower() and 'REVIEW-CYCLE-20-CROSS-FILE-2026-10-08.md' in manifest)

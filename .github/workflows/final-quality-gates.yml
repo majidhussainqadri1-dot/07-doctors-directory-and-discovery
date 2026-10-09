@@ -53,13 +53,13 @@ jobs:
       - name: Deterministic package build B and canonical release checksum
         run: |
           bash tests/build-release.sh
-          cmp /tmp/build-a.zip build/07-doctors-directory-and-discovery-1.2.1.zip
-          sha256sum build/07-doctors-directory-and-discovery-1.2.1.zip | tee build/07-doctors-directory-and-discovery-1.2.1.zip.sha256
+          cmp /tmp/build-a.zip build/07-doctors-directory-and-discovery-1.2.2.zip
+          sha256sum build/07-doctors-directory-and-discovery-1.2.2.zip | tee build/07-doctors-directory-and-discovery-1.2.2.zip.sha256
       - name: Clean-extract package verification
         run: |
-          python3 tests/verify-package-paths.py build/07-doctors-directory-and-discovery-1.2.1.zip
+          python3 tests/verify-package-paths.py build/07-doctors-directory-and-discovery-1.2.2.zip
           rm -rf /tmp/ddd-extract && mkdir /tmp/ddd-extract
-          unzip -q build/07-doctors-directory-and-discovery-1.2.1.zip -d /tmp/ddd-extract
+          unzip -q build/07-doctors-directory-and-discovery-1.2.2.zip -d /tmp/ddd-extract
           test -f /tmp/ddd-extract/doctors-directory-and-discovery/doctors-directory.php
           test "$(find /tmp/ddd-extract -mindepth 1 -maxdepth 1 -type d | wc -l)" -eq 1
           (cd /tmp/ddd-extract/doctors-directory-and-discovery && sha256sum -c MANIFEST.sha256)
@@ -68,6 +68,6 @@ jobs:
         with:
           name: 07-doctors-directory-and-discovery-1.2.2
           path: |
-            build/07-doctors-directory-and-discovery-1.2.1.zip
-            build/07-doctors-directory-and-discovery-1.2.1.zip.sha256
+            build/07-doctors-directory-and-discovery-1.2.2.zip
+            build/07-doctors-directory-and-discovery-1.2.2.zip.sha256
           if-no-files-found: error
