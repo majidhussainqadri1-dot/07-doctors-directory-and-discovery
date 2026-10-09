@@ -32,7 +32,8 @@ Status vocabulary: **Implemented** means present in source and covered by reposi
 
 ## Release linkage
 
-- Release: `1.2.1`
-- Package: `07-doctors-directory-and-discovery-1.2.1.zip`
-- Exact commit and deterministic package SHA-256 are emitted by the final GitHub Actions candidate and attached to the release evidence.
+- Release: `1.2.2`
+- Package: `07-doctors-directory-and-discovery-1.2.2.zip`
+- Deterministic package SHA-256: `3607e59f9d080cfe97a1835346dda9c4c426d5a56f4e653b8adb63b02fe2e64b` (verified by File 07 v1.2.2 Final Quality Gates run 37924897538 on corrective HEAD `2bfe174b1af850a3825cedf2163608e39ab59121`).
+- The exact source commit and package SHA-256 are separately checked by the final GitHub Actions candidate. A subsequent plugin-content change requires rebuilding the package and updating this evidence.
 - Staging, Founder, live and operational evidence are intentionally not fabricated; they remain the gates in `STAGING-ACCEPTANCE.md`.

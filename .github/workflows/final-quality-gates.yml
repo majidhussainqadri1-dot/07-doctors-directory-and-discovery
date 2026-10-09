@@ -55,6 +55,9 @@ jobs:
           bash tests/build-release.sh
           cmp /tmp/build-a.zip build/07-doctors-directory-and-discovery-1.2.2.zip
           sha256sum build/07-doctors-directory-and-discovery-1.2.2.zip | tee build/07-doctors-directory-and-discovery-1.2.2.zip.sha256
+      - name: Declared release candidate checksum parity
+        run: |
+          sed 's#  build/#  #' build/07-doctors-directory-and-discovery-1.2.2.zip.sha256 | diff -u RELEASE-CANDIDATE.sha256 -
       - name: Clean-extract package verification
         run: |
           python3 tests/verify-package-paths.py build/07-doctors-directory-and-discovery-1.2.2.zip

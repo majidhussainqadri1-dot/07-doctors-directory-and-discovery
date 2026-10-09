@@ -27,7 +27,11 @@ See `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md` for the exact companion 
 
 ## Package evidence
 
-Pending exact deterministic v1.2.2 CI package SHA-256. This field must be updated from the exact final artifact; it must not be guessed.
+Deterministic package: `07-doctors-directory-and-discovery-1.2.2.zip`.
+
+SHA-256: `3607e59f9d080cfe97a1835346dda9c4c426d5a56f4e653b8adb63b02fe2e64b`.
+
+Evidence: File 07 v1.2.2 Final Quality Gates, run 37924897538, corrective source HEAD `2bfe174b1af850a3825cedf2163608e39ab59121`. The package is assembled exclusively from `doctors-directory/`; these release-document and workflow changes do not modify the packaged plugin. The final quality workflow checks the declared checksum against the freshly built package. If packaged source changes, rebuild and refresh this checksum.
 
 ## Release truth
 
