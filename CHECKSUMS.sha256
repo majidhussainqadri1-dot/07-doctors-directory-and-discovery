@@ -62,7 +62,7 @@ eb6d2eeb4da1a3f61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-dire
 a99bf44017d9d2df564d7b3e1aa10697efa4b035c544ad027a30e343e64c73e9  ./doctors-directory/includes/class-sdd-seo.php
 2f81fe9c03f99d8fa6833dff827e94475365ea04818ad444cc267dff32069a5b  ./doctors-directory/readme.txt
 49fa5d98aead2f2ef3126e8fe7fb81aa9cd6ae2268e264c6d56edff151e43f82  ./doctors-directory/uninstall.php
-292bd044569ef01a172e914758f9fdbaa833974d792d269b06a9a2fabf75ac24  ./tests/bootstrap.php
+27ca02e61a816bc86c5cd5e52318fd487e9eabff4651324afc9e38aa86dd99b0  ./tests/bootstrap.php
 8c755b0d4292bb1db818969378632aaffeafd0775d8a2e15dcd5d96bbb49f626  ./tests/build-release.sh
 0f31ce419c510c67abdcc2041a321c0fd64a4804ec2ea4b1655e43e4d639e0e5  ./tests/central-plan-adversarial.py
 6a44eb9821c0b71a0d9082440bab3da58ccd99f9ce2226b1605782389acf40c7  ./tests/central-plan-ranking.py
