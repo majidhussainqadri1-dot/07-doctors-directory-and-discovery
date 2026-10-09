@@ -48,7 +48,7 @@ e7a875b651c97d30b564613499cd6736dd8a92103e128d1858192a341a11b55b  ./doctors-dire
 ff789f0cb7f2bb3e531cbfa3fcdc4ba2f41893e6535ab1025e273ae15d4c4a3d  ./doctors-directory/includes/class-ddd-future-discovery.php
 fac1b2d44493b8f9eaee488a515eaab927566a0dee046e764270c71917328846  ./doctors-directory/includes/class-ddd-future-mutation-guard.php
 2b2299772be3857f909102a721e2928f541a6e6193b69e6b209a985194b2cdfb  ./doctors-directory/includes/class-ddd-future-preferences.php
-27a5346581d5a4c822823ee7c68833b32301901e87465e88f19d9849aa0eb724  ./doctors-directory/includes/class-ddd-future-query.php
+cb0eb6248b4814793d05cf5caedfb12bee553dd6861f220c81810e9fa834b9e3  ./doctors-directory/includes/class-ddd-future-query.php
 a141aef4db5c9193e0e9c357c89cd981eb9f1e0cf56fbfa1217e8a81ccffb4ee  ./doctors-directory/includes/class-ddd-future-ui.php
 a5c6fba42726f796c53c21f35a6b6dc0fca95c563d3d9f1dc9175b2b2dafd5f9  ./doctors-directory/includes/class-ddd-ranking-appeal.php
 95de1c1c66bdbd642a6600de40544748713e44dcd93c47aab390cdb5bf3aafdf  ./doctors-directory/includes/class-ddd-ranking-ui.php
@@ -76,5 +76,5 @@ e4d836582f274987a8b617e009ef39486837ae53f704c64993da9b0ae5021379  ./tests/source
 567936f95230782ede761eff8e4581cd5d84f96b7a239471b2bc1710abb64a1e  ./tests/static-audit.sh
 4d394cd971ba73d5fd3478f1997e488f2fcb5776d4958e4941865d3e1d49e1f9  ./tests/test-contrast.py
 6b1d7aea191f5a6b27f2720c530178e2490693fb1e1eb4039823beb6d675f7b7  ./tests/test-pagination.py
-ca51f50e4b7eb35f0e6b936367f59b3552ff01fd4e01805668562d0e64cecb02  ./tests/unit-helpers.php
+89535541acd768c47bae3a79598fc0b86a970fc7906fa20ff0870ab24eae054c  ./tests/unit-helpers.php
 619b612a9c887618d3aba05af24a25e56c2c0f93c775c435a8923bbcb5631278  ./tests/verify-package-paths.py

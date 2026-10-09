@@ -84,6 +84,10 @@ ok(!DDD_Future_Query::matches($distant,$availability_params),'appointment outsid
 $GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']=array(function(){return array('next_available_at'=>'not-a-date','clinic_timezone'=>'UTC');});
 $invalid=DDD_Future_Query::enrich($availability_doctor,$availability_params);
 ok(!DDD_Future_Query::matches($invalid,$availability_params),'invalid availability timestamp fails closed');
+$GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']=array(function(){return array('next_available_at'=>'2026-02-30T12:00:00+00:00','clinic_timezone'=>'UTC');});
+$invalid_calendar=DDD_Future_Query::enrich($availability_doctor,$availability_params);
+ok(!DDD_Future_Query::matches($invalid_calendar,$availability_params),'invalid calendar date cannot satisfy availability filter');
+ok(empty($invalid_calendar['local_availability']),'invalid calendar date is not advertised');
 unset($GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']);
 
 echo "TOTAL PASS: $tests\n";
