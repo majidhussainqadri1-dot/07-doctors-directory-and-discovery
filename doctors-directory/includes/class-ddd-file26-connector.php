@@ -6,7 +6,7 @@
  * with File00/File03/File09/File07. No patient, phone, email, fee or direct
  * clinical-case data leaves this adapter.
  */
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 final class DDD_File26_Connector {
     const SLUG='file07-verified-doctors';
     public static function register(){
