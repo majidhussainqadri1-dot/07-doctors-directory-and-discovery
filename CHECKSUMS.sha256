@@ -39,7 +39,7 @@ e7a875b651c97d30b564613499cd6736dd8a92103e128d1858192a341a11b55b  ./doctors-dire
 a713ab2457961f33f3080b3af4fb514938c86e07e0c840ed5f381a379e60ad19  ./doctors-directory/doctors-directory.php
 16a71e9caf3ae2629fcab3487d8460db5ca64a1958610d32494557f8e874651b  ./doctors-directory/includes/class-ddd-central-ranking.php
 192e2cdf5d17a3b5d902c7e94b25685aa85717bf657d5e83b37882186988e2df  ./doctors-directory/includes/class-ddd-cross-file-contracts.php
-260b2f2438bcf9c2a766ac102270bda7725b5b3441ddcb7781ec6f91723471f7  ./doctors-directory/includes/class-ddd-file26-connector.php
+42583a24b02c2712a0e9e68d13cfd203843f61ba8281d45d6ca4afd07a5730c8  ./doctors-directory/includes/class-ddd-file26-connector.php
 ff789f0cb7f2bb3e531cbfa3fcdc4ba2f41893e6535ab1025e273ae15d4c4a3d  ./doctors-directory/includes/class-ddd-future-discovery.php
 fac1b2d44493b8f9eaee488a515eaab927566a0dee046e764270c71917328846  ./doctors-directory/includes/class-ddd-future-mutation-guard.php
 2b2299772be3857f909102a721e2928f541a6e6193b69e6b209a985194b2cdfb  ./doctors-directory/includes/class-ddd-future-preferences.php
