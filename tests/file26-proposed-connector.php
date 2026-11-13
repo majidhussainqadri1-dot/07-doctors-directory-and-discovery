@@ -23,7 +23,7 @@ foreach ( array( 'list_batch', 'fetch_object', 'can_view', 'health' ) as $call )
     connector_check( is_callable( $m[$call] ), 'Native connector callable: ' . $call );
 }
 $health = DDD_File26_Connector::health();
-connector_check( $health['state'] === 'degraded' && $health['status'] ?? '' !== 'approved', 'Absent true File00/03/09/07 readiness remains degraded' );
+connector_check( $health['state'] === 'degraded' && ! isset( $health['status'] ), 'Absent true File00/03/09/07 readiness remains degraded' );
 $batch = DDD_File26_Connector::list_batch( '', 10, array() );
 connector_check( is_wp_error( $batch ), 'Incomplete owner identities refuse search batch' );
 $fake = array( 'connector_slug' => $m['slug'], 'visibility' => 'public', 'entity_type' => 'doctor_directory_projection', 'object_id' => '12345678-1234-4abc-8def-123456789abc', 'object_version' => 1 );
