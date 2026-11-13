@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.2 — 2026-10-08
+
+### Corrected — fresh twenty-round exact-HEAD audit
+- Rechecked File 07 against its complete plan, the consolidated governing plan and current companion repository HEADs for Files 00, 03, 08, 09, 17, 19, 20, 21, 22, 23, 24, 25 and 26.
+- Aligned official ranking freshness to File 24's current 31-day fairness-evidence window.
+- Official merit tiers now fail closed when File 24 explicitly blocks current File 26 fairness evidence; no blocked assurance is presented as an accepted merit ranking.
+- Bounded fee/currency filtering now rejects unknown File 08 fee data in core directory search, neutral ranking fallback and FUT24 advanced discovery.
+- Documented current File 08 owner-projection omissions and the current File 24/File 26 policy-version compatibility risk without fabricating companion truth.
+- Database schema remains `1.1.1`; projection schema remains `3`; no new File 07 table or column is introduced.
+
 ## 1.2.1 — 2026-10-06
 
 ### Corrected — twenty-round plan/central/cross-file reconciliation

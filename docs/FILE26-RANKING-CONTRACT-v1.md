@@ -14,7 +14,7 @@ A valid File 26 response must provide:
 
 - `ready=true` and compatible `contract_version`;
 - non-empty `policy_version`;
-- `monthly_version` in a year-month form and a snapshot no older than 35 days;
+- `monthly_version` in a year-month form and a snapshot no older than 31 days;
 - `nested_tiers=true`;
 - `bias_audit.status=pass` with explicit prohibition of donation, payment, paid promotion, Founder favoritism and purchased engagement;
 - no more items than the bounded `limit` requested by File 07;

@@ -226,8 +226,8 @@ final class DDD_Repository {
 		if ( preg_match( '/^[A-Z]{3}$/', $currency ) ) { $conditions[] = 'currency=%s'; $params[] = $currency; }
 		$fee_min = DDD_Helpers::decimal_or_null( $args['fee_min'] );
 		$fee_max = DDD_Helpers::decimal_or_null( $args['fee_max'] );
-		if ( null !== $fee_min ) { $conditions[] = '(fee_max IS NULL OR fee_max>=%f)'; $params[] = $fee_min; }
-		if ( null !== $fee_max ) { $conditions[] = '(fee_min IS NULL OR fee_min<=%f)'; $params[] = $fee_max; }
+		if ( null !== $fee_min ) { $conditions[] = 'fee_max IS NOT NULL AND fee_max>=%f'; $params[] = $fee_min; }
+		if ( null !== $fee_max ) { $conditions[] = 'fee_min IS NOT NULL AND fee_min<=%f'; $params[] = $fee_max; }
 		if ( $args['recent_only'] ) { $days = max( 1, min( 365, absint( $args['recent_only'] ) ) ); $conditions[] = 'verified_at>=%s'; $params[] = gmdate( 'Y-m-d H:i:s', time() - DAY_IN_SECONDS * $days ); }
 
 		$active_expr = "CASE WHEN featured=1 AND (feature_start IS NULL OR feature_start<=%s) AND (feature_end IS NULL OR feature_end>%s) THEN 1 ELSE 0 END";

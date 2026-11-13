@@ -8,10 +8,11 @@ audit_end=text.find("$back =",audit_start)
 appeal_audit=text[audit_start:audit_end] if audit_start>=0 and audit_end>audit_start else ''
 checks={
  'top tier fails closed without File26': "return'all'===$tier?self::neutral($filters):$current" in compact and 'file26_ranking_unavailable' in text,
- 'stale snapshot rejected': 'file26_snapshot_stale' in text and 'MAX_SNAPSHOT_AGE' in text,
+ 'stale snapshot rejected': 'file26_snapshot_stale' in text and 'MAX_SNAPSHOT_AGE = 2678400' in text,
  'bad contract rejected': 'file26_contract_incompatible' in text,
  'missing bias audit rejected': 'file26_bias_audit_missing' in text and 'file26_bias_guard_incomplete' in text,
  'paid donor boost rejected': 'file26_paid_bias_detected' in text,
+ 'File24 blocked assurance rejects merit snapshot': 'file24_ranking_assurance_blocked' in text and "'blocked' === sanitize_key" in text,
  'oversized File26 page rejected': 'file26_page_oversized' in text and 'count( $raw_items ) > $request_limit' in text,
  'duplicate IDs reject snapshot': 'file26_duplicate_public_id' in text and 'isset($seen[$id])' in compact,
  'invalid public ID rejects snapshot': 'file26_public_id_invalid' in text,
