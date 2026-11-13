@@ -38,9 +38,13 @@ The latest source-head matrix and dual-lens review are recorded in `docs/FILE07-
 
 Deterministic package: `07-doctors-directory-and-discovery-1.2.2.zip`.
 
-SHA-256 (new source candidate, pending exact-HEAD GitHub CI): `6661a0c87e0ecc80f4a13ea78c982209206f64516b515afeb30524cd36cc88e0`.
+SHA-256 (File26 proposed-only draft branch candidate, pending exact-HEAD CI): `8be28f861b389511ac5bbbeda95e2ee3da2b5c2a49f184fbf6e42939d63ac342`.
 
 Evidence: PR #13 HEAD `446701d2a839f5a07b4a8ce70c98229afa1d1adb` previously passed exact-source CI and two deterministic builds for the language/country scope corrections. The subsequent current-owner disclosure guard modifies three plugin PHP files and adds an executable source regression; the new candidate above was locally built and smoke tested. Its own exact-head CI / release artifact parity and separate current-owner staging acceptance are mandatory before release. Neither prior branch success nor this reconstructed package proves Hostinger staging/live deployment.
+
+## File26 proposed-only source extension (separate draft branch, 2026-11-13)
+
+The historical File07 PR #12 connector was ported without activation onto the exact merged File07 v1.2.2 source. This introduces a File07 -> File26 doctor_directory_projection PROPOSED manifest and executable no-owner fail-closed tests, but does not authorize production indexing or official ranking. See `docs/FILE07-FILE26-PROPOSED-INTEGRATION-2026-11-13.md`. File26 PR #22, end-to-end revocation and Hostinger staging remain outstanding. The main v1.2.2 package remains identified by SHA-256 `6661a0c87e0ecc80f4a13ea78c982209206f64516b515afeb30524cd36cc88e0`; this draft branch has a different binary and is NOT the current main package.
 
 ## Release truth
 
