@@ -1,12 +1,12 @@
 70d51e16fe89ff87084d3826e5525f2703765e80188c34127c61e9ffdef96a60  ./.ci-trigger
-f482b9685382f02392518da81fe295fc716f1f38622a9556fd4871a17bdc91e8  ./.github/workflows/file-07-quality-gates.yml
-59daccbc0de5b9a0309218d9ed317304af1e796b67dae4cfd418c246a6fc609b  ./.github/workflows/final-quality-gates.yml
+1890a5a1bd236a69a7a04aea892f8ccd5b5c8155cc549af9eacbcc8612e434fa  ./.github/workflows/file-07-quality-gates.yml
+bdb9bed48e5e3781aa22023cefc3370d37603c70c7899170d9a6de0a3aed81ff  ./.github/workflows/final-quality-gates.yml
 b24047d049461eccb9dfb7679021233f99614a56a2edb5d392244a42fa039d76  ./.gitignore
 2dc451cc2e6db7a0d52bf48c128cd5dd1e371ae8f24dcc6308403117b80effb6  ./CHANGELOG.md
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
-9e2cb497804b4f53e295b4f9ba10ad8446f4c7f32c6a7e3d9c62deb842d23023  ./MANIFEST.md
+00f9d66282b47496b6d00c08f0fc8baf99d5ce6b1df8d6c79d5186a30e70a9ec  ./MANIFEST.md
 487e7c2d75a76c9f6157665c717fd3e7feb08bd2a619927cf798ec9cd5d38075  ./README.md
-3d1a76e5990af7938259d5582920af4d7c770ab92e99de56ab33fab50efabaca  ./RELEASE-CANDIDATE.sha256
+22a3c1abed01a75553da75c63dc269aeb13ac9e119a567dc68d7d24c043445ee  ./RELEASE-CANDIDATE.sha256
 ec1a4e7b5a5e4629a2131a1952ad4f7aefc98930e5a223161d14f2b061a82b2e  ./docs/API-CONTRACTS.md
 52d5d2d413eabc07adb12faa454e319c3294c955c71813e949c0bed18aabad74  ./docs/CENTRAL-PLAN-RECONCILIATION-2026-08-10.md
 8d1782dd684fedbcf6c3a9f937373ac1836a0cb5d0f401ec67a0869921a3f3ed  ./docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md
@@ -14,6 +14,7 @@ ec1a4e7b5a5e4629a2131a1952ad4f7aefc98930e5a223161d14f2b061a82b2e  ./docs/API-CON
 3445db4538f8001a6c30f3f59ffe175cfbd77fbfd1771de90de96b83bd564986  ./docs/DATA-DICTIONARY.md
 6b590990d7a99fc427b360743dad0fdce22aa41aaeac0bcefbec233a5df221e1  ./docs/DEPENDENCY-INVENTORY.md
 a9293b384239ed46a4fdb2d5a0dc40f621681b6b969c34cdf0f307897103a729  ./docs/FILE07-2026-11-13-CURRENT-OWNER-AND-RELEASE-GATES.md
+fb44f9bfa29204ac4d325fd02d9302b50715dc3bd328339bc08da0cde97848e2  ./docs/FILE07-FILE26-PROPOSED-INTEGRATION-2026-11-13.md
 281b7790072ee73df080f345986808c0f186a311ff28cbc8378bfe45e54b6538  ./docs/FILE26-RANKING-CONTRACT-v1.md
 432f4b542a622bca6bdee224d086e096e046d3cf93ec057ed1bd8f0a8abc2d72  ./docs/FUTURE-DISCOVERY-24-ENHANCEMENTS.md
 ef4045964bd167fbb656e1dfe003ffd61713494d8ab0d549f69cead3bd8844a5  ./docs/HOURLY-AUDIT-2026-10-09-ROUND-02.md
@@ -24,7 +25,7 @@ da96c03f9d5119563ea139c0c165663cf9b3404f03ee8700345d174681a4ad14  ./docs/OPERATI
 2c75321243643201f8351b137e0cfde735cf6223163e34970c597c42bc0544d0  ./docs/RELEASE-NOTES-1.1.0.md
 5e5aa36fc235cb17dc51969e52d41327ce6fb40c5282f6c8a3d8839b57bd1a6e  ./docs/RELEASE-NOTES-1.2.0.md
 194b8b7867c2810de4a03e79801fd8ee11aebd26f9479b0c284a44f9a435dcd7  ./docs/RELEASE-NOTES-1.2.1.md
-1843aae96e96ba323b9e077c5513b75e3250377b20d722d90530f806b3e78970  ./docs/RELEASE-NOTES-1.2.2.md
+42274f97b8860d8af137bed095410bb3d6b8bc6069f2bb721b6299d5715337e2  ./docs/RELEASE-NOTES-1.2.2.md
 d7f2591ffc76ef880e896b5ee8f6dc82b377915c52326f8006f75df9e4dc289f  ./docs/REQUIREMENTS-TRACEABILITY.md
 93fc7e07744c13f15aa5cac458179eba0a9ebf778f61bf095d36719f8a18cb24  ./docs/REVIEW-CYCLE-1.md
 ac0a275dfcc32c75c5d1c721cfe2de5b2b8fc6eeb1c00f81dc02f5e52312e390  ./docs/REVIEW-CYCLE-2.md
@@ -43,9 +44,10 @@ f86bc731a34b59ac12bc05cc946a236a76eec9f6fbe17417a675a06c5581707e  ./doctors-dire
 c2fbf7ed500659acd0f52f0fd849f512d9af3f950b663e751cb4aa555b54ced2  ./doctors-directory/assets/css/future-discovery.css
 1c646fbc18e5d964fb5dfffbdf1c2d4209b62df56038f779f8180dbc3505a6c4  ./doctors-directory/assets/js/directory.js
 e7a875b651c97d30b564613499cd6736dd8a92103e128d1858192a341a11b55b  ./doctors-directory/assets/js/future-discovery.js
-18e7e55f80d2732c9bfafd43d9cf02d11fdb0ed32aed4b8aecca72dfedeacb9a  ./doctors-directory/doctors-directory.php
+bceb154ff4f006ecfb6812587cb2d88afc3c761bd6f10a9916c00c200714a4e7  ./doctors-directory/doctors-directory.php
 7d8c1fe90343c75af1a101d7b0f6f38dedc6ccadfa9a919d633cf718b4202c71  ./doctors-directory/includes/class-ddd-central-ranking.php
 192e2cdf5d17a3b5d902c7e94b25685aa85717bf657d5e83b37882186988e2df  ./doctors-directory/includes/class-ddd-cross-file-contracts.php
+42583a24b02c2712a0e9e68d13cfd203843f61ba8281d45d6ca4afd07a5730c8  ./doctors-directory/includes/class-ddd-file26-connector.php
 ff789f0cb7f2bb3e531cbfa3fcdc4ba2f41893e6535ab1025e273ae15d4c4a3d  ./doctors-directory/includes/class-ddd-future-discovery.php
 fac1b2d44493b8f9eaee488a515eaab927566a0dee046e764270c71917328846  ./doctors-directory/includes/class-ddd-future-mutation-guard.php
 2b2299772be3857f909102a721e2928f541a6e6193b69e6b209a985194b2cdfb  ./doctors-directory/includes/class-ddd-future-preferences.php
@@ -69,6 +71,7 @@ eb6d2eeb4da1a3f61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-dire
 0f31ce419c510c67abdcc2041a321c0fd64a4804ec2ea4b1655e43e4d639e0e5  ./tests/central-plan-adversarial.py
 6a44eb9821c0b71a0d9082440bab3da58ccd99f9ce2226b1605782389acf40c7  ./tests/central-plan-ranking.py
 c5e0383147bb56c82916fc6c470cdd0056bb657a2d757d0423b4f422bf7b0363  ./tests/current-owner-visibility.php
+c578585732c05cc918595f55b67b0a52108746d765dc7ce13231e4a4e2d19a80  ./tests/file26-proposed-connector.php
 de768eadb80cb3872b6306ffdb87cd07d51126eac000023716052fcd0c48e4c5  ./tests/future-discovery-24.py
 d76cf4bd4fc2d207844788125bc98cc962c8ea361535f4347abe4ecccf3ca670  ./tests/generate-source-checksums.sh
 ad567412582a1227f27d4481171620597143dd1e93ba693160385ac1f7c2bb11  ./tests/review-20-cross-file-20261008.py

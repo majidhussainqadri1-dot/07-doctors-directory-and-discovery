@@ -46,6 +46,9 @@ require_once DDD_DIR . 'includes/class-ddd-future-mutation-guard.php';
 require_once DDD_DIR . 'includes/class-ddd-future-preferences.php';
 require_once DDD_DIR . 'includes/class-ddd-future-ui.php';
 require_once DDD_DIR . 'includes/class-ddd-future-discovery.php';
+// Proposed-only File26 owner interface: registration never authorizes indexing by itself.
+require_once DDD_DIR . 'includes/class-ddd-file26-connector.php';
+DDD_File26_Connector::register();
 
 register_activation_hook( DDD_FILE, array( 'DDD_Activator', 'activate' ) );
 register_deactivation_hook( DDD_FILE, array( 'DDD_Activator', 'deactivate' ) );

@@ -18,6 +18,7 @@
 - `doctors-directory/includes/class-ddd-future-query.php`
 - `doctors-directory/includes/class-ddd-future-mutation-guard.php`
 - `doctors-directory/includes/class-ddd-future-discovery.php`
+- `doctors-directory/includes/class-ddd-file26-connector.php` — proposed-only, not approved for indexing
 - `doctors-directory/includes/class-ddd-future-preferences.php`
 - `doctors-directory/includes/class-ddd-future-ui.php`
 - `doctors-directory/uninstall.php`
@@ -34,6 +35,8 @@
 - `.github/workflows/final-quality-gates.yml`
 - `tests/bootstrap.php`
 - `tests/unit-helpers.php`
+- `tests/current-owner-visibility.php`
+- `tests/file26-proposed-connector.php`
 - `tests/source-contracts.py`
 - `tests/review-20-cross-file-20261008.py`
 - `tests/central-plan-ranking.py`
@@ -81,4 +84,6 @@
 - `docs/RELEASE-NOTES-1.2.0.md`
 - `docs/RELEASE-NOTES-1.2.1.md`
 - `docs/RELEASE-NOTES-1.2.2.md`
+- `docs/FILE07-2026-11-13-CURRENT-OWNER-AND-RELEASE-GATES.md`
+- `docs/FILE07-FILE26-PROPOSED-INTEGRATION-2026-11-13.md`
 - `docs/DEPENDENCY-INVENTORY.md`
