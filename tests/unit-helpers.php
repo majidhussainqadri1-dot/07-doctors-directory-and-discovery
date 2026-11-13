@@ -52,6 +52,9 @@ $semantic_cases=array(
     array('in-person doctor in Finland','finland','in-person'),
     array('teleclinic doctor in Finland','teleclinic finland',''),
     array('urduvian doctor in Finland','urduvian finland',''),
+    array('online Urdu doctor in Lahore','lahore','online'),
+    array('online English doctor in Lahore','lahore','online'),
+    array('online Arabic doctor in Lahore','lahore','online'),
     array('اردو ڈاکٹر لاہور','لاہور',''),
 );
 foreach($semantic_cases as $case){
@@ -66,6 +69,10 @@ $parsed=DDD_Future_Query::interpret('urduvian doctor in Finland');
 ok(!isset($parsed['language']),'semantic language does not match within a longer word');
 $parsed=DDD_Future_Query::interpret('اردو ڈاکٹر لاہور');
 ok(($parsed['language']??'')==='Urdu','whole-word Urdu language intent recognized');
+foreach(array('Urdu','English','Arabic') as $language){
+    $parsed=DDD_Future_Query::interpret('online '.$language.' doctor in Lahore');
+    ok(($parsed['language']??'')===$language,'Latin-script language recognized without leaking into residual query: '.$language);
+}
 
 
 $availability_params=DDD_Future_Query::sanitize(array('availability_days'=>7,'timezone'=>'Asia/Karachi'));
