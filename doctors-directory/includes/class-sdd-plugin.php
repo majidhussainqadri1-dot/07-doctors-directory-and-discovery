@@ -110,16 +110,17 @@ final class DDD_REST {
 		$result = DDD_Repository::search( $request->get_params() );
 		if ( is_wp_error( $result ) ) { return $result; }
 		$response = rest_ensure_response( $result );
-		$response->header( 'Cache-Control', 'public, max-age=60, stale-while-revalidate=120' );
+		// Current owner rechecks cannot coexist safely with stale public/CDN responses.
+		$response->header( 'Cache-Control', 'private, no-store, max-age=0' );
+		$response->header( 'Pragma', 'no-cache' );
 		$response->header( 'Vary', 'Accept-Encoding' );
-		$response->header( 'ETag', '"' . hash( 'sha256', wp_json_encode( $result ) . '|' . get_option( 'ddd_cache_version', 1 ) ) . '"' );
 		return $response;
 	}
 
 	public function doctor( WP_REST_Request $request ) {
 		$doctor = DDD_Repository::get_by_public_id( $request['public_id'] );
 		if ( ! $doctor ) { return DDD_Helpers::safe_error( 'doctor_not_found', __( 'Doctor not found.', DDD_TEXT_DOMAIN ), 404 ); }
-		$response = rest_ensure_response( $doctor ); $response->header( 'Cache-Control', 'public, max-age=120, stale-while-revalidate=300' ); $response->header( 'Vary', 'Accept-Encoding' ); return $response;
+		$response = rest_ensure_response( $doctor ); $response->header( 'Cache-Control', 'private, no-store, max-age=0' ); $response->header( 'Pragma', 'no-cache' ); $response->header( 'Vary', 'Accept-Encoding' ); return $response;
 	}
 
 	public function facets( WP_REST_Request $request ) {
