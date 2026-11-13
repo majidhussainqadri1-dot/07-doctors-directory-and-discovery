@@ -104,7 +104,7 @@ final class DDD_SEO {
 
 if ( class_exists( 'WP_Sitemaps_Provider' ) ) {
 	final class DDD_Doctor_Sitemap_Provider extends WP_Sitemaps_Provider {
-		const PER_PAGE = 1000;
+		const PER_PAGE = 100;
 
 		public function __construct() {
 			$this->name = 'ddd-doctors';
@@ -118,8 +118,11 @@ if ( class_exists( 'WP_Sitemaps_Provider' ) ) {
 			$table = DDD_Repository::table( 'projection' );
 			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT public_id,profile_url,updated_at FROM {$table} WHERE eligible=1 ORDER BY doctor_id ASC LIMIT %d OFFSET %d", self::PER_PAGE, $offset ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$urls = array();
-			foreach ( $rows as $row ) {
-				$entry = array( 'loc' => ! empty( $row['profile_url'] ) ? esc_url_raw( $row['profile_url'] ) : DDD_Helpers::public_profile_url( $row['public_id'] ) );
+			foreach ( (array) $rows as $row ) {
+				// Sitemap entries are public disclosures; suppress stale/revoked owner states.
+				$doctor = DDD_Repository::get_by_public_id( $row['public_id'] );
+				if ( ! $doctor ) { continue; }
+				$entry = array( 'loc' => ! empty( $doctor['profile_url'] ) ? $doctor['profile_url'] : $doctor['public_directory_url'] );
 				if ( $row['updated_at'] && '0000-00-00 00:00:00' !== $row['updated_at'] ) {
 					$entry['lastmod'] = gmdate( DATE_W3C, strtotime( $row['updated_at'] . ' UTC' ) );
 				}
