@@ -24,6 +24,7 @@ jobs:
       - name: Helper and contract tests
         run: |
           php tests/unit-helpers.php
+          php tests/current-owner-visibility.php
           python3 tests/source-contracts.py
       - name: Fresh twenty-round cross-file audit
         run: python3 tests/review-20-cross-file-20261008.py
