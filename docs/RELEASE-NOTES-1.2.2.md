@@ -31,9 +31,9 @@ See `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md` for the exact companion 
 
 Deterministic package: `07-doctors-directory-and-discovery-1.2.2.zip`.
 
-SHA-256 (locally reproduced candidate, pending exact-HEAD GitHub CI): `d85fe45e059f893d2bab2398ccf1b2205b13729436eab875c6e78458b92511ff`.
+SHA-256 (locally reproduced candidate, pending exact-HEAD GitHub CI): `77031aae3bd1d44728ef05d110d5a728ce648ad8339ace5f0d60f86b16061b88`.
 
-Evidence: the 2026-10-09 PR #11 GitHub Actions package (`bef255...`) was independently reproduced byte-for-byte from its extracted plugin source. The single PHP source correction was applied and the documented deterministic build procedure produced the new candidate SHA-256 above. Local focused functional smoke was 18/18 PASS; exact updated branch CI, full regression suite and final clean-extract acceptance are still mandatory. Neither this reconstructed package nor the prior PR artifact proves staging or live deployment.
+Evidence: the 2026-10-09 PR #11 GitHub Actions package (`bef255...`) was independently reproduced byte-for-byte from its extracted plugin source. The single PHP source correction was applied and the documented deterministic build procedure produced the new candidate SHA-256 above. Local focused functional smoke was 20/20 PASS; exact updated branch CI, full regression suite and final clean-extract acceptance are still mandatory. Neither this reconstructed package nor the prior PR artifact proves staging or live deployment.
 
 ## Release truth
 
