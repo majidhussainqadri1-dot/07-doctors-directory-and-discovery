@@ -12,6 +12,7 @@ v1.2.2 is the corrective result of a fresh twenty-round File 07 audit against th
 - An explicit File 24 `blocked` fairness decision now withholds official merit ranking. File 07 does not silently publish merit results after the assurance owner has blocked them.
 - Core, neutral-ranking and advanced-discovery fee filters now reject absent/non-numeric fee owner data for bounded fee searches; missing currency also cannot satisfy an explicit currency filter.
 - Missing File 08 owner fields remain unknown rather than being fabricated.
+- Follow-up language-intent correction (2026-11-13): Latin language tokens (`Urdu`, `English`, `Arabic`) are recognized as language facets and removed from free-text residual search; 3 positive residual assertions and 3 language assertions are added to unit tests.
 
 ## Version/data impact
 
@@ -29,9 +30,9 @@ See `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md` for the exact companion 
 
 Deterministic package: `07-doctors-directory-and-discovery-1.2.2.zip`.
 
-SHA-256: `bef2554ac6ad233e9d98a8cac280f00d8e904844399d2a71fe419af7f86fe8ad`.
+SHA-256 (locally reproduced candidate, pending exact-HEAD GitHub CI): `d85fe45e059f893d2bab2398ccf1b2205b13729436eab875c6e78458b92511ff`.
 
-Evidence: deterministic package built from corrective HEAD `1dee44293d7b8c6fce4f77e6d656d2658dc4e24f` in Final Quality Gates run 37988920515 yielded this SHA-256. That run passed the code, regression, source-manifest and deterministic-build steps, but failed the declared checksum parity because the earlier digest remained in the release declaration. Exact-head CI confirmation of this corrected declaration is required. The package is assembled exclusively from `doctors-directory/`. The final workflow checks the declared checksum against the freshly built package. If packaged source changes, rebuild and refresh this checksum.
+Evidence: the 2026-10-09 PR #11 GitHub Actions package (`bef255...`) was independently reproduced byte-for-byte from its extracted plugin source. The single PHP source correction was applied and the documented deterministic build procedure produced the new candidate SHA-256 above. Local focused functional smoke was 18/18 PASS; exact updated branch CI, full regression suite and final clean-extract acceptance are still mandatory. Neither this reconstructed package nor the prior PR artifact proves staging or live deployment.
 
 ## Release truth
 
