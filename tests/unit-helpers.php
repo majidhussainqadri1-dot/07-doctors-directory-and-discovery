@@ -96,5 +96,14 @@ $invalid_calendar=DDD_Future_Query::enrich($availability_doctor,$availability_pa
 ok(!DDD_Future_Query::matches($invalid_calendar,$availability_params),'invalid calendar date cannot satisfy availability filter');
 ok(empty($invalid_calendar['local_availability']),'invalid calendar date is not advertised');
 unset($GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']);
+$country_scope_us=DDD_Future_Query::sanitize(array('serves_country'=>'US'));
+$country_scope_pk=DDD_Future_Query::sanitize(array('serves_country'=>'Pakistan'));
+$country_scope_fr=DDD_Future_Query::sanitize(array('serves_country'=>'FR'));
+$country_doctor=array('discovery_extensions'=>array('clinic'=>array('countries_served'=>array('Russia','South Africa'))));
+ok(!DDD_Future_Query::matches($country_doctor,$country_scope_us),'US country coverage must not substring-match Russia');
+ok(!DDD_Future_Query::matches($country_doctor,$country_scope_fr),'FR country coverage must not substring-match South Africa');
+$country_doctor['discovery_extensions']['clinic']['countries_served']=array('pakistan','Bangladesh');
+ok(DDD_Future_Query::matches($country_doctor,$country_scope_pk),'Exact case-normalized owner country coverage remains eligible');
+
 
 echo "TOTAL PASS: $tests\n";
