@@ -7,6 +7,7 @@
 - Aligned official ranking freshness to File 24's current 31-day fairness-evidence window.
 - Official merit tiers now fail closed when File 24 explicitly blocks current File 26 fairness evidence; no blocked assurance is presented as an accepted merit ranking.
 - Bounded fee/currency filtering now rejects unknown File 08 fee data in core directory search, neutral ranking fallback and FUT24 advanced discovery.
+- Follow-up source regression (2026-11-13): remove recognized Latin-script language labels (`urdu`, `english`, `arabic`) from the natural-language residual query after mapping them to the language facet; add unit regressions so language choice does not inadvertently narrow free-text search.
 - Documented current File 08 owner-projection omissions and the current File 24/File 26 policy-version compatibility risk without fabricating companion truth.
 - Database schema remains `1.1.1`; projection schema remains `3`; no new File 07 table or column is introduced.
 
