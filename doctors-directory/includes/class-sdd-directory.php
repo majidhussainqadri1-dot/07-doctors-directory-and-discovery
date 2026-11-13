@@ -195,6 +195,30 @@ final class DDD_Repository {
 		return true;
 	}
 
+	/**
+	 * Recheck authoritative owner eligibility, canonical identity and projection versions
+	 * before returning any stored public fields. A row marked eligible in the database
+	 * is not sufficient after suspension, consent withdrawal or an owner-side edit.
+	 */
+	public static function current_public_projection( $row ) {
+		if ( ! is_array( $row ) || empty( $row['eligible'] ) || empty( $row['doctor_id'] ) || ! DDD_Helpers::valid_public_id( (string) ( $row['public_id'] ?? '' ) ) ) { return false; }
+		$live = DDD_Contracts::eligibility( absint( $row['doctor_id'] ) );
+		$owner_public_id = strtolower( (string) ( $live['profile']['public_id'] ?? '' ) );
+		if ( empty( $live['eligible'] ) || ! DDD_Helpers::valid_public_id( $owner_public_id ) || ! hash_equals( $owner_public_id, strtolower( (string) $row['public_id'] ) ) ) { return false; }
+		$stored = json_decode( (string) ( $row['owner_versions_json'] ?? '' ), true );
+		if ( ! is_array( $stored ) ) { return false; }
+		$current = array(
+			'identity' => (string) ( $live['identity']['claim_version'] ?? '' ),
+			'verification' => (string) ( $live['verification']['decision_version'] ?? '' ),
+			'profile' => (string) ( $live['profile']['profile_version'] ?? '' ),
+			'clinic' => (string) ( $live['clinic']['clinic_version'] ?? '' ),
+		);
+		foreach ( $current as $owner => $version ) {
+			if ( ! array_key_exists( $owner, $stored ) || ! is_string( $stored[ $owner ] ) || ! hash_equals( $stored[ $owner ], $version ) ) { return false; }
+		}
+		return true;
+	}
+
 	public static function search( $args = array() ) {
 		global $wpdb;
 		$defaults = array( 'q' => '', 'country' => '', 'city' => '', 'specialty' => '', 'language' => '', 'qualification' => '', 'min_experience' => 0, 'mode' => '', 'accepting' => 0, 'currency' => '', 'fee_min' => null, 'fee_max' => null, 'featured_only' => 0, 'recent_only' => 0, 'limit' => self::DEFAULT_LIMIT, 'cursor' => '' );
@@ -250,10 +274,17 @@ final class DDD_Repository {
 		if ( $having ) { $sql .= ' HAVING ' . implode( ' AND ', $having ); }
 		$sql .= " ORDER BY relevance_score DESC, active_featured DESC, quality_score DESC, COALESCE(verified_at,'1970-01-01 00:00:00') DESC, public_id ASC LIMIT %d";
 		$all_params = array_merge( $select_params, $params, $having_params, array( $limit + 1 ) );
+		$wpdb->last_error = '';
 		$rows = $wpdb->get_results( $wpdb->prepare( $sql, $all_params ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		if ( ! is_array( $rows ) || '' !== (string) $wpdb->last_error ) {
+			return DDD_Helpers::safe_error( 'directory_search_unavailable', __( 'Directory results cannot be verified. Please retry later.', DDD_TEXT_DOMAIN ), 503 );
+		}
 		$has_more = count( $rows ) > $limit;
 		if ( $has_more ) { array_pop( $rows ); }
-		$items = array_map( array( __CLASS__, 'public_dto' ), $rows );
+		$items = array();
+		foreach ( $rows as $row ) {
+			if ( self::current_public_projection( $row ) ) { $items[] = self::public_dto( $row ); }
+		}
 		$next = '';
 		if ( $has_more && $rows ) {
 			$last = end( $rows );
@@ -313,8 +344,7 @@ final class DDD_Repository {
 		$now = current_time( 'mysql', true );
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT *, CASE WHEN featured=1 AND (feature_start IS NULL OR feature_start<=%s) AND (feature_end IS NULL OR feature_end>%s) THEN 1 ELSE 0 END active_featured FROM {$table} WHERE public_id=%s AND eligible=1", $now, $now, strtolower( $public_id ) ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( ! $row ) { return array(); }
-		$live = DDD_Contracts::eligibility( absint( $row['doctor_id'] ) );
-		return ! empty( $live['eligible'] ) ? self::public_dto( $row ) : array();
+		return self::current_public_projection( $row ) ? self::public_dto( $row ) : array();
 	}
 
 	public static function get_status( $user_id ) {

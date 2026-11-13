@@ -7,6 +7,9 @@
 - Aligned official ranking freshness to File 24's current 31-day fairness-evidence window.
 - Official merit tiers now fail closed when File 24 explicitly blocks current File 26 fairness evidence; no blocked assurance is presented as an accepted merit ranking.
 - Bounded fee/currency filtering now rejects unknown File 08 fee data in core directory search, neutral ranking fallback and FUT24 advanced discovery.
+- Follow-up source regression (2026-11-13): remove recognized Latin-script language labels (`urdu`, `english`, `arabic`) from the natural-language residual query after mapping them to the language facet; add unit regressions so language choice does not inadvertently narrow free-text search.
+- Follow-up discovery scope correction (2026-11-13): `serves_country` now requires an exact case-normalized entry in the File 08 owner-published country list; substring collisions such as `US` in `Russia` and `FR` in `South Africa` no longer falsely qualify doctors. Exact matching uses a separate scalar canonicalizer because the broad search transliteration helper can emit multiple variants for case differences; this was caught and corrected after the new positive CI test failed.
+- Follow-up current-owner disclosure guard (2026-11-13): public directory search, doctor detail and sitemap refuse stale stored eligibility, changed File03 public UUID and version mismatches across File00/File03/File09/File08; the search DB read also fails closed on errors. Eligibility-sensitive public REST responses no longer allow stale public CDN/browser caching. Dedicated executable tests and CI gates cover these conditions.
 - Documented current File 08 owner-projection omissions and the current File 24/File 26 policy-version compatibility risk without fabricating companion truth.
 - Database schema remains `1.1.1`; projection schema remains `3`; no new File 07 table or column is introduced.
 

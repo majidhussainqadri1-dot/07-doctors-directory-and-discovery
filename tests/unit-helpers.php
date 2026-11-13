@@ -52,6 +52,9 @@ $semantic_cases=array(
     array('in-person doctor in Finland','finland','in-person'),
     array('teleclinic doctor in Finland','teleclinic finland',''),
     array('urduvian doctor in Finland','urduvian finland',''),
+    array('online Urdu doctor in Lahore','lahore','online'),
+    array('online English doctor in Lahore','lahore','online'),
+    array('online Arabic doctor in Lahore','lahore','online'),
     array('اردو ڈاکٹر لاہور','لاہور',''),
 );
 foreach($semantic_cases as $case){
@@ -66,6 +69,10 @@ $parsed=DDD_Future_Query::interpret('urduvian doctor in Finland');
 ok(!isset($parsed['language']),'semantic language does not match within a longer word');
 $parsed=DDD_Future_Query::interpret('اردو ڈاکٹر لاہور');
 ok(($parsed['language']??'')==='Urdu','whole-word Urdu language intent recognized');
+foreach(array('Urdu','English','Arabic') as $language){
+    $parsed=DDD_Future_Query::interpret('online '.$language.' doctor in Lahore');
+    ok(($parsed['language']??'')===$language,'Latin-script language recognized without leaking into residual query: '.$language);
+}
 
 
 $availability_params=DDD_Future_Query::sanitize(array('availability_days'=>7,'timezone'=>'Asia/Karachi'));
@@ -89,5 +96,14 @@ $invalid_calendar=DDD_Future_Query::enrich($availability_doctor,$availability_pa
 ok(!DDD_Future_Query::matches($invalid_calendar,$availability_params),'invalid calendar date cannot satisfy availability filter');
 ok(empty($invalid_calendar['local_availability']),'invalid calendar date is not advertised');
 unset($GLOBALS['ddd_test_filters']['ddd_file08_public_discovery_v1']);
+$country_scope_us=DDD_Future_Query::sanitize(array('serves_country'=>'US'));
+$country_scope_pk=DDD_Future_Query::sanitize(array('serves_country'=>'Pakistan'));
+$country_scope_fr=DDD_Future_Query::sanitize(array('serves_country'=>'FR'));
+$country_doctor=array('discovery_extensions'=>array('clinic'=>array('countries_served'=>array('Russia','South Africa'))));
+ok(!DDD_Future_Query::matches($country_doctor,$country_scope_us),'US country coverage must not substring-match Russia');
+ok(!DDD_Future_Query::matches($country_doctor,$country_scope_fr),'FR country coverage must not substring-match South Africa');
+$country_doctor['discovery_extensions']['clinic']['countries_served']=array('pakistan','Bangladesh');
+ok(DDD_Future_Query::matches($country_doctor,$country_scope_pk),'Exact case-normalized owner country coverage remains eligible');
+
 
 echo "TOTAL PASS: $tests\n";
