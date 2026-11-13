@@ -13,6 +13,7 @@ v1.2.2 is the corrective result of a fresh twenty-round File 07 audit against th
 - Core, neutral-ranking and advanced-discovery fee filters now reject absent/non-numeric fee owner data for bounded fee searches; missing currency also cannot satisfy an explicit currency filter.
 - Missing File 08 owner fields remain unknown rather than being fabricated.
 - Follow-up language-intent correction (2026-11-13): Latin language tokens (`Urdu`, `English`, `Arabic`) are recognized as language facets and removed from free-text residual search; 3 positive residual assertions and 3 language assertions are added to unit tests.
+- Follow-up country-scope correction (2026-11-13): File 08 published coverage is now matched as an exact normalized country entry rather than substring; negative `US`/`Russia` and `FR`/`South Africa` plus positive `Pakistan` regression cases were added.
 
 ## Version/data impact
 
