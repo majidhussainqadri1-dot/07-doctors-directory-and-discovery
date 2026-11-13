@@ -30,6 +30,10 @@ v1.2.2 is the corrective result of a fresh twenty-round File 07 audit against th
 
 See `docs/CROSS-FILE-DEPENDENCY-SNAPSHOT-2026-10-08.md` for the exact companion repository HEADs used in this audit and the remaining external File 08 / File 24↔26 compatibility caveats.
 
+## Current cross-file assurance status (2026-11-13)
+
+The latest source-head matrix and dual-lens review are recorded in `docs/FILE07-2026-11-13-CURRENT-OWNER-AND-RELEASE-GATES.md`. File 09 now has a newer source HEAD than the previous October audit. File 00 issue #57 remains an OPEN P0 onboarding/verification contract blocker. File07 PR #12/File26 PR #22 remain proposed-only and cannot be marked operational. Source fixes do not bypass any of these mandatory owner gates.
+
 ## Package evidence
 
 Deterministic package: `07-doctors-directory-and-discovery-1.2.2.zip`.
