@@ -37,6 +37,7 @@ checks = {
     "No raw error log or secret output": all(x not in text for x in ("file_get_contents( WP_CONTENT_DIR", "AUTH_KEY", "DB_PASSWORD", "WP_DEBUG_LOG_PATH")),
     "Clear installed tree vs ZIP parity distinction": "tree_sha256" in text and "zip_sha256" in text and "UNVERIFIED: installed tree hash is not a ZIP hash" in text,
     "Non-installable ops file excluded from ZIP build": 'cp -a "$ROOT/doctors-directory/." "$STAGE/"' in build,
+    "Isolated-only safety due to WP-CLI bootstrap effects": "--skip-plugins --skip-themes" in text and "ISOLATED RESTORED STAGING COPY" in text and "bootstrap_side_effects" in text,
     "Runtime remains untouched": "File07 V12.3" in text and not (ROOT / "doctors-directory/ops").exists(),
 }
 
