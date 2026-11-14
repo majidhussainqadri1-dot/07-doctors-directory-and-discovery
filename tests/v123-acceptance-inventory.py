@@ -19,21 +19,21 @@ conditions = []
 def check(name, ok):
     conditions.append((name, bool(ok)))
 
-ids = re.findall(r"^\\| (F07-(?:FR-\\d{3}|NFR-\\d{3}|CEN-01|FUT-\\d{2})) \\|", gates, re.M)
+ids = re.findall(r"^\| (F07-(?:FR-\d{3}|NFR-\d{3}|CEN-01|FUT-\d{2})) \|", gates, re.M)
 expected = (
     [f"F07-FR-{i:03d}" for i in range(1, 16)]
     + [f"F07-NFR-{i:03d}" for i in range(1, 11)]
     + ["F07-CEN-01"]
     + [f"F07-FUT-{i:02d}" for i in range(1, 25)]
 )
-ats = re.findall(r"^\\| (AT-\\d{2}) \\|", gates, re.M)
+ats = re.findall(r"^\| (AT-\d{2}) \|", gates, re.M)
 check("Exactly 50 distinct F07 requirement IDs", len(ids) == 50 and len(set(ids)) == 50 and set(ids) == set(expected))
 check("Exactly 20 acceptance journey IDs", len(ats) == 20 and len(set(ats)) == 20 and set(ats) == {f"AT-{i:02d}" for i in range(1, 21)})
-row_lines = [ln for ln in gates.splitlines() if re.match(r"^\\| F07-(?:FR|NFR|CEN|FUT)-", ln)]
+row_lines = [ln for ln in gates.splitlines() if re.match(r"^\| F07-(?:FR|NFR|CEN|FUT)-", ln)]
 check("Each requirement explicitly unverified staging/live", len(row_lines) == 50 and all("STAGING-UNVERIFIED / LIVE-UNVERIFIED" in ln for ln in row_lines))
 check("AT journeys never presented as accepted", gates.count("NOT-EXECUTED-IN-STAGING/LIVE") == 20)
 check("Version and declared schema match current source", "Version: 1.2.2" in main and "DDD_DB_VERSION', '1.1.1" in main and "DDD_PROJECTION_SCHEMA', 3" in main)
-check("Migration documentation matches 1.2.2 source", "runtime \`1.2.2\`" in migration and "source target: runtime \`1.2.1\`" not in migration)
+check("Migration documentation matches 1.2.2 source", "runtime `1.2.2`" in migration and "source target: runtime `1.2.1`" not in migration)
 check("Rollback documentation matches 1.2.2 source", "1.2.2 source candidate" in rollback and "1.2.1 source candidate" not in rollback)
 check("All five live-reality facts separately disclosed", all(term in freeze for term in ["Repository HEAD", "Deployed Version", "DB Version", "Migration State", "Live Verification Status"]))
 check("Exact installed code and DB explicitly unverified", "Deployed Version | **UNVERIFIED**" in freeze and "DB Version | **UNVERIFIED**" in freeze)
