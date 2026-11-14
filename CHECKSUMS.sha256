@@ -1,10 +1,10 @@
 70d51e16fe89ff87084d3826e5525f2703765e80188c34127c61e9ffdef96a60  ./.ci-trigger
-8aa67d6ba785ac54e62ddbb9a4f92e47a5583da0ccb5be1de773a77974d1760c  ./.github/workflows/file-07-quality-gates.yml
-b63fbf5a55be1be900b7d740ba75d060bd37a1a2a90888832ae8ebaf4e70081c  ./.github/workflows/final-quality-gates.yml
+ff6afe701a39d22fad29c486ab27bb68c3efe6c0c9d1c1bbfdcd296f17ddace8  ./.github/workflows/file-07-quality-gates.yml
+9104c2e6ae5b1b33cfc3ffd36043dabb3d0b71164925ca2ccddefbba81f0a8b5  ./.github/workflows/final-quality-gates.yml
 b24047d049461eccb9dfb7679021233f99614a56a2edb5d392244a42fa039d76  ./.gitignore
 2dc451cc2e6db7a0d52bf48c128cd5dd1e371ae8f24dcc6308403117b80effb6  ./CHANGELOG.md
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
-47fe2d3d4afdd7736121d7b37b3f05ddbbcbeba0922c39b86d45b8f88d831301  ./MANIFEST.md
+b4bf7e47127e446b206793ac730676c2b11c99d8a323a5b1f1262f0eae422135  ./MANIFEST.md
 487e7c2d75a76c9f6157665c717fd3e7feb08bd2a619927cf798ec9cd5d38075  ./README.md
 3d1a76e5990af7938259d5582920af4d7c770ab92e99de56ab33fab50efabaca  ./RELEASE-CANDIDATE.sha256
 ec1a4e7b5a5e4629a2131a1952ad4f7aefc98930e5a223161d14f2b061a82b2e  ./docs/API-CONTRACTS.md
