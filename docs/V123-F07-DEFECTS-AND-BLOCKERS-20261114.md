@@ -33,3 +33,12 @@ Scope: read-only assessment of File07 `main` HEAD `8f9b567c08e9456daf31ebadf17b1
 No production patch, migration, File26 index activation, paid merit signal, fabricated availability, or resolved-live claim before exact deployed code/schema/parity and source-specific root cause. Protected user data must never enter derivative index.
 
 Final incident report must separately state: Repository HEAD / Deployed Version / DB Version / Migration State / Live Verification Status; counts: found/fixed/CI-retested/staging-retested/live-verified/open/blocked.
+
+## Newly verified cross-owner source findings (distinct from File07 runtime bugs)
+
+| ID | Kind | Owner and source evidence | Status / next step |
+|---|---|---|---|
+| BL-11 / File08 Issue #52 | Missing rich public projection contract | File08 `WCA_File03_Adapter::public_clinic_claim` publishes no canonical fee/currency/next availability/countries served/map coordinates despite File07 advanced consumer slots. Source HEAD `d086840...`. | Open owner enhancement/integration; File07 must remain fail-empty/unknown; no Live defect claimed |
+| BL-12 / File26 Issue #40 | Source-default policy syntax vs assurance parser | File26 fallback `doctor-global-1.0` conflicts with File24 numeric policy-version regex; configured effective policy unknown. | Open owner contract-decision; do not bypass File24 blocked state or assert Live failure |
+
+The source-level blocker count is not a count of verified production defects. Retain 2 File07 documentary corrections, 2 correction-introduced QA error groups corrected, 0 verified File07 runtime fixes and 0 verified Live fixes. Hostinger deployed parity is still unavailable.
