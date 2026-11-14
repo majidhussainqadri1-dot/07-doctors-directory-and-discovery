@@ -16,6 +16,7 @@ Status **CHECKLIST ONLY — NO PHYSICAL TEST PASS CERTIFIED**. File07 source `ma
 ## UX/accessibility/performance suite
 
 - 320, 390, 768, 1024 and 1440 CSS px, 200% text, 400% zoom and reduced-motion; RTL Urdu/Arabic and LTR English; NVDA/TalkBack/VoiceOver with actual browser/OS versions recorded.
+- WCAG 2.2 AA applicable success criteria require manual and automated real-journey evidence; an icon/contrast static check is not overall conformance.
 - File20 one global header/menu; File25 canonical green #087A4E and semantic tokens; no extra duplicate shell. Use actual mobile, tablet and desktop user journeys.
 - Page and REST states: loading, empty, zero-result, permission expired, owner unavailable, stale, offline, failed, retry, revoked and success. Keyboard focus preserved.
 - Test at least 1000 synthetic practitioners, >250 eligible, concurrent updates, stable pagination, owner version changes and slow cache/DB/outbox jobs.
