@@ -32,3 +32,10 @@ File07 PR #15 head `afdd751486835ff50cb7efc54b55813350402a08` is DRAFT, PROPOSED
 7. File07→26: owner event/tombstone, indexed revocation, stale cursor/cache/page/SEO purge, current click-time authorization, no patient/credential/private data.
 
 Source, staging and live contract columns must remain separate.
+
+## Exact source-level owner interface findings (2026-11-14)
+
+- **File08** `includes/class-wca-file03-adapter.php::public_clinic_claim` registers `sabri_file08_public_clinic_projection_v1` and returns name/languages/services/canonical clinic and booking URLs, status, visibility, version and expiry. It does **not** publish authoritative fee/currency, accepting patients, consultation mode, next-available slot, served countries, clinic coordinates or accessibility. Optional `ddd_file08_public_discovery_v1` is not evidenced as a File08 native provider on inspected main. File07 must keep these fields `unknown`, never fabricate values. Owner action: File08 Issue #52.
+- **File03** `includes/trait-spd-profile-public-dto.php::public_dto` checks `SPD_Authorization::audience_allows` for contact fields and omits minor contacts before exposing `contacts`; File07 consumes the public DTO, not raw identity contacts. Cross-file staging must still test owner consent revocation/cache updates.
+- **File19** `SUN_Event_Validator` recognizes File07's `DoctorDiscovery.SavedSearchMatched` event-name grammar and registered data allowlist; a structural code match does not verify actual notification acceptance, delivery, quiet hours or erasure.
+- **File26/File24** File26 `Doctor_Ranking::policy()` uses fallback identifier `doctor-global-1.0` while File24 `RankingFairnessPolicy.php` accepts numeric semver-like policy versions only. This is a conditional source-level contract mismatch; actual configured File26 policy and Live behavior are unknown. Owner action: File26 Issue #40. Never bypass a File24 blocked assurance decision.
