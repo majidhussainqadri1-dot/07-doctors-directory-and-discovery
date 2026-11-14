@@ -2,8 +2,14 @@
 /**
  * Sabri File07 V12.3 — read-only WordPress/Hostinger reality freeze.
  *
- * Run ONLY by an authorized operator in an authenticated WP-CLI environment:
- *   wp eval-file ops/file07-readonly-reality-freeze.php
+ * Run ONLY by an authorized operator on an ISOLATED RESTORED STAGING COPY:
+ *   wp --skip-plugins --skip-themes eval-file ops/file07-readonly-reality-freeze.php
+ *
+ * WARNING: WP-CLI bootstraps WordPress before this file executes. A normal
+ * bootstrap may run plugins_loaded upgrade/migration hooks; mu-plugins can
+ * still load even with --skip-plugins. Do NOT run on unverified LIVE as the
+ * first reality freeze. Obtain Hostinger filesystem/DB read-only snapshots
+ * through separate authorized controls before allowing any WP bootstrap.
  *
  * This file is NOT part of the installable File07 plugin; build-release.sh
  * copies doctors-directory/ only. Never execute through an HTTP route.
@@ -11,7 +17,8 @@
  *
  * ATTENTION: This script reads the WordPress installation, not staging/live
  * interchangeably. Label the exact environment and preserve the generated
- * report confidentially in your governed incident register.
+ * report confidentially in your governed incident register. The script itself
+ * issues no writes, but WordPress bootstrap side effects are NOT attested.
  */
 if ( ! defined( 'ABSPATH' ) || ! defined( 'WP_CLI' ) || ! WP_CLI || 'cli' !== PHP_SAPI ) {
 	exit( 1 );
@@ -172,7 +179,7 @@ foreach ( array( 'ddd_reconcile_tick', 'ddd_expire_features_tick', 'ddd_process_
 $report = array(
 	'report_type'             => 'file07-v123-readonly-reality-freeze',
 	'captured_at_utc'         => gmdate( 'c' ),
-	'environment'             => 'OPERATOR_MUST_LABEL_LIVE_OR_STAGING',
+	'environment'             => 'OPERATOR_MUST_LABEL_ISOLATED_RESTORED_STAGING',
 	'wordpress_version'      => get_bloginfo( 'version' ),
 	'php_version'            => PHP_VERSION,
 	'database_server_version'=> method_exists( $wpdb, 'db_version' ) ? $wpdb->db_version() : null,
@@ -187,7 +194,8 @@ $report = array(
 	'ddd_cron'               => $cron,
 	'deployed_zip_parity'    => 'UNVERIFIED: installed tree hash is not a ZIP hash',
 	'live_behavior_retested' => false,
-	'write_operations'       => 0,
+	'script_write_operations'=> 0,
+	'bootstrap_side_effects' => 'NOT ATTESTED — WP-CLI boot may run mu-plugin hooks; use only on isolated restored staging with skip flags',
 	'privacy_notice'         => 'Contains only aggregate counts, schema names, plugin versions, and hashes; do not publish publicly.',
 );
 WP_CLI::line( wp_json_encode( $report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
