@@ -42,7 +42,7 @@ check("File00/File09 source correction not misreported as live", "source merged"
 check("File07/File26 proposed-only integration kept blocked", "PR #15" in owners and "PROPOSED-only" in owners and "PR #22" in owners)
 check("No fabricated resolved-production claims", "0 (live unverified" in defects and "New File07 runtime code patches" in defects)
 check("Security and real restore/rollback remain evidence gates", all(x in release for x in ["IDOR", "actual isolated restore", "rollback", "WCAG 2.2 AA"]))
-check("Two-pass review expressly not runtime E2E acceptance", "not a complete independent security code audit" in reviews and "not sufficient for real" in reviews)
+check("Two-pass review expressly not runtime E2E acceptance", "**not** a complete independent security code audit" in reviews and "not sufficient for real" in reviews)
 
 for name, ok in conditions:
     print(("PASS" if ok else "FAIL") + ": " + name)
