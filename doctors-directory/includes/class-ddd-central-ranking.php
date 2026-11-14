@@ -516,7 +516,14 @@ final class DDD_Central_Ranking {
 		$hash = DDD_Helpers::filter_hash( $f ); $raw = isset($_GET['doctor_rank_cursor']) ? sanitize_text_field(wp_unslash($_GET['doctor_rank_cursor'])) : ''; $cursor = $raw ? DDD_Helpers::cursor_decode($raw,$hash) : array();
 		if ( $raw && ! $cursor ) { return new WP_Error( 'neutral_cursor_invalid', __( 'The All Verified cursor expired or does not match these filters. Restart the view.', DDD_TEXT_DOMAIN ) ); }
 		if ( $cursor ) { $where[]='(display_name_norm>%s OR (display_name_norm=%s AND public_id>%s))'; $p[]=(string)($cursor['n']??''); $p[]=(string)($cursor['n']??''); $p[]=(string)($cursor['p']??''); }
-		$p[] = self::LIMIT + 1; $rows = $wpdb->get_results( $wpdb->prepare("SELECT * FROM {$table} WHERE ".implode(' AND ',$where).' ORDER BY display_name_norm ASC, public_id ASC LIMIT %d',$p), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$p[] = self::LIMIT + 1;
+		$wpdb->last_error = '';
+		$rows = $wpdb->get_results( $wpdb->prepare("SELECT * FROM {$table} WHERE ".implode(' AND ',$where).' ORDER BY display_name_norm ASC, public_id ASC LIMIT %d',$p), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// A failed fallback read must not be presented as an empty/valid directory.
+		// wpdb::get_results() can return null on query failure; count(null) is fatal on PHP 8.
+		if ( ! is_array( $rows ) || '' !== (string) ( $wpdb->last_error ?? '' ) ) {
+			return DDD_Helpers::safe_error( 'neutral_ranking_store_unavailable', __( 'The verified-doctor directory is temporarily unavailable. Please try again.', DDD_TEXT_DOMAIN ), 503 );
+		}
 		$more = count($rows)>self::LIMIT; if($more){array_pop($rows);} $items=array();
 		foreach($rows as $row){ $dto=DDD_Repository::get_by_public_id($row['public_id']); if($dto){$items[]=array('public_id'=>$dto['public_id'],'rank'=>0,'explanation'=>array(__( 'Verified and publicly eligible', DDD_TEXT_DOMAIN ),__( 'Neutral alphabetical fallback; no merit rank is asserted while File 26 is unavailable.', DDD_TEXT_DOMAIN )));}}
 		$next=''; if($more&&$rows){$last=end($rows);$next=DDD_Helpers::cursor_encode(array('fh'=>$hash,'n'=>(string)$last['display_name_norm'],'p'=>(string)$last['public_id']));}
