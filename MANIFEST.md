@@ -34,6 +34,7 @@
 - `.github/workflows/final-quality-gates.yml`
 - `tests/bootstrap.php`
 - `tests/unit-helpers.php`
+- `tests/privacy-db-read-guard.php`
 - `tests/source-contracts.py`
 - `tests/review-20-cross-file-20261008.py`
 - `tests/central-plan-ranking.py`
@@ -60,6 +61,7 @@
 - `docs/DATA-DICTIONARY.md`
 - `docs/THREAT-MODEL.md`
 - `docs/PRIVACY-RETENTION.md`
+- `docs/PRIVACY-DB-READ-SOURCE-20261114.md`
 - `docs/MIGRATION.md`
 - `docs/ROLLBACK.md`
 - `docs/OPERATIONS-RUNBOOK.md`
