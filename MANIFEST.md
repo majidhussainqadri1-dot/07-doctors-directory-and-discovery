@@ -34,7 +34,8 @@
 - `.github/workflows/final-quality-gates.yml`
 - `tests/bootstrap.php`
 - `tests/unit-helpers.php`
-- `tests/v123-acceptance-inventory.py`\n- `tests/source-contracts.py`
+- `tests/v123-acceptance-inventory.py`
+- `tests/source-contracts.py`
 - `tests/review-20-cross-file-20261008.py`
 - `tests/central-plan-ranking.py`
 - `tests/central-plan-adversarial.py`
@@ -55,7 +56,13 @@
 - `MANIFEST.md`
 - `CHECKSUMS.sha256`
 - `RELEASE-CANDIDATE.sha256`
-- `docs/V123-F07-ENV-REALITY-FREEZE-20261114.md`\n- `docs/V123-F07-CROSS-FILE-OWNERS-20261114.md`\n- `docs/V123-F07-DEFECTS-AND-BLOCKERS-20261114.md`\n- `docs/V123-F07-REQUIREMENT-GATES-20261114.md`\n- `docs/V123-F07-SECURITY-PERF-STAGING-RELEASE-20261114.md`\n- `docs/V123-F07-REVIEWS-A-B-20261114.md`\n- `docs/REQUIREMENTS-TRACEABILITY.md`
+- `docs/V123-F07-ENV-REALITY-FREEZE-20261114.md`
+- `docs/V123-F07-CROSS-FILE-OWNERS-20261114.md`
+- `docs/V123-F07-DEFECTS-AND-BLOCKERS-20261114.md`
+- `docs/V123-F07-REQUIREMENT-GATES-20261114.md`
+- `docs/V123-F07-SECURITY-PERF-STAGING-RELEASE-20261114.md`
+- `docs/V123-F07-REVIEWS-A-B-20261114.md`
+- `docs/REQUIREMENTS-TRACEABILITY.md`
 - `docs/API-CONTRACTS.md`
 - `docs/DATA-DICTIONARY.md`
 - `docs/THREAT-MODEL.md`
