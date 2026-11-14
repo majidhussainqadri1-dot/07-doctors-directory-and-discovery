@@ -1,10 +1,10 @@
 70d51e16fe89ff87084d3826e5525f2703765e80188c34127c61e9ffdef96a60  ./.ci-trigger
-ff6afe701a39d22fad29c486ab27bb68c3efe6c0c9d1c1bbfdcd296f17ddace8  ./.github/workflows/file-07-quality-gates.yml
-9104c2e6ae5b1b33cfc3ffd36043dabb3d0b71164925ca2ccddefbba81f0a8b5  ./.github/workflows/final-quality-gates.yml
+1de3db8fc9ea678194b5e3fb3f09e5a1147c0126c0596b314e4b8d25cf9d8240  ./.github/workflows/file-07-quality-gates.yml
+341ba89aac8e2107450ae343c7ecd7adda644e66dd7418221d6f3284e78ef708  ./.github/workflows/final-quality-gates.yml
 b24047d049461eccb9dfb7679021233f99614a56a2edb5d392244a42fa039d76  ./.gitignore
 2dc451cc2e6db7a0d52bf48c128cd5dd1e371ae8f24dcc6308403117b80effb6  ./CHANGELOG.md
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
-b4bf7e47127e446b206793ac730676c2b11c99d8a323a5b1f1262f0eae422135  ./MANIFEST.md
+55c5e8aa43a5964af3357a9796882c1868d21f7bfbc8ded2b265217a55fbc3f5  ./MANIFEST.md
 487e7c2d75a76c9f6157665c717fd3e7feb08bd2a619927cf798ec9cd5d38075  ./README.md
 3d1a76e5990af7938259d5582920af4d7c770ab92e99de56ab33fab50efabaca  ./RELEASE-CANDIDATE.sha256
 ec1a4e7b5a5e4629a2131a1952ad4f7aefc98930e5a223161d14f2b061a82b2e  ./docs/API-CONTRACTS.md
@@ -40,6 +40,7 @@ c602abb5a3f17bdeb48c56cf4bf4b6022447714f75c9d975894706bf25df0aa5  ./docs/ROLLBAC
 f1f4ef3cf31b61a0262410093def46189ebf79aa5c52ee03e74cef60e9010f04  ./docs/V123-F07-CROSS-FILE-OWNERS-20261114.md
 d8cf1f6b2899097db9ccaa9c5d84dd0d9ff8d6290247f82b84fed392a78886a6  ./docs/V123-F07-DEFECTS-AND-BLOCKERS-20261114.md
 079e46889b3c95cf99d3a97e9b12bb7412ff5bdc4014bee21505a75a6d9726a9  ./docs/V123-F07-ENV-REALITY-FREEZE-20261114.md
+1ca02cecc59ecebaf893bd84c8a5ba78faf187be5516f06016e16054f31bfb1c  ./docs/V123-F07-READONLY-OPERATOR-PROBE-20261114.md
 a497b68c6e9a90d5b321bde6d996f39b4e1674c03e31d496c62fa8f486ffa180  ./docs/V123-F07-REQUIREMENT-GATES-20261114.md
 20aa56b2996036dacf07784dacfe519db5e2b52f9737e3ed55da327d3610bd1d  ./docs/V123-F07-REVIEWS-A-B-20261114.md
 e84a4260e851f055c7f17c8a0a397766d33a76c1f2deef2f39f08e6868e07d93  ./docs/V123-F07-SECURITY-PERF-STAGING-RELEASE-20261114.md
@@ -70,6 +71,7 @@ eb6d2eeb4da1a3f61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-dire
 35ebe8e30ff7b016f346ea26db695dd1b6888f7e69c9be95f02994c5757f1fdf  ./doctors-directory/includes/class-sdd-seo.php
 2f81fe9c03f99d8fa6833dff827e94475365ea04818ad444cc267dff32069a5b  ./doctors-directory/readme.txt
 49fa5d98aead2f2ef3126e8fe7fb81aa9cd6ae2268e264c6d56edff151e43f82  ./doctors-directory/uninstall.php
+e2a08ed4ca44307b4e3e592df8c2b36852b3d668a40591647d49167b7127f208  ./ops/file07-readonly-reality-freeze.php
 15115f271ab32921c53449993caf78d9dc84262727ebaabfd75975a0adae31b7  ./tests/bootstrap.php
 8c755b0d4292bb1db818969378632aaffeafd0775d8a2e15dcd5d96bbb49f626  ./tests/build-release.sh
 0f31ce419c510c67abdcc2041a321c0fd64a4804ec2ea4b1655e43e4d639e0e5  ./tests/central-plan-adversarial.py
@@ -86,4 +88,5 @@ e4d836582f274987a8b617e009ef39486837ae53f704c64993da9b0ae5021379  ./tests/source
 6b1d7aea191f5a6b27f2720c530178e2490693fb1e1eb4039823beb6d675f7b7  ./tests/test-pagination.py
 d8fc2b4bb091abfcdd0c2405c0a3e1e8481957e224292f08792c99820e644276  ./tests/unit-helpers.php
 4d17a73134a44bb6e0570d2eeb66001d952d08ab447ccee28a639c987326f8cf  ./tests/v123-acceptance-inventory.py
+854bc2d777c94c079d139eebf766b61b0058911b1a5570dbdeb72b4a5c6673b4  ./tests/v123-readonly-freeze-contract.py
 619b612a9c887618d3aba05af24a25e56c2c0f93c775c435a8923bbcb5631278  ./tests/verify-package-paths.py
