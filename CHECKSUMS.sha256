@@ -1,10 +1,10 @@
 70d51e16fe89ff87084d3826e5525f2703765e80188c34127c61e9ffdef96a60  ./.ci-trigger
-f482b9685382f02392518da81fe295fc716f1f38622a9556fd4871a17bdc91e8  ./.github/workflows/file-07-quality-gates.yml
-59daccbc0de5b9a0309218d9ed317304af1e796b67dae4cfd418c246a6fc609b  ./.github/workflows/final-quality-gates.yml
+4253b7d0b478ff4ae4336609dbafd12eafbea32815ecfd19d7c084fb6d5a2aef  ./.github/workflows/file-07-quality-gates.yml
+930fa2ed6c1df4527c1390ebb61dce506585188754a69784572c510cf56ba73a  ./.github/workflows/final-quality-gates.yml
 b24047d049461eccb9dfb7679021233f99614a56a2edb5d392244a42fa039d76  ./.gitignore
 2dc451cc2e6db7a0d52bf48c128cd5dd1e371ae8f24dcc6308403117b80effb6  ./CHANGELOG.md
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
-9e2cb497804b4f53e295b4f9ba10ad8446f4c7f32c6a7e3d9c62deb842d23023  ./MANIFEST.md
+492e99a2c9a47946e13615e652ee20ce3955761305d9464d0fc6d77befc32963  ./MANIFEST.md
 487e7c2d75a76c9f6157665c717fd3e7feb08bd2a619927cf798ec9cd5d38075  ./README.md
 3d1a76e5990af7938259d5582920af4d7c770ab92e99de56ab33fab50efabaca  ./RELEASE-CANDIDATE.sha256
 ec1a4e7b5a5e4629a2131a1952ad4f7aefc98930e5a223161d14f2b061a82b2e  ./docs/API-CONTRACTS.md
@@ -19,6 +19,7 @@ a9293b384239ed46a4fdb2d5a0dc40f621681b6b969c34cdf0f307897103a729  ./docs/FILE07-
 ef4045964bd167fbb656e1dfe003ffd61713494d8ab0d549f69cead3bd8844a5  ./docs/HOURLY-AUDIT-2026-10-09-ROUND-02.md
 cfd3a55dc65a9ac50f2c4777b05e53f7042fd744571cd6e5ecc044d608edfdae  ./docs/HOURLY-AUDIT-2026-10-10-ROUND-03.md
 951bd8fe9236e1c885c39f7225605181ef9fd20b9f5e4fadf86362e787bf12de  ./docs/MIGRATION.md
+69641bc8a0c57c23c9c5be962adfa4d10c617f87700e5376d52b425affbb941c  ./docs/NEUTRAL-DB-FAIL-CLOSED-SOURCE-20261114.md
 da96c03f9d5119563ea139c0c165663cf9b3404f03ee8700345d174681a4ad14  ./docs/OPERATIONS-RUNBOOK.md
 742cdc94f561be498ac96eaf287f35882cbbb41cbd681d14ce9e3d4270665f55  ./docs/PRIVACY-RETENTION.md
 2c75321243643201f8351b137e0cfde735cf6223163e34970c597c42bc0544d0  ./docs/RELEASE-NOTES-1.1.0.md
@@ -44,7 +45,7 @@ c2fbf7ed500659acd0f52f0fd849f512d9af3f950b663e751cb4aa555b54ced2  ./doctors-dire
 1c646fbc18e5d964fb5dfffbdf1c2d4209b62df56038f779f8180dbc3505a6c4  ./doctors-directory/assets/js/directory.js
 e7a875b651c97d30b564613499cd6736dd8a92103e128d1858192a341a11b55b  ./doctors-directory/assets/js/future-discovery.js
 18e7e55f80d2732c9bfafd43d9cf02d11fdb0ed32aed4b8aecca72dfedeacb9a  ./doctors-directory/doctors-directory.php
-7d8c1fe90343c75af1a101d7b0f6f38dedc6ccadfa9a919d633cf718b4202c71  ./doctors-directory/includes/class-ddd-central-ranking.php
+adc4dfc04771766c2a1871cdee533c64cd22336653881ac8fdde14fbc88f6f63  ./doctors-directory/includes/class-ddd-central-ranking.php
 192e2cdf5d17a3b5d902c7e94b25685aa85717bf657d5e83b37882186988e2df  ./doctors-directory/includes/class-ddd-cross-file-contracts.php
 ff789f0cb7f2bb3e531cbfa3fcdc4ba2f41893e6535ab1025e273ae15d4c4a3d  ./doctors-directory/includes/class-ddd-future-discovery.php
 fac1b2d44493b8f9eaee488a515eaab927566a0dee046e764270c71917328846  ./doctors-directory/includes/class-ddd-future-mutation-guard.php
@@ -71,6 +72,7 @@ eb6d2eeb4da1a3f61d55b5cd4b4c97d0730e6ba9c035a3a02f5b09d8a4a515ee  ./doctors-dire
 c5e0383147bb56c82916fc6c470cdd0056bb657a2d757d0423b4f422bf7b0363  ./tests/current-owner-visibility.php
 de768eadb80cb3872b6306ffdb87cd07d51126eac000023716052fcd0c48e4c5  ./tests/future-discovery-24.py
 d76cf4bd4fc2d207844788125bc98cc962c8ea361535f4347abe4ecccf3ca670  ./tests/generate-source-checksums.sh
+0dcbb2eba7f63e6b884f7388a54b21435a68bdc08000a8a0e41c08c9ec7b7b3d  ./tests/neutral-db-fail-closed.php
 ad567412582a1227f27d4481171620597143dd1e93ba693160385ac1f7c2bb11  ./tests/review-20-cross-file-20261008.py
 620f7718520a0a1b35726970fe271b8ec741b542796790136a4df3528fa0c7a0  ./tests/review-40.py
 4677b3feb1ae557f01ebd6881b32e3d1bf153fdfb1d45b7a20c70fcaa38fd8ec  ./tests/review-80.py

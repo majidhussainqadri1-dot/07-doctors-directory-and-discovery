@@ -34,6 +34,7 @@
 - `.github/workflows/final-quality-gates.yml`
 - `tests/bootstrap.php`
 - `tests/unit-helpers.php`
+- `tests/neutral-db-fail-closed.php`
 - `tests/source-contracts.py`
 - `tests/review-20-cross-file-20261008.py`
 - `tests/central-plan-ranking.py`
@@ -81,4 +82,5 @@
 - `docs/RELEASE-NOTES-1.2.0.md`
 - `docs/RELEASE-NOTES-1.2.1.md`
 - `docs/RELEASE-NOTES-1.2.2.md`
+- `docs/NEUTRAL-DB-FAIL-CLOSED-SOURCE-20261114.md`
 - `docs/DEPENDENCY-INVENTORY.md`
