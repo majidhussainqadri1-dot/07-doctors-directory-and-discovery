@@ -31,6 +31,12 @@ jobs:
           php tests/unit-helpers.php
           php tests/current-owner-visibility.php
           python3 tests/source-contracts.py
+      - name: V12.3 isolated read-only operator probe syntax and safety
+        run: |
+          php -l ops/file07-readonly-reality-freeze.php
+          python3 tests/v123-readonly-freeze-contract.py
+      - name: V12.3 requirements and release-truth inventory
+        run: python3 tests/v123-acceptance-inventory.py
       - name: Fresh twenty-round cross-file audit
         run: python3 tests/review-20-cross-file-20261008.py
       - name: Central-plan File 26 ranking contract
