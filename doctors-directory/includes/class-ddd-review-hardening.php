@@ -53,6 +53,39 @@ final class DDD_Privacy_Hardening {
 		$retained = false;
 		$messages = array();
 		$global_hold = (bool) apply_filters( 'ddd_privacy_legal_hold', false, $user->ID );
+		$reports = DDD_Repository::table( 'reports' );
+
+		// WordPress uses this priority-99 callback, not DDD_Privacy::erase().
+		// Preflight canonical report reads BEFORE page-one erasure mutations.
+		$wpdb->last_error = '';
+		$held_raw = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$reports} WHERE (reporter_id=%d OR doctor_id=%d) AND retention_hold=1",
+				$user->ID,
+				$user->ID
+			)
+		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! is_numeric( $held_raw ) || '' !== (string) ( $wpdb->last_error ?? '' ) ) {
+			return new WP_Error( 'ddd_privacy_hardening_hold_unavailable', __( 'The directory erasure request could not be completed safely. Please retry.', DDD_TEXT_DOMAIN ), array( 'status' => 503 ) );
+		}
+		$retained = $global_hold || (int) $held_raw > 0;
+
+		$rows = array();
+		if ( ! $global_hold ) {
+			$wpdb->last_error = '';
+			$rows = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM {$reports} WHERE (reporter_id=%d OR doctor_id=%d) AND retention_hold=0 ORDER BY id ASC LIMIT %d",
+					$user->ID,
+					$user->ID,
+					self::BATCH
+				),
+				ARRAY_A
+			); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( ! is_array( $rows ) || '' !== (string) ( $wpdb->last_error ?? '' ) ) {
+				return new WP_Error( 'ddd_privacy_hardening_rows_unavailable', __( 'The directory erasure request could not be completed safely. Please retry.', DDD_TEXT_DOMAIN ), array( 'status' => 503 ) );
+			}
+		}
 
 		if ( 1 === $page ) {
 			DDD_Helpers::set_meta( $user->ID, 'discoverable', '0' );
@@ -63,29 +96,9 @@ final class DDD_Privacy_Hardening {
 			$removed = ! is_wp_error( $deleted );
 		}
 
-		$reports = DDD_Repository::table( 'reports' );
-		$held_count = (int) $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$reports} WHERE (reporter_id=%d OR doctor_id=%d) AND retention_hold=1",
-				$user->ID,
-				$user->ID
-			)
-		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$retained = $global_hold || $held_count > 0;
-
 		if ( $global_hold ) {
 			$remaining = 0;
 		} else {
-			$rows = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM {$reports} WHERE (reporter_id=%d OR doctor_id=%d) AND retention_hold=0 ORDER BY id ASC LIMIT %d",
-					$user->ID,
-					$user->ID,
-					self::BATCH
-				),
-				ARRAY_A
-			); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
 			foreach ( $rows as $row ) {
 				$changes = array(
 					'updated_at' => current_time( 'mysql', true ),
@@ -100,18 +113,24 @@ final class DDD_Privacy_Hardening {
 				if ( absint( $row['doctor_id'] ) === absint( $user->ID ) ) {
 					$changes['doctor_id'] = 0;
 				}
-				if ( false !== $wpdb->update( $reports, $changes, array( 'id' => absint( $row['id'] ) ) ) ) {
-					$removed = true;
+				if ( false === $wpdb->update( $reports, $changes, array( 'id' => absint( $row['id'] ) ) ) ) {
+					return new WP_Error( 'ddd_privacy_hardening_update_unavailable', __( 'The directory erasure request could not be completed safely. Please retry.', DDD_TEXT_DOMAIN ), array( 'status' => 503 ) );
 				}
+				$removed = true;
 			}
 
-			$remaining = (int) $wpdb->get_var(
+			$wpdb->last_error = '';
+			$remaining_raw = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT COUNT(*) FROM {$reports} WHERE (reporter_id=%d OR doctor_id=%d) AND retention_hold=0",
 					$user->ID,
 					$user->ID
 				)
 			); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( ! is_numeric( $remaining_raw ) || '' !== (string) ( $wpdb->last_error ?? '' ) ) {
+				return new WP_Error( 'ddd_privacy_hardening_remaining_unavailable', __( 'The directory erasure request could not be completed safely. Please retry.', DDD_TEXT_DOMAIN ), array( 'status' => 503 ) );
+			}
+			$remaining = (int) $remaining_raw;
 		}
 
 		if ( $retained ) {
