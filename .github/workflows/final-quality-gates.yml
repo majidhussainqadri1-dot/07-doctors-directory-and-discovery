@@ -35,6 +35,8 @@ jobs:
         run: |
           php -l ops/file07-readonly-reality-freeze.php
           python3 tests/v123-readonly-freeze-contract.py
+      - name: V12.3 exact 50-ID source-method trace
+        run: python3 tests/v123-source-symbol-trace.py
       - name: V12.3 requirements and release-truth inventory
         run: python3 tests/v123-acceptance-inventory.py
       - name: Fresh twenty-round cross-file audit
