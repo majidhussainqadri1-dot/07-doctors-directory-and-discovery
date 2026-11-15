@@ -35,6 +35,7 @@
 - `tests/bootstrap.php`
 - `tests/unit-helpers.php`
 - `tests/privacy-db-read-guard.php`
+- `tests/privacy-effective-callback.php`
 - `tests/source-contracts.py`
 - `tests/review-20-cross-file-20261008.py`
 - `tests/central-plan-ranking.py`
