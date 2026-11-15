@@ -51,13 +51,13 @@ FROM wp_options WHERE option_name='ddd_activation_lock';
 -- Installed table existence, storage engine and APPROXIMATE InnoDB row estimates.
 SELECT table_name, engine, table_rows
 FROM information_schema.tables
-WHERE table_schema=DATABASE() AND table_name LIKE 'wp\\_ddd\\_%'
+WHERE table_schema=DATABASE() AND LEFT(table_name, CHAR_LENGTH('wp_ddd_'))='wp_ddd_'
 ORDER BY table_name;
 
 -- Column-level schema signature only: no personal row data.
 SELECT table_name, column_name, column_type, is_nullable
 FROM information_schema.columns
-WHERE table_schema=DATABASE() AND table_name LIKE 'wp\\_ddd\\_%'
+WHERE table_schema=DATABASE() AND LEFT(table_name, CHAR_LENGTH('wp_ddd_'))='wp_ddd_'
 ORDER BY table_name, ordinal_position;
 ```
 
