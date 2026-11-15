@@ -1,10 +1,10 @@
 70d51e16fe89ff87084d3826e5525f2703765e80188c34127c61e9ffdef96a60  ./.ci-trigger
-d16b4616428af771672c75a921fa6d013dae1107cdf7204cdf78752612395207  ./.github/workflows/file-07-quality-gates.yml
-38466708cacd7cd92a659f4f9766a91efae0fa2a64d30ab977b584dde0f6d152  ./.github/workflows/final-quality-gates.yml
+694ea9e9e0f9dc3859c5698b840d56b91c7f85483eec55b543168e24424e4ae2  ./.github/workflows/file-07-quality-gates.yml
+e7af1bcdd282bc66fcd2e511bef4330fdb05f10b5d0df43557dbe012eadf7450  ./.github/workflows/final-quality-gates.yml
 b24047d049461eccb9dfb7679021233f99614a56a2edb5d392244a42fa039d76  ./.gitignore
 2dc451cc2e6db7a0d52bf48c128cd5dd1e371ae8f24dcc6308403117b80effb6  ./CHANGELOG.md
 edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6  ./LICENSE
-bb6e4c25fd0b628b7f3cf0380cabe234fde3743c630b16b8874be7fddb2980ff  ./MANIFEST.md
+0fa0844c09d582847b1886894a2a8f009ad2d4c0487f70baf25dfcb011293d00  ./MANIFEST.md
 487e7c2d75a76c9f6157665c717fd3e7feb08bd2a619927cf798ec9cd5d38075  ./README.md
 3d1a76e5990af7938259d5582920af4d7c770ab92e99de56ab33fab50efabaca  ./RELEASE-CANDIDATE.sha256
 ec1a4e7b5a5e4629a2131a1952ad4f7aefc98930e5a223161d14f2b061a82b2e  ./docs/API-CONTRACTS.md
@@ -20,6 +20,7 @@ ef4045964bd167fbb656e1dfe003ffd61713494d8ab0d549f69cead3bd8844a5  ./docs/HOURLY-
 cfd3a55dc65a9ac50f2c4777b05e53f7042fd744571cd6e5ecc044d608edfdae  ./docs/HOURLY-AUDIT-2026-10-10-ROUND-03.md
 951bd8fe9236e1c885c39f7225605181ef9fd20b9f5e4fadf86362e787bf12de  ./docs/MIGRATION.md
 da96c03f9d5119563ea139c0c165663cf9b3404f03ee8700345d174681a4ad14  ./docs/OPERATIONS-RUNBOOK.md
+0c75770b5d5ed21379e25638d1a0f4e8f1550252e6fc174a2c1e8444a85df3be  ./docs/PRIVACY-ACTIVE-HANDLER-20261115.md
 deb8457e107bf120264392727bba0f4dc6455124c26118fc1ef4ac3b341ec70e  ./docs/PRIVACY-DB-READ-SOURCE-20261114.md
 742cdc94f561be498ac96eaf287f35882cbbb41cbd681d14ce9e3d4270665f55  ./docs/PRIVACY-RETENTION.md
 2c75321243643201f8351b137e0cfde735cf6223163e34970c597c42bc0544d0  ./docs/RELEASE-NOTES-1.1.0.md
@@ -54,7 +55,7 @@ fac1b2d44493b8f9eaee488a515eaab927566a0dee046e764270c71917328846  ./doctors-dire
 a141aef4db5c9193e0e9c357c89cd981eb9f1e0cf56fbfa1217e8a81ccffb4ee  ./doctors-directory/includes/class-ddd-future-ui.php
 a5c6fba42726f796c53c21f35a6b6dc0fca95c563d3d9f1dc9175b2b2dafd5f9  ./doctors-directory/includes/class-ddd-ranking-appeal.php
 95de1c1c66bdbd642a6600de40544748713e44dcd93c47aab390cdb5bf3aafdf  ./doctors-directory/includes/class-ddd-ranking-ui.php
-352c4afdface7c23dd588c1dd77fb6edffd6fc6b60230d859bfe184a6265ed5d  ./doctors-directory/includes/class-ddd-review-hardening.php
+7641e8f58c75b9f4a4783f9d5b56b5262e7e9c6f6fb470b450f3c8ed48aec062  ./doctors-directory/includes/class-ddd-review-hardening.php
 a315e55c6a7a4694301f4adc1607eb775b3fad90f624f0a056e7277c1932aa46  ./doctors-directory/includes/class-sdd-activator.php
 477af20b9076c0b869a040c0341ceea86f4a6feed1c20e19d5258cdcad3db892  ./doctors-directory/includes/class-sdd-admin.php
 960c653c953ac39d1502a0bf25fb0628006a7bdf0253247c34e7750d380b68eb  ./doctors-directory/includes/class-sdd-directory.php
@@ -73,6 +74,7 @@ c5e0383147bb56c82916fc6c470cdd0056bb657a2d757d0423b4f422bf7b0363  ./tests/curren
 de768eadb80cb3872b6306ffdb87cd07d51126eac000023716052fcd0c48e4c5  ./tests/future-discovery-24.py
 d76cf4bd4fc2d207844788125bc98cc962c8ea361535f4347abe4ecccf3ca670  ./tests/generate-source-checksums.sh
 85f09ec5ac0094d276f7594c6111c0a234abded217e48f9620ee81b5a2e262a6  ./tests/privacy-db-read-guard.php
+357d32f6be1095ca6849f328e7dd1c810a2ca43b7ed904ffd29c8f84fa4e2282  ./tests/privacy-effective-callback.php
 ad567412582a1227f27d4481171620597143dd1e93ba693160385ac1f7c2bb11  ./tests/review-20-cross-file-20261008.py
 620f7718520a0a1b35726970fe271b8ec741b542796790136a4df3528fa0c7a0  ./tests/review-40.py
 4677b3feb1ae557f01ebd6881b32e3d1bf153fdfb1d45b7a20c70fcaa38fd8ec  ./tests/review-80.py
