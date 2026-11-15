@@ -34,7 +34,11 @@ final class DDD_Privacy {
 		}
 
 		$reports = DDD_Repository::table( 'reports' );
+		$wpdb->last_error = '';
 		$report_rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$reports} WHERE reporter_id=%d OR doctor_id=%d ORDER BY id ASC LIMIT %d OFFSET %d", $user->ID, $user->ID, self::BATCH, $offset ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! is_array( $report_rows ) || '' !== (string) ( $wpdb->last_error ?? '' ) ) {
+			return new WP_Error( 'ddd_privacy_export_reports_unavailable', __( 'Your directory export could not be completed safely. Please retry.', DDD_TEXT_DOMAIN ), array( 'status' => 503 ) );
+		}
 		foreach ( $report_rows as $row ) {
 			$relation = absint( $row['reporter_id'] ) === absint( $user->ID ) ? __( 'Submitted by you', DDD_TEXT_DOMAIN ) : __( 'About your public doctor listing', DDD_TEXT_DOMAIN );
 			$item = array( array( 'name' => __( 'Relationship', DDD_TEXT_DOMAIN ), 'value' => $relation ), array( 'name' => __( 'Public doctor identifier', DDD_TEXT_DOMAIN ), 'value' => $row['doctor_public_id'] ), array( 'name' => __( 'Reason', DDD_TEXT_DOMAIN ), 'value' => $row['reason'] ), array( 'name' => __( 'Status', DDD_TEXT_DOMAIN ), 'value' => $row['status'] ), array( 'name' => __( 'Created at UTC', DDD_TEXT_DOMAIN ), 'value' => $row['created_at'] ), array( 'name' => __( 'Updated at UTC', DDD_TEXT_DOMAIN ), 'value' => $row['updated_at'] ) );
@@ -43,7 +47,11 @@ final class DDD_Privacy {
 		}
 
 		$saves = DDD_Repository::table( 'saved_refs' ); $projection = DDD_Repository::table( 'projection' );
+		$wpdb->last_error = '';
 		$save_rows = $wpdb->get_results( $wpdb->prepare( "SELECT p.public_id,p.display_name,s.created_at FROM {$saves} s LEFT JOIN {$projection} p ON p.doctor_id=s.doctor_id WHERE s.user_id=%d ORDER BY s.id ASC LIMIT %d OFFSET %d", $user->ID, self::BATCH, $offset ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! is_array( $save_rows ) || '' !== (string) ( $wpdb->last_error ?? '' ) ) {
+			return new WP_Error( 'ddd_privacy_export_saves_unavailable', __( 'Your directory export could not be completed safely. Please retry.', DDD_TEXT_DOMAIN ), array( 'status' => 503 ) );
+		}
 		foreach ( $save_rows as $save ) {
 			$data[] = array( 'group_id' => 'ddd-saves', 'group_label' => __( 'Saved Doctors', DDD_TEXT_DOMAIN ), 'item_id' => 'ddd-save-' . sanitize_key( $save['public_id'] ), 'data' => array( array( 'name' => __( 'Doctor name', DDD_TEXT_DOMAIN ), 'value' => $save['display_name'] ), array( 'name' => __( 'Public doctor identifier', DDD_TEXT_DOMAIN ), 'value' => $save['public_id'] ), array( 'name' => __( 'Saved at UTC', DDD_TEXT_DOMAIN ), 'value' => $save['created_at'] ) ) );
 		}
@@ -62,6 +70,15 @@ final class DDD_Privacy {
 		$page = max( 1, absint( $page ) ); $removed = false; $retained = false; $messages = array();
 		$legal_hold = (bool) apply_filters( 'ddd_privacy_legal_hold', false, $user->ID );
 
+		// Validate the reports read BEFORE performing any page-one erasure mutation.
+		// An invalid DB read must not be followed by a partial deletion or false success.
+		$reports = DDD_Repository::table( 'reports' );
+		$wpdb->last_error = '';
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$reports} WHERE reporter_id=%d OR doctor_id=%d ORDER BY id ASC LIMIT %d", $user->ID, $user->ID, self::BATCH ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! is_array( $rows ) || '' !== (string) ( $wpdb->last_error ?? '' ) ) {
+			return new WP_Error( 'ddd_privacy_erasure_reports_unavailable', __( 'The directory erasure request could not be completed safely. Please retry.', DDD_TEXT_DOMAIN ), array( 'status' => 503 ) );
+		}
+
 		if ( 1 === $page ) {
 			DDD_Helpers::set_meta( $user->ID, 'discoverable', '0' );
 			delete_user_meta( $user->ID, '_ddd_public_phone' ); delete_user_meta( $user->ID, '_ddd_public_whatsapp' );
@@ -70,8 +87,6 @@ final class DDD_Privacy {
 			$removed = ! is_wp_error( $deleted );
 		}
 
-		$reports = DDD_Repository::table( 'reports' );
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$reports} WHERE reporter_id=%d OR doctor_id=%d ORDER BY id ASC LIMIT %d", $user->ID, $user->ID, self::BATCH ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		foreach ( $rows as $row ) {
 			$row_hold = $legal_hold || ! empty( $row['retention_hold'] );
 			if ( $row_hold ) {
