@@ -1,0 +1,54 @@
+# File07 V12.3 exact source and test anchors (2026-11-15)
+# This is NOT a functional acceptance matrix. Each row records a real code symbol and a related repository test file; it does NOT certify that the test exercises every clause of the requirement. Source baseline main@8f9b567c08e9456daf31ebadf17b13bb307571f8. All staging/live states remain UNVERIFIED.
+# Format: Requirement_ID | Short requirement | Exact PHP source path | Real source method name | Existing related test path | Remaining mandatory acceptance evidence | Source anchor classification | Staging | Live
+Requirement_ID	Short_Requirement	Source_File	Method	Related_Source_Test	Critical_Unverified_Contract	Source_Anchor	Staging	Live
+F07-FR-001	Eligibility projection	doctors-directory/includes/class-sdd-helpers.php	eligibility	tests/current-owner-visibility.php	File00/03/08/09 currently public	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-002	Founder only section	doctors-directory/includes/class-sdd-directory.php	founder_section	tests/central-plan-adversarial.py	Live single-founder/no recent-list mixing	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-003	Featured editorial doctors	doctors-directory/includes/class-sdd-directory.php	set_feature	tests/source-contracts.py	Current approvals/expiry/audit	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-004	Recently verified	doctors-directory/includes/class-sdd-directory.php	search	tests/test-pagination.py	File09 effective verification and recency	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-005	All doctors/cursor	doctors-directory/includes/class-sdd-directory.php	search	tests/test-pagination.py	Real stable pagination and duplicates	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-006	Directory search	doctors-directory/includes/class-sdd-directory.php	search	tests/review-40.py	Real language and aliases	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-007	Faceted filters	doctors-directory/includes/class-sdd-directory.php	filters	tests/current-owner-visibility.php	File08 fee/slot/modes owner claim	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-008	Doctor public cards	doctors-directory/includes/class-sdd-directory.php	card	tests/test-contrast.py	Accessible canonical CTAs and consent	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-009	Ranking/search policy	doctors-directory/includes/class-ddd-central-ranking.php	snapshot	tests/central-plan-ranking.py	File26+File24 current authorized scores	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-010	Taxonomy governance	doctors-directory/includes/class-sdd-directory.php	taxonomy_upsert	tests/source-contracts.py	Owner taxonomy/version/aliases	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-011	Owner index synchronization	doctors-directory/includes/class-sdd-directory.php	reconcile	tests/review-20-cross-file-20261008.py	Tombstone and downstream File26 revocation	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-012	Directory saves	doctors-directory/includes/class-sdd-directory.php	save_reference	tests/unit-helpers.php	Private owner/account authorization	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-013	SEO/sitemap	doctors-directory/includes/class-sdd-seo.php	schema	tests/source-contracts.py	Live cache/index/structured privacy	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-014	Doctor preview/status	doctors-directory/includes/class-sdd-profile.php	status	tests/current-owner-visibility.php	Owner-sourced precise missing reasons	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FR-015	Report/abuse workflow	doctors-directory/includes/class-sdd-directory.php	report	tests/review-40.py	Real moderation safety routing	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-001	Object/field authorization	doctors-directory/includes/class-sdd-helpers.php	eligibility	tests/current-owner-visibility.php	Guest/private/suspended IDOR	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-002	Privacy lifecycle	doctors-directory/includes/class-sdd-privacy.php	erase	tests/review-40.py	PR20 and Issue19 plus GDPR legal hold	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-003	Reliability/outbox	doctors-directory/includes/class-sdd-directory.php	process_outbox	tests/review-80.py	Real MySQL retry/dead-letter/recovery	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-004	Performance	doctors-directory/includes/class-sdd-directory.php	search	tests/test-pagination.py	Field p75/p95+1000 fixture doctors	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-005	Accessibility/RTL	doctors-directory/includes/class-ddd-future-ui.php	panel	tests/test-contrast.py	AT/keyboard/zoom/device acceptance	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-006	Observability	doctors-directory/includes/class-sdd-plugin.php	record_health	tests/source-contracts.py	Host logs/alerts no raw personal data	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-007	Migration/rollback	doctors-directory/includes/class-sdd-activator.php	maybe_upgrade	tests/review-80.py	Actual DB restore and rollback	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-008	Operability/system check	doctors-directory/includes/class-sdd-plugin.php	system_check	tests/source-contracts.py	Safe repair and queue health	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-009	Compatibility	doctors-directory/includes/class-sdd-helpers.php	dependency_health	tests/source-contracts.py	Current WP/PHP/companion versions	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-NFR-010	Localization	doctors-directory/includes/class-ddd-future-query.php	local	tests/future-discovery-24.py	DST/RTL/currency/browser locales	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-CEN-01	Official global Top tiers	doctors-directory/includes/class-ddd-central-ranking.php	snapshot	tests/central-plan-ranking.py	File26 monthly + File24 assurance	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-01	Doctor compare	doctors-directory/includes/class-ddd-future-discovery.php	rest_compare	tests/future-discovery-24.py	Public doctor/clinic live claims	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-02	Guided finder	doctors-directory/includes/class-ddd-future-discovery.php	rest_guided	tests/future-discovery-24.py	No diagnosis/therapy claims	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-03	Near Me	doctors-directory/includes/class-ddd-future-query.php	distance	tests/future-discovery-24.py	Explicit consent/no GPS persistence	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-04	Map and list	doctors-directory/includes/class-ddd-future-query.php	map_points	tests/future-discovery-24.py	File08 public coordinates/accessibility	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-05	Published next appointment	doctors-directory/includes/class-ddd-future-query.php	next_available_datetime	tests/future-discovery-24.py	File08 actual fresh slot	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-06	Local IANA timezone	doctors-directory/includes/class-ddd-future-query.php	local	tests/future-discovery-24.py	DST and safe fallback	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-07	Serves-country	doctors-directory/includes/class-ddd-future-query.php	matches	tests/future-discovery-24.py	File08 scope and licensing caveat	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-08	Saved searches/alerts	doctors-directory/includes/class-ddd-future-preferences.php	save_search	tests/future-discovery-24.py	File19 actual ingestion/delivery	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-09	Private shortlists	doctors-directory/includes/class-ddd-future-preferences.php	save_list	tests/future-discovery-24.py	No clinical details; eligibility	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-10	Why this doctor	doctors-directory/includes/class-ddd-future-query.php	why	tests/future-discovery-24.py	Evidence-based public-only explanation	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-11	User personal sort	doctors-directory/includes/class-ddd-future-query.php	personal	tests/future-discovery-24.py	Non-official rank notice	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-12	Ranking transparency	doctors-directory/includes/class-ddd-future-discovery.php	rest_transparency	tests/future-discovery-24.py	File26 policy+File24 fairness status	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-13	Verification freshness	doctors-directory/includes/class-ddd-future-query.php	enrich	tests/future-discovery-24.py	File09 true effective date	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-14	Professional public facets	doctors-directory/includes/class-ddd-future-query.php	args	tests/future-discovery-24.py	File03 public owner fields	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-15	Public knowledge footprint	doctors-directory/includes/class-ddd-future-query.php	enrich	tests/future-discovery-24.py	Owner articles/research events	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-16	Accessible communication	doctors-directory/includes/class-ddd-future-query.php	matches	tests/future-discovery-24.py	Public verified owner support	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-17	Clinic accessibility	doctors-directory/includes/class-ddd-future-query.php	matches	tests/future-discovery-24.py	File08 public clinic accessibility	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-18	Natural-language filters	doctors-directory/includes/class-ddd-future-query.php	interpret	tests/future-discovery-24.py	No clinical inference	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-19	Semantic/phonetic aliases	doctors-directory/includes/class-ddd-future-query.php	merge	tests/future-discovery-24.py	Bounded multilingual owner lexicon	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-20	Zero results recovery	doctors-directory/includes/class-ddd-future-query.php	zero_result_recovery	tests/future-discovery-24.py	No fictitious doctor	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-21	Anti-gaming/paid bias	doctors-directory/includes/class-ddd-future-discovery.php	integrity_contract	tests/central-plan-adversarial.py	File24 independent guard and File26 owner	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-22	Unmet demand aggregation	doctors-directory/includes/class-ddd-future-discovery.php	record_demand	tests/future-discovery-24.py	No patient/IP/free text/GPS	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-23	Emergency query diversion	doctors-directory/includes/class-ddd-future-discovery.php	safe_interpretation	tests/future-discovery-24.py	Suppress recommendations	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
+F07-FUT-24	Offline low-bandwidth pack	doctors-directory/includes/class-ddd-future-discovery.php	rest_offline_pack	tests/future-discovery-24.py	Expiry/revalidate and safe public data	SYMBOL_ONLY	UNVERIFIED	UNVERIFIED
