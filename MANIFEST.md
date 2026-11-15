@@ -36,6 +36,7 @@
 - `tests/unit-helpers.php`
 - `ops/file07-readonly-reality-freeze.php` — isolated operator probe, excluded from package
 - `tests/v123-readonly-freeze-contract.py`
+- `tests/v123-source-symbol-trace.py`
 - `tests/v123-acceptance-inventory.py`
 - `tests/source-contracts.py`
 - `tests/review-20-cross-file-20261008.py`
@@ -62,6 +63,7 @@
 - `docs/V123-F07-CROSS-FILE-OWNERS-20261114.md`
 - `docs/V123-F07-DEFECTS-AND-BLOCKERS-20261114.md`
 - `docs/V123-F07-REQUIREMENT-GATES-20261114.md`
+- `docs/V123-F07-EXACT-SOURCE-TRACE-20261115.tsv`
 - `docs/V123-F07-SECURITY-PERF-STAGING-RELEASE-20261114.md`
 - `docs/V123-F07-REVIEWS-A-B-20261114.md`
 - `docs/V123-F07-READONLY-OPERATOR-PROBE-20261114.md`
